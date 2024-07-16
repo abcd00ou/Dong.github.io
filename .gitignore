@@ -1,0 +1,8 @@
+/env
+/.vscode
+/Flask_CI_Example.egg-info
+*__pycache__*
+pip-selfcheckin.json
+*.pyc
+.coverage
+.DS_Store

@@ -1,0 +1,583 @@
+{% extends "layout.html" %}
+{% block title %}Survey{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></scriptsrc>></script>
+   <script charset="utf-8" src="https://static.worksmobile.net/static/wm/woff/edge/3.6/sdk.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+   
+
+   <script type="text/javascript">
+       (function() {
+           emailjs.init("_GKGc3e2Afedx7hjm")
+       })();
+   </script>
+ 
+   <style>
+     
+
+       h2 {
+           color: #333;
+           text-align: center;
+           margin-bottom: 20px;
+       }
+
+       form {
+           background: #fff;
+           padding: 20px;
+           border-radius: 10px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           width: 100%;
+           max-width: 1000px;
+           display: flex;
+           flex-direction: column;
+       }
+
+       label {
+           margin-bottom: 5px;
+           color: #555;
+           font-weight: bold;
+       }
+
+       input[type="number"],
+       input[type="text"],
+       select,
+       textarea {
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           padding: 10px;
+           margin-bottom: 20px;
+           width: 100%;
+           box-sizing: border-box;
+       }
+
+       textarea {
+           resize: none;
+           height: 100px;
+       }
+
+       input[type="submit"] {
+           padding: 15px;
+           border: none;
+           border-radius: 5px;
+           font-size: 16px;
+           width: 100%;
+           background-color: #4CAF50;
+           color: white;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+       }
+
+       input[type="submit"]:hover {
+           background-color: #45a049;
+       }
+
+       .section {
+           margin-bottom: 20px;
+       }
+
+       .flex-container {
+           display: flex;
+           gap: 10px;
+           flex-wrap: wrap;
+       }
+
+       .flex-container .col-4 {
+           flex: 1;
+           min-width: 150px;
+       }
+
+       .flex-container .col-4 button {
+           margin-left: 10px;
+           padding: 10px;
+           border: none;
+           background-color: #36c1ae;
+           color: white;
+           border-radius: 5px;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+       }
+
+       .flex-container .col-4 button:hover {
+           background-color: #2a978b;
+       }
+       .button{
+        margin-left: 10px;
+        padding: 10px;
+        border: none;
+        background-color: #36c1ae;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+       }
+
+   </style>
+</head>
+<body>
+    <body class="index-page">
+
+        <header id="header" class="header fixed-top">
+          <div class="topbar d-flex align-items-center">
+            <div class="container d-flex justify-content-center justify-content-md-between">
+              <div class="contact-info d-flex align-items-center">
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@example.com</a></i>
+                <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
+              </div>
+              <div class="social-links d-none d-md-flex align-items-center">
+                <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div><!-- End Top Bar -->
+      
+          <div class="branding d-flex align-items-center">
+            <div class="container position-relative d-flex align-items-center justify-content-between">
+              <a href="{{ url_for('main') }}" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='img/seowoologo.png') }}" alt="">
+                <h1 class="sitename">서우HR</h1>
+              </a>
+              <nav id="navmenu" class="navmenu">
+                <ul>
+                  <li><a href="#hero">Home</a></li>
+                  <li><a href="#about">About</a></li>
+                  <li><a href="#Services">Services</a></li>
+                  <li><a href="{{url_for('survey')}}" class = 'active'>Survey</a></li>
+                  <li><a href="{{url_for('calendar')}}">Calendar</a></li>
+                  <li><a href="#team">Team</a></li>
+                  <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="#">Dropdown 1</a></li>
+                      <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><a href="#">Deep Dropdown 1</a></li>
+                          <li><a href="#">Deep Dropdown 2</a></li>
+                          <li><a href="#">Deep Dropdown 3</a></li>
+                          <li><a href="#">Deep Dropdown 4</a></li>
+                          <li><a href="#">Deep Dropdown 5</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Dropdown 2</a></li>
+                      <li><a href="#">Dropdown 3</a></li>
+                      <li><a href="#">Dropdown 4</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#contact">Contact</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+              </nav>
+            </div>
+          </div>
+        </header>
+   <form id="survey-form">
+
+
+    
+       <h2>Survey Form</h2>
+       <div class="section">
+           <label for="workplace">작업장:</label>
+           <select id="workplace" name="workplace">
+               <option value="당진">당진</option>
+               <option value="마곡">마곡</option>
+               <option value="시흥">시흥</option>
+           </select>
+       </div>
+       <div class="section">
+           <label for="numworkers">작업인원:</label>
+           <input type="number" id="numworkers" name="numworkers" min="1">
+       </div>
+       <div class="flex-container">
+           <div class="col-4">
+               <label for="workers_add1">기본 근무자 추가:</label>
+               <input type="text" id="workers_add1">
+               <button id="add1" class="button" style="float:right">작업자 추가</button><br><br><br>
+               <label for="workers-normal">작업자 명:</label>
+               <textarea id="workers-normal" disabled></textarea>
+           </div>
+           <div class="col-4">
+               <label for="workers_add2">추가 근무자 추가:</label>
+               <input type="text" id="workers_add2">
+               <button id="add2" class="button" style="float:right">작업자 추가</button><br><br><br>
+               <label for="workers-hard">작업자 명:</label>
+               <textarea id="workers-hard" disabled></textarea>
+           </div>
+           <div class="col-4">
+               <label for="workers_add3">오전 근무자 추가:</label>
+               <input type="text" id="workers_add3">
+               <button id="add3" class="button" style="float:right">작업자 추가</button><br><br><br>
+               <label for="workers-morning">작업자 명:</label>
+               <textarea id="workers-morning" disabled></textarea>
+           </div>
+       </div>
+       <div class="flex-container">
+           <div class="col-4">
+               <label for="category">중분류:</label>
+               <select id="category" name="category" onchange="filterData('category')">
+                   <option value="">Select</option>
+               </select>
+           </div>
+           <div class="col-4">
+               <label for="floor">층:</label>
+               <select id="floor" name="floor" onchange="filterData('floor')">
+                   <option value="">Select</option>
+               </select>
+           </div>
+           <div class="col-4">
+               <label for="section">구간:</label>
+               <select id="section" name="section" onchange="filterData('section')">
+                   <option value="">Select</option>
+               </select>
+           </div>
+           <div class="col-4">
+               <label for="subsection">세부 구간:</label>
+               <select id="subsection" name="subsection">
+                   <option value="">Select</option>
+               </select>
+           </div>
+           <div class="col-4">
+               <label for="task">작업내용:</label>
+               <select id="task" name="task">
+                   <option value="">Select</option>
+               </select>
+           </div>
+           <div class="col-4">
+               <label for="effort">공수:</label>
+               <input type="number" id="effort" name="effort">
+           </div>
+           
+       </div>
+       <div class="col-4">
+       <button id="add-task" class="button" style="float:right">작업 추가</button>
+       <label for="task-result">작업결과</label>
+       <textarea id="task-result" disabled></textarea>
+       </div>
+       <div class="section">
+           <label for="specialnotes">특이사항:</label>
+           <textarea  id="specialnotes" name="specialnotes"></textarea>
+       </div>
+       <div class="section">
+           <label for="overtime">연장근무:</label>
+           <textarea id="overtime" name="overtime"></textarea>
+       </div>
+       <input type="submit" value="Submit2" id="submit2">
+       
+   </form>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+    function populateDropdown(id, options) {
+                const select = document.getElementById(id);
+                select.innerHTML = '<option value="">Select</option>';
+                options.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.text = option;
+                    select.appendChild(opt);
+                });
+	    	}
+
+        function filterData(level) {
+            if (!data) {
+                console.error('Data is not loaded yet.');
+                return;
+            }
+
+            const category = document.getElementById('category').value;
+            const floor = document.getElementById('floor').value;
+            const section = document.getElementById('section').value;
+
+            let filteredData = [];
+            if (level === 'category') {
+                filteredData = data.filter(item => item['중분류'] === category);
+                populateDropdown('floor', [...new Set(filteredData.map(item => item['층']))]);
+                document.getElementById('section').innerHTML = '<option value="">Select</option>';
+                document.getElementById('subsection').innerHTML = '<option value="">Select</option>';
+                document.getElementById('task').innerHTML = '<option value="">Select</option>';
+            } else if (level === 'floor') {
+                filteredData = data.filter(item => item['중분류'] === category && item['층'] === floor);
+                populateDropdown('section', [...new Set(filteredData.map(item => item['구간']))]);
+                document.getElementById('subsection').innerHTML = '<option value="">Select</option>';
+                document.getElementById('task').innerHTML = '<option value="">Select</option>';
+            } else if (level === 'section') {
+                filteredData = data.filter(item => item['중분류'] === category && item['층'] === floor && item['구간'] === section);
+                populateDropdown('subsection', [...new Set(filteredData.map(item => item['세부구간']))]);
+                populateDropdown('task', [...new Set(filteredData.map(item => item['작업 내용']))]);
+            }
+        };
+       
+
+
+    window.onload = function(){
+    
+  		 document.getElementById('add1').addEventListener('click', function(event) {
+			event.preventDefault();
+		     var newbie = document.getElementById('workers_add1').value; 
+		   	 var work_list = document.getElementById('workers-normal');
+		   	
+		     work_list.textContent += newbie+","; 
+		   	document.getElementById('workers_add1').value = "";
+		   
+		 });
+  
+		document.getElementById('add2').addEventListener('click', function(event) {
+					event.preventDefault();
+				   var newbie = document.getElementById('workers_add2').value; 
+				   var work_list = document.getElementById('workers-hard');
+
+				   work_list.textContent += newbie+","; 
+				  document.getElementById('workers_add2').value = "";
+
+			   });
+
+		document.getElementById('add3').addEventListener('click', function(event) {
+				  event.preventDefault();
+				   var newbie = document.getElementById('workers_add3').value; 
+				   var work_list = document.getElementById('workers-morning');
+
+				   work_list.textContent += newbie+","; 
+				  document.getElementById('workers_add3').value = "";
+
+			   });
+
+        document.getElementById('add-task').addEventListener('click', function(event) {
+				  event.preventDefault();
+				   var category = document.getElementById('category').value; 
+                   var floor = document.getElementById('floor').value; 
+                   var section = document.getElementById('section').value; 
+                   var subsection = document.getElementById('subsection').value; 
+                   var task = document.getElementById('task').value; 
+                   var effort = document.getElementById('effort').value; 
+                   
+				   var task_result = document.getElementById('task-result');
+
+				   task_result.textContent += category+"_"+floor+"_"+section+"_"+subsection+"_"+task+"_"+effort+"\n"; 
+                   document.getElementById('category').value = "";
+                   document.getElementById('floor').value = "";
+                   document.getElementById('section').value = "";
+                   document.getElementById('subsection').value = "";
+                   document.getElementById('task').value = "";
+                   document.getElementById('effort').value = "";
+                   
+
+			   });
+
+        
+
+       
+        
+
+
+    // 1. 페이지 로드 시 인증을 위한 함수 호출
+   
+
+       document.getElementById('submit2').addEventListener('click', function(event) {
+           createEvent()
+           alert("Naverworks 캘린더에 저장하였습니다. ")
+            
+        })
+
+		 document.getElementById('survey-form').addEventListener('submit', function(event) {
+                   
+					 // Submit 시점에 required 속성 추가
+				  document.getElementById('numworkers').required = true;
+				  document.getElementById('specialnotes').required = true;
+				  document.getElementById('overtime').required = true;
+
+				  if (!document.getElementById('survey-form').checkValidity()) {
+					  // required validation failed
+					  event.preventDefault();
+					  alert('Please fill all required fields.');
+					  return;
+				  }
+
+
+				  event.preventDefault();
+
+				  const formData = {
+					  numworkers: document.getElementById('numworkers').value,
+					  workersnormal: document.getElementById('workers-normal').value,
+					  workershard: document.getElementById('workers-hard').value,
+					  workersmorning: document.getElementById('workers-morning').value,
+					  taskresult : document.getElementById("task-result").value,
+                      specialnotes: document.getElementById('specialnotes').value,
+					  overtime: document.getElementById('overtime').value
+				  };
+
+				  emailjs.send('service_odcgc2y', 'template_7pojdeh', formData)
+					  .then(function(response) {
+						  alert('Email sent successfully!');
+					  }, function(error) {
+						  alert('Failed to send email. Error: ' + JSON.stringify(error));
+					  });
+			  });
+
+              async function getAccessToken() {
+
+                
+                // URL에서 code와 state 파라미터를 추출
+                const urlParams = new URLSearchParams(window.location.search);
+                const code = urlParams.get('code');
+                const state = urlParams.get('state');
+
+                const response = await fetch('/callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    code: code,
+                    grant_type: 'authorization_code',
+                    client_id: '8zESjIVD54_8K5PA_dIu',
+                    client_secret: 'wyWAH1uLEY'
+                })
+                });
+                
+                // // 토큰 정보 사용 예제
+                // const accessToken = tokenInfo.access_token;
+                alert('Access Token: ' + accessToken);
+                const tokenInfo = await response.json();
+                const accessToken = tokenInfo.access_token;
+                console.log("fetch전")
+                fetchFiles(accessToken);
+                }
+
+    function formatDateTime(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+        }
+
+
+        async function createEvent() {
+            const formData = {
+					  numworkers: document.getElementById('numworkers').value,
+					  workersnormal: document.getElementById('workers-normal').value,
+					  workershard: document.getElementById('workers-hard').value,
+					  workersmorning: document.getElementById('workers-morning').value,
+					  taskresult : document.getElementById("task-result").value,
+                      specialnotes: document.getElementById('specialnotes').value,
+					  overtime: document.getElementById('overtime').value
+				  };
+
+            const start = new Date();
+            start2 = formatDateTime(start)
+            console.log(start)
+
+            // const token = await getAccessToken();
+     
+
+            const event = {
+                summary: "Testmessage",
+                description: JSON.stringify(formData),
+               
+                recurrence:[],
+                recurringEventId:"TZID=Asia/Seoul:2025-04-05"
+            };
+            console.log("?????")
+            const response = await fetch('/create_event', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(event)
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = result.message;
+        };
+
+        // 3. 파일 조회 함수
+        async function fetchFiles(accessToken) {
+            const response = await fetch('https://www.worksapis.com/v1.0/sharedrives', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            const files = await response.json();
+            console.log(files);
+            // 파일 목록을 화면에 표시하는 함수 호출 (추가 작업 필요)
+            displayFiles(files);
+        }
+
+        // 4. 파일 목록을 화면에 표시하는 함수 (예제)
+        function displayFiles(files) {
+            const fileList = document.createElement('ul');
+            files.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.textContent = file.name; // 예시로 파일 이름을 표시
+                fileList.appendChild(listItem);
+            });
+            document.body.appendChild(fileList);
+        }
+
+        // async function getAccessToken() {
+        //     const clientId = '8zESjIVD54_8K5PA_dIu';
+        //     const redirectUri = "http://localhost:8080/Untitled-1.html";
+        //     const state = 'YOUR_STATE'; // 임의의 값
+        //     const clientSecret = "wyWAH1uLEY";
+        //     const authUrl = `https://auth.worksmobile.com/oauth2/v2.0/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=calendar&response_type=code&state=STATE_STRING`;
+
+        //     window.open(authUrl);
+
+        //     // Code to handle redirect and extract authorization code
+        //     const urlParams = new URLSearchParams(window.location.search);
+        //     const code = urlParams.get('code');
+
+        //     const tokenResponse = await fetch('https://auth.worksmobile.com/oauth2/v2.0/token', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded'
+        //         },
+        //         body: new URLSearchParams({
+        //             code: code,
+        //             grant_type: 'authorization_code',
+        //             client_id: clientId,
+        //             client_secret: clientSecret,
+        //             redirect_uri: redirectUri
+        //         })
+        //     });
+
+    
+            
+        //     const tokenInfo = await tokenResponse.json();
+        //     console.log(tokenInfo)
+        //     return tokenInfo.access_token;
+        // }
+
+        
+        
+
+
+
+    var json_data ="[{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":\"\\uae30\\ub465\",\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uac70\\ud478\\uc9d1 \\uc124\\uce58 \\ubc0f \\ubc18\\ub3c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":\"\\ud615\\ud2c0\"},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":\"\\ucf54\\uc544\",\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\uacc4\\ub2e8 \\uacc4\\uafb8\\ubbf8 \\uc124\\uce58 \\ubc0f \\ud558\\ubd80 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":\"\\ud615\\ud2c0\"},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":\"\\ucf54\\uc544\",\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ubc88 \\uacc4\\ub2e8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":5.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":\"\\uc54c\\ud3fc\"},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":\"\\uc2dd\\ub2f9\",\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"E\\/V\\uc2e4 \\uac70\\ud478\\uc9d1 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":\"\\uc54c\\ud3fc\"},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":\"\\ucf54\\uc544\",\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uac70\\ud478\\uc9d1 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":\"\\ucf54\\uc544\",\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\uce35\\uc73c\\ub85c \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"2\\ubc88\\uac8c\\uc774\\ud2b8\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"5\\ubc88\\uac8c\\uc774\\ud2b8\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc900\\ube44 \\uc791\\uc5c5 D\\uad6c\\uac04 \\ud558\\ubd80 \\ucabd \\uc9c0\\uac8c\\ucc28 \\uc6b4\\uc804 \\uc791\\uc5c5, \\uc2e0\\ud638\\uc218 \",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":\"3\\ubc88 \\ucf54\\uc544\",\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub04a\\uc5b4\\uce58\\uae30 \\uad6c\\uac04 \\ub2e4\\ub9c8\\uac00 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\uacc4\\ub2e8 \\uae30\\ub465 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"EV\\uc2e4 \\uae30\\ub465 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"DA\\uc2e4 \\uad6c\\uac04 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":13.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"5\\ubc88\\uac8c\\uc774\\ud2b8\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc900\\ube44 \\uc791\\uc5c5 D\\uad6c\\uac04 \\ud558\\ubd80 \\ucabd \\uc9c0\\uac8c\\ucc28 \\uc6b4\\uc804 \\uc791\\uc5c5, \\uc2e0\\ud638\\uc218 \",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 01\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"B,C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.3,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":6.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\ud0c0\\uc124 \\uacf5\\uad6c\\ub9ac\\ub9dd \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.2,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc2dd\\ub2f9 EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ubc88 \\ucf54\\uc544 \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\ubc0f \\uc54c\\ud3fc \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":6.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\ud30c\\ub77c\\ud3ab \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"\\uae30\\ud0c0\",\"\\uad6c\\uac04\":null,\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > 2F \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\uacc4\\ub2e8 \\uc2dc\\uc2a4\\ud15c \\ubc1c\\ud310 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\ucf54\\uc544 \\uae30\\ub465 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"DA\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":11.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"DA\\uc2e4 \\ud0c0\\uc124 \\uacf5\\uad6c\\ub9ac\\ub9dd \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 03\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":8.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\uacc4\\ub2e8 \\ub0b4\\ubd80 \\uc678\\ubd80 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":6.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ube44\\uc0c1 EV\\uc2e4 \\uc804\\uc2e4 \\uac70\\ud478\\uc9d1 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc2dd\\ub2f9 EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ubc88 \\uacc4\\ub2e8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\uacc4\\ub2e8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\ud30c\\ub77c\\ud3ab \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc6d0\\ud615 \\uae30\\ub465 \\ucca0\\uadfc \\uc218\\uc9c1\\ub3c4 \\uc7a1\\uae30 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ucf54\\uc544 \\uc790\\uc7ac \\uc591\\uc911 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"\\uae30\\ud0c0\",\"\\uad6c\\uac04\":null,\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F \\uc790\\uc7ac \\uc815\\ub9ac \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ucf54\\uc544 \\uacc4\\ub2e8 \\uc2dc\\uc2a4\\ud15c \\ubc1c\\ud310 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ubc88 \\uacc4\\ub2e8 \\uae30\\ub465 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" 5\\ubc88 \\uacc4\\ub2e8 \\uc2dc\\uc2a4\\ud15c \\ubc1c\\ud310 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 04\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\ubc18\\ub3c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":8.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\uacc4\\ub2e8 \\ubc0f \\uc678\\ubd80 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ube44\\uc0c1 EV\\uc2e4 \\ubc0f \\uc678\\ubd80 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":5.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc2dd\\ub2f9 EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ubc88 \\uacc4\\ub2e8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":5.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uae30\\ub9ac\\ubc14\\ub9ac \\ubc0f \\uc218\\uc9c1 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\uacc4\\ub2e8 \\ud558\\ubd80 \\ub9c8\\uac10 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ubc88 \\uacc4\\ub2e8 \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" \\ub7a8\\ud504 \\ud30c\\ub77c\\ud3ab \\uc791\\uc5c5\",\"\\uacf5\\uc218\":6.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > \\uc9c0\\uac8c\\ucc28 \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ubc88 \\ucf54\\uc544 \\uae30\\ub465 \\ubcfc\\ud2b8 \\ubc0f \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc9c0\\uac8c\\ucc28 \\uc6b4\\uc804 \\uc791\\uc5c5, \\uc2e0\\ud638\\uc218\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\uacc4\\ub2e8 \\ub4a4\\ud3b8 \\ub208\\uc379 5\\uc804 > 8\\uc804\\uc73c\\ub85c \\uc7ac\\uc218\\uc815 \\uc791\\uc5c5(\\ubb38\\ubd80\\uc7a5\\ub2d8 \\uc9c0\\uc2dc)\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\uacc4\\ub2e8 \\uc2dc\\uc2a4\\ud15c \\ubc1c\\ud310 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 05\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\ubc18\\ub3c4 \\ubc0f \\ubc18\\ub3c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\uacc4\\ub2e8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":8.8,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc2dd\\ub2f9 EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C,E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\ubc0f \\uc54c\\ud3fc \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ubc88 \\uacc4\\ub2e8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":5.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"EV\\uc2e4 \\ubc0f RC\\uc2ac\\ub77c\\ube0c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ubc88 \\uacc4\\ub2e8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":6.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\ud30c\\ub77c\\ud3ab \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"\\uae30\\ud0c0\",\"\\uad6c\\uac04\":null,\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F \\uc790\\uc7ac \\uc815\\ub9ac \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\uacc4\\ub2e8 \\ud0c0\\uc124 \\uc804 \\ud558\\ubd80 \\ub9c8\\uac10 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"B2\",\"\\uad6c\\uac04\":\"A,B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc678\\ubd80 1,3\\ucf54\\uc544 \\ubc29\\uc218\\ud131 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\uacc4\\ub2e8 \\ucca0\\uace8 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" 3\\ubc88 \\uacc4\\ub2e8 \\uae30\\ub465 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\uacc4\\ub2e8 \\ud0c0\\uc124 \\uc804 \\ub370\\ud06c \\uc2ac\\ub77c\\ube0c \\ub04a\\uc5b4\\uce58\\uae30 \\ub2e4\\ub9c8\\uac00 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"DA\\uc2e4 \\ud0c0\\uc124 \\ubd88\\ub7c9\\uc73c\\ub85c \\uc778\\ud574 \\uac00\\uc640 \\uc7ac\\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 06\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":8.3,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":6.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"EV\\uc2e4 \\ubc0f RC\\uc2ac\\ub77c\\ube0c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\ud30c\\ub77c\\ud3ab \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ucf54\\uc544 \\ud0c0\\uc124 \\uacf5\\uad6c\\ub9ac\\ub9dd \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.4,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"1\\ubc88\\uac8c\\uc774\\ud2b8\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"\\uae30\\ud0c0\",\"\\uad6c\\uac04\":null,\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > 2F \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"B2\",\"\\uad6c\\uac04\":\"A,B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ubc29\\uc218\\ud131 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ubc88 \\ucf54\\uc544 \\uae30\\ub465 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc9c0\\uac8c\\ucc28 \\uc2e0\\ud638\\uc218 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc131\\ud070, \\uc774\\uc911 \\uc2ac\\ub77c\\ube0c \\uad6c\\uac04 \\ud0c0\\uc124 \\uacf5\\uad6c\\ub9ac\\ub9dd \\uc791\\uc5c5 \",\"\\uacf5\\uc218\":1.6,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 07\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\ubc0f \\uac70\\ud478\\uc9d1 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" 1\\ucf54\\uc544 \\uacc4\\uafb8\\ubbf8 \\uc124\\uce58 \\ubc0f \\ub2e8\\ucc28 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":8.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"EV\\uc2e4 \\ubc0f \\uae30\\ub465 \\ub9c8\\uac10 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" EV\\uc2e4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\ud30c\\ub77c\\ud3ab \\ub9c8\\uac10 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"3\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"B2\",\"\\uad6c\\uac04\":\"A,B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ubc29\\uc218\\ud131 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ucf54\\uc544 \\uc2dc\\uc2a4\\ud15c \\ubc1c\\ud310 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ucf54\\uc544 \\uae30\\ub465 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"RC\\uc2ac\\ub77c\\ube0c \\ucd94\\uac00 \\ub3c4\\uba74 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 10\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":5.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ubc88 \\uacc4\\ub2e8 \\ub4a4\\ud3b8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"EV\\uc2e4 \\ud558\\ubd80 \\ub9c8\\uac10 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ucf54\\uc544 \\uc606 RC\\uc2ac\\ub77c\\ube0c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1\\ucf54\\uc544 \\ud0c0\\uc124 \\uc804 \\ud558\\ubd80 \\ub9c8\\uac10 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > \\uc790\\uc7ac \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"B2\",\"\\uad6c\\uac04\":\"A,B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ubc29\\uc218\\ud131 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub370\\ud06c \\uc2ac\\ub77c\\ube0c \\ub2e8\\ucc28\\uad6c\\uac04 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ubc88 \\uacc4\\ub2e8 \\uc0c1\\ubd80 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub370\\ud06c \\uc2ac\\ub77c\\ube0c \\ub04a\\uc5b4\\uce58\\uae30 \\uad6c\\uac04 \\ub2e4\\ub9c8\\uac00 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 11\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":8.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\uacc4\\ub2e8 \\uc774\\uc911 \\uc2ac\\ub77c\\ube0c \\uad6c\\uac04 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" 5\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"RC\\uc2ac\\ub77c\\ube0c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":6.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\ucf54\\uc544 \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\ubc0f \\uac70\\ud478\\uc9d1 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ud0c0\\uc124 \\uacf5\\uad6c\\ub9ac\\ub9dd \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.2,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc591\\uc911 \\uc9c0\\uac8c\\ucc28 \\uc791\\uc5c5, \\uc720\\ub3c4\\uc6d0\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"2\\ubc88\\uac8c\\uc774\\ud2b8\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ud0c0\\uc124 \\uae30\\ub465 \\ud0c0\\uc124 \\uc911 \\uac00\\uc640 \\ud130\\uc9d0\\uc73c\\ub85c \\uacf5\\uad6c\\ub9ac \\uccad\\uc18c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.1,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A,B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ubc29\\uc218\\ud131 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\ucf54\\uc544 \\uae30\\ub465 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\uc5e0\\ubc30\\ub4dc \\uad6c\\uac04 \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\ubc0f \\uc678\\ubd80 \\uac70\\ud478\\uc9d1 \\uc7ac\\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub370\\ud06c \\uc2ac\\ub77c\\ube0c \\ud0c0\\uc124 \\uc804 \\ub2e4\\ub9c8\\uac00 \\ubc0f \\ub2e8\\ucc28 \\ub9c8\\uac10 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc591\\uc911 \\uc9c0\\uac8c\\ucc28 \\uc791\\uc5c5, \\uc720\\ub3c4\\uc6d0\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 12\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":9.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ubc88 \\ucf54\\uc544 \\uc678\\ubd80 \\ud558\\ubd80 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D,B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\ubc0f \\ubc18\\ub3c4 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"\\uae30\\ud0c0\",\"\\uad6c\\uac04\":null,\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"\\uae30\\ud0c0\",\"\\uad6c\\uac04\":null,\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc815\\ub9ac \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\ud30c\\ub77c\\ud3ab \\ud0c0\\uc124 \\uacf5\\uad6c\\ub9ac\\ub9dd \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"A,B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ubc29\\uc218\\ud131 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 EV\\uc804\\uc2e4 \\uc0c1\\ubd80 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ucf54\\uc544 \\uae30\\ub465 \\ub4a4\\ud3b8 \\ubc29\\uc218\\ud131 \\uc7ac\\uc218\\uc815 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\ucf54\\uc544 \\uc606 \\ubc29\\uc218\\ud131 \\uc7ac\\uc218\\uc815 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" 6\\ubc88 \\uacc4\\ub2e8 \\uc2dc\\uc2a4\\ud15c \\ubc1c\\ud310 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ud30c\\ub77c\\ud3ab \\ud0c0\\uc124 \\uc804 \\ucca0\\uadfc \\uc6d0\\ud615\\uae30\\ub465 \\uc218\\uc9c1 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"B2\",\"\\uad6c\\uac04\":\"A,B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ubc29\\uc218\\ud131 \\ud0c0\\uc124 \\uacf5\\uad6c\\ub9ac\\ub9dd \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.8,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 13\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"B1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uac70\\ud478\\uc9d1 \\uc124\\uce58 \\ubc0f \\ubc18\\ub3c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uac70\\ud478\\uc9d1 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":9.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ucf54\\uc544 \\uc774\\uc911 \\uc2ac\\ub77c\\ube0c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ucf54\\uc544 \\uacc4\\uafb8\\ubbf8 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ucf54\\uc544 \\uacc4\\ub2e8 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":8.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" \\uae30\\ub465 \\ubc18\\ub3c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ucf54\\uc544 \\uc606 RC\\uc2ac\\ub77c\\ube0c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ubc88 \\ucf54\\uc544 \\uacc4\\uafb8\\ubbf8 \\uc124\\uce58 \\ubc0f \\ud558\\ubd80 \\ub9c8\\uac10 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"2\\ucf54\\uc544 \\uae30\\uc900\\ubaa9 \\uc124\\uce58 \\ubc0f \\uac70\\ud478\\uc9d1 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"5\\ucf54\\uc544 \\ud558\\ubd80 \\uc6b0\\ub808\\ud0c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\" 4\\ucf54\\uc544 \\ud558\\ubd80 \\uc6b0\\ub808\\ud0c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"2\\ubc88\\uac8c\\uc774\\ud2b8\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B,D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ucf54\\uc544 \\uae30\\ub465 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ucf54\\uc544 EV\\uc804\\uc2e4 \\uc0c1\\ubd80 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":0.5,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 14\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\ubc18\\ub3c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":8.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc774\\uc911 \\uc2ac\\ub77c\\ube0c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\ub9c8\\uac10 \\ubc0f \\uae30\\ub9ac\\ubc14\\ub9ac \\uc218\\uc9c1 \\uc6b0\\ub808\\ud0c4 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":7.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"2\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc774\\uc911 \\uc2ac\\ub77c\\ube0c \\ubc1c\\ud310 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc774\\uc911 \\uc2ac\\ub77c\\ube0c \\uc0c1\\ubd80 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub370\\ud06c \\uc2ac\\ub77c\\ube0c \\ub2e8\\ucc28 \\ubc0f \\ub367\\uc0b4 \\uad6c\\uac04 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub370\\ud06c \\uc2ac\\ub77c\\ube0c \\ubc15\\uc2a4 \\uad6c\\uac04, \\ub2e4\\ub9c8\\uac00 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 15\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"3\\ubc88 \\ucf54\\uc544 \\uc774\\uc911 \\uc2ac\\ub77c\\ube0c \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":11.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"B,C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D,B\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\uae30\\ub465 \\uc0c1\\ubd80 \\uac00\\uc640 \\uc124\\uce58 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":2.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"2\\ubc88 \\ucf54\\uc544 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":6.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"\\uae30\\ud0c0\",\"\\uad6c\\uac04\":null,\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"1F > 2F \\uc790\\uc7ac \\uc591\\uc911 \\ubc0f \\uc900\\ube44 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\ub3c4\\uae09\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"E\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"4\\ubc88 \\ucf54\\uc544 \\ud0c0\\uc124 \\uacf5\\uad6c\\ub9ac\\ub9dd \\uc791\\uc5c5\",\"\\uacf5\\uc218\":3.8,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\uc6d0\\ud615 \\uae30\\ub465 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"1\",\"\\uad6c\\uac04\":\"F\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub7a8\\ud504 \\uc2dc\\uc2a4\\ud15c \\uba4d\\uc5d0 \\uc544\\uae30\\uc0ac\\ub9ac \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"C\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"6\\ubc88 \\ucf54\\uc544 EV\\uc804\\uc2e4 \\uc0c1\\ubd80 \\ubcfc\\ud2b8 \\uc6a9\\uc811 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":1.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null},{\"\\uc911\\ubd84\\ub958\":\"\\uc9c1\\uc601\",\"\\uce35\":\"2\",\"\\uad6c\\uac04\":\"D\",\"\\uc138\\ubd80\\uad6c\\uac04\":null,\"\\uc791\\uc5c5 \\ub0b4\\uc6a9\":\"\\ub370\\ud06c \\uc2ac\\ub77c\\ube0c \\ub04a\\uc5b4\\uce58\\uae30 \\uad6c\\uac04 \\ub2e4\\ub9c8\\uac00 \\uc791\\uc5c5\",\"\\uacf5\\uc218\":4.0,\"\\uc791\\uc5c5\\ub0a0\\uc9dc\":\"06\\uc6d4 17\\uc77c\",\"\\uc9c1\\uc885\":null}]" 
+
+    data = JSON.parse(json_data)
+    populateDropdown('category', [...new Set(data.map(item => item['중분류']))]);
+
+            
+            };
+
+
+        
+  	
+</script>
+
+{% endblock %}

@@ -1,0 +1,619 @@
+{% extends "layout.html" %}
+{% block title %}Survey{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></scriptsrc>></script>
+   <script charset="utf-8" src="https://static.worksmobile.net/static/wm/woff/edge/3.6/sdk.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+   
+
+   <script type="text/javascript">
+       (function() {
+           emailjs.init("_GKGc3e2Afedx7hjm")
+       })();
+   </script>
+ 
+   <style>
+
+        .item_disable {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .list_depth1 {
+            display: none;
+        }
+        .list_depth1.active {
+            display: block;
+        }
+
+        
+
+       h2 {
+           color: #333;
+           text-align: center;
+           margin-bottom: 20px;
+       }
+
+       form {
+           background: #fff;
+           padding: 20px;
+           border-radius: 10px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           width: 100%;
+           max-width: 1000px;
+           display: flex;
+           flex-direction: column;
+       }
+
+       label {
+           margin-bottom: 5px;
+           color: #555;
+           font-weight: bold;
+       }
+
+       input[type="number"],
+       input[type="text"],
+       select,
+       textarea {
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           padding: 10px;
+           margin-bottom: 20px;
+           width: 100%;
+           box-sizing: border-box;
+       }
+
+       textarea {
+           resize: none;
+           height: 100px;
+       }
+
+       input[type="submit"] {
+           padding: 15px;
+           border: none;
+           border-radius: 5px;
+           font-size: 16px;
+           width: 100%;
+           background-color: #4CAF50;
+           color: white;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+       }
+
+       input[type="submit"]:hover {
+           background-color: #45a049;
+       }
+
+       .section {
+           margin-bottom: 20px;
+       }
+
+       .flex-container {
+           display: flex;
+           gap: 10px;
+           flex-wrap: wrap;
+       }
+
+       .flex-container .col-4 {
+           flex: 1;
+           min-width: 150px;
+       }
+
+       .flex-container .col-4 button {
+           margin-left: 10px;
+           padding: 10px;
+           border: none;
+           background-color: #36c1ae;
+           color: white;
+           border-radius: 5px;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+       }
+
+       .flex-container .col-4 button:hover {
+           background-color: #2a978b;
+       }
+       .button{
+        margin-left: 10px;
+        padding: 10px;
+        border: none;
+        background-color: #36c1ae;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+       }
+
+   </style>
+</head>
+<body>
+    <body class="index-page" style="margin-top:100px;">
+
+        <header id="header" class="header fixed-top">
+          <div class="topbar d-flex align-items-center">
+            <div class="container d-flex justify-content-center justify-content-md-between">
+              <div class="contact-info d-flex align-items-center">
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@example.com</a></i>
+                <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
+              </div>
+              <div class="social-links d-none d-md-flex align-items-center">
+                <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div><!-- End Top Bar -->
+      
+          <div class="branding d-flex align-items-center">
+            <div class="container position-relative d-flex align-items-center justify-content-between">
+              <a href="{{ url_for('main') }}" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='img/seowoologo.png') }}" alt="">
+                <h1 class="sitename">서우HR</h1>
+              </a>
+              <nav id="navmenu" class="navmenu">
+                <ul>
+                  <li><a href="#hero">Home</a></li>
+                  <li><a href="#about">About</a></li>
+                  <li><a href="#Services">Services</a></li>
+                  <li><a href="{{url_for('survey')}}" class = 'active'>Survey</a></li>
+                  <li><a href="{{url_for('calendar')}}">Calendar</a></li>
+                  <li><a href="#team">Team</a></li>
+                  <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="#">Dropdown 1</a></li>
+                      <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><a href="#">Deep Dropdown 1</a></li>
+                          <li><a href="#">Deep Dropdown 2</a></li>
+                          <li><a href="#">Deep Dropdown 3</a></li>
+                          <li><a href="#">Deep Dropdown 4</a></li>
+                          <li><a href="#">Deep Dropdown 5</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Dropdown 2</a></li>
+                      <li><a href="#">Dropdown 3</a></li>
+                      <li><a href="#">Dropdown 4</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#contact">Contact</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+              </nav>
+            </div>
+          </div>
+        </header>
+        <h2>Survey Form</h2>
+   <form id="survey-form" style="align-items: center;">
+    
+    <ul class="list_carsearch">
+        <li>
+            <!-- 제조사 선택 -->
+            <a href="#" class="link_item" onclick="showOptions('manufacturer')">
+                <strong class="tit_category">제조사</strong>
+                <ul class="list_depth1" id="manufacturerOptions">
+                    <!-- Example options -->
+                    <li><a href="#" onclick="selectOption('manufacturer', '당진')">당진</a></li>
+                    <li><a href="#" onclick="selectOption('manufacturer', '마곡')">마곡</a></li>
+                    <li><a href="#" onclick="selectOption('manufacturer', '시흥')">시흥</a></li>
+                </ul>
+                <span class="uiico uiico_arrow"></span>
+            </a>
+        </li>
+        <li id="modelItem" class="item_disable">
+            <!-- 모델 선택 -->
+            <a href="#" class="link_item" onclick="showOptions('model')">
+                <strong class="tit_category">중분류</strong>
+                <ul class="list_depth1" id="modelOptions"></ul>
+                <span class="uiico uiico_arrow"></span>
+            </a>
+        </li>
+        <li id="badgeItem" class="item_disable">
+            <!-- 등급 선택 -->
+            <a href="#" class="link_item" onclick="showOptions('badge')">
+                <strong class="tit_category">층</strong>
+                <ul class="list_depth1" id="badgeOptions"></ul>
+                <span class="uiico uiico_arrow"></span>
+            </a>
+        </li>
+        <li id="badgeItem" class="item_disable">
+            <!-- 등급 선택 -->
+            <a href="#" class="link_item" onclick="showOptions('badge')">
+                <strong class="tit_category">구간</strong>
+                <ul class="list_depth1" id="badgeOptions"></ul>
+                <span class="uiico uiico_arrow"></span>
+            </a>
+        </li>
+        <li id="badgeItem" class="item_disable">
+            <!-- 등급 선택 -->
+            <a href="#" class="link_item" onclick="showOptions('badge')">
+                <strong class="tit_category">세부구간</strong>
+                <ul class="list_depth1" id="badgeOptions"></ul>
+                <span class="uiico uiico_arrow"></span>
+            </a>
+        </li>
+        <li id="badgeItem" class="item_disable">
+            <!-- 등급 선택 -->
+            <a href="#" class="link_item" onclick="showOptions('badge')">
+                <strong class="tit_category">작업내용</strong>
+                <ul class="list_depth1" id="badgeOptions"></ul>
+                <span class="uiico uiico_arrow"></span>
+            </a>
+        </li>
+        <li id="badgeItem" class="item_disable">
+            <!-- 등급 선택 -->
+            <a href="#" class="link_item" onclick="showOptions('badge')">
+                <strong class="tit_category">공수</strong>
+                <ul class="list_depth1" id="badgeOptions"></ul>
+                <span class="uiico uiico_arrow"></span>
+            </a>
+        </li>
+
+    </ul>
+
+
+   </form>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+    function populateDropdown(id, options) {
+                const select = document.getElementById(id);
+                select.innerHTML = '<option value="">Select</option>';
+                options.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.text = option;
+                    select.appendChild(opt);
+                });
+	    	}
+
+        function filterData(level) {
+            if (!data) {
+                console.error('Data is not loaded yet.');
+                return;
+            }
+
+            const category = document.getElementById('category').value;
+            const floor = document.getElementById('floor').value;
+            const section = document.getElementById('section').value;
+
+            let filteredData = [];
+            if (level === 'category') {
+                filteredData = data.filter(item => item['중분류'] === category);
+                populateDropdown('floor', [...new Set(filteredData.map(item => item['층']))]);
+                document.getElementById('section').innerHTML = '<option value="">Select</option>';
+                document.getElementById('subsection').innerHTML = '<option value="">Select</option>';
+                document.getElementById('task').innerHTML = '<option value="">Select</option>';
+            } else if (level === 'floor') {
+                filteredData = data.filter(item => item['중분류'] === category && item['층'] === floor);
+                populateDropdown('section', [...new Set(filteredData.map(item => item['구간']))]);
+                document.getElementById('subsection').innerHTML = '<option value="">Select</option>';
+                document.getElementById('task').innerHTML = '<option value="">Select</option>';
+            } else if (level === 'section') {
+                filteredData = data.filter(item => item['중분류'] === category && item['층'] === floor && item['구간'] === section);
+                populateDropdown('subsection', [...new Set(filteredData.map(item => item['세부구간']))]);
+                populateDropdown('task', [...new Set(filteredData.map(item => item['작업 내용']))]);
+            }
+        };
+
+    const models = {
+        'Toyota': ['Corolla', 'Camry', 'Prius'],
+        'Honda': ['Civic', 'Accord', 'Fit'],
+        'Ford': ['Focus', 'Mustang', 'Explorer']
+    };
+
+    const badges = {
+        'Corolla': ['Base', 'Sport', 'Luxury'],
+        'Camry': ['LE', 'SE', 'XLE'],
+        'Prius': ['Eco', 'Tech', 'Touring'],
+        'Civic': ['LX', 'EX', 'Touring'],
+        'Accord': ['Sport', 'EX-L', 'Touring'],
+        'Fit': ['DX', 'LX', 'EX'],
+        'Focus': ['S', 'SE', 'Titanium'],
+        'Mustang': ['EcoBoost', 'GT', 'Bullitt'],
+        'Explorer': ['XLT', 'Limited', 'Platinum']
+    };
+
+    function showOptions(category) {
+        document.querySelectorAll('.list_depth1').forEach(el => el.classList.remove('active'));
+        document.getElementById(category + 'Options').classList.add('active');
+    }
+
+    function selectOption(category, value) {
+        if (category === 'manufacturer') {
+            document.getElementById('modelItem').classList.remove('item_disable');
+            const modelOptions = document.getElementById('modelOptions');
+            modelOptions.innerHTML = models[value].map(model => 
+                `<li><a href="#" onclick="selectOption('model', '${model}')">${model}</a></li>`
+            ).join('');
+        } else if (category === 'model') {
+            document.getElementById('badgeItem').classList.remove('item_disable');
+            const badgeOptions = document.getElementById('badgeOptions');
+            badgeOptions.innerHTML = badges[value].map(badge => 
+                `<li><a href="#">${badge}</a></li>`
+            ).join('');
+        }
+
+        // Hide the current options after selection
+        document.getElementById(category + 'Options').classList.remove('active');
+    }
+
+    
+
+    window.onload = function(){
+
+       
+        
+    
+  		 document.getElementById('add1').addEventListener('click', function(event) {
+			event.preventDefault();
+		     var newbie = document.getElementById('workers_add1').value; 
+		   	 var work_list = document.getElementById('workers-normal');
+		   	
+		     work_list.textContent += newbie+","; 
+		   	document.getElementById('workers_add1').value = "";
+		   
+		 });
+  
+		document.getElementById('add2').addEventListener('click', function(event) {
+					event.preventDefault();
+				   var newbie = document.getElementById('workers_add2').value; 
+				   var work_list = document.getElementById('workers-hard');
+
+				   work_list.textContent += newbie+","; 
+				  document.getElementById('workers_add2').value = "";
+
+			   });
+
+		document.getElementById('add3').addEventListener('click', function(event) {
+				  event.preventDefault();
+				   var newbie = document.getElementById('workers_add3').value; 
+				   var work_list = document.getElementById('workers-morning');
+
+				   work_list.textContent += newbie+","; 
+				  document.getElementById('workers_add3').value = "";
+
+			   });
+
+        document.getElementById('add-task').addEventListener('click', function(event) {
+				  event.preventDefault();
+				   var category = document.getElementById('category').value; 
+                   var floor = document.getElementById('floor').value; 
+                   var section = document.getElementById('section').value; 
+                   var subsection = document.getElementById('subsection').value; 
+                   var task = document.getElementById('task').value; 
+                   var effort = document.getElementById('effort').value; 
+                   
+				   var task_result = document.getElementById('task-result');
+
+				   task_result.textContent += category+"_"+floor+"_"+section+"_"+subsection+"_"+task+"_"+effort+"\n"; 
+                   document.getElementById('category').value = "";
+                   document.getElementById('floor').value = "";
+                   document.getElementById('section').value = "";
+                   document.getElementById('subsection').value = "";
+                   document.getElementById('task').value = "";
+                   document.getElementById('effort').value = "";
+                   
+
+			   });
+
+        
+    //필수 데이터 로드 
+    var data;
+
+    // Fetch the JSON data
+    fetch('/static/data/test.json')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        data = data;
+        
+    })
+    .catch(error => console.error('Error fetching JSON:', error));
+
+
+       
+        
+
+
+    // 1. 페이지 로드 시 인증을 위한 함수 호출
+   
+
+       document.getElementById('submit2').addEventListener('click', function(event) {
+           createEvent()
+           alert("Naverworks 캘린더에 저장하였습니다. ")
+            
+        })
+
+		 document.getElementById('survey-form').addEventListener('submit', function(event) {
+                   
+					 // Submit 시점에 required 속성 추가
+				  document.getElementById('numworkers').required = true;
+				  document.getElementById('specialnotes').required = true;
+				  document.getElementById('overtime').required = true;
+
+				  if (!document.getElementById('survey-form').checkValidity()) {
+					  // required validation failed
+					  event.preventDefault();
+					  alert('Please fill all required fields.');
+					  return;
+				  }
+
+
+				  event.preventDefault();
+
+				  const formData = {
+					  numworkers: document.getElementById('numworkers').value,
+					  workersnormal: document.getElementById('workers-normal').value,
+					  workershard: document.getElementById('workers-hard').value,
+					  workersmorning: document.getElementById('workers-morning').value,
+					  taskresult : document.getElementById("task-result").value,
+                      specialnotes: document.getElementById('specialnotes').value,
+					  overtime: document.getElementById('overtime').value
+				  };
+
+				  emailjs.send('service_odcgc2y', 'template_7pojdeh', formData)
+					  .then(function(response) {
+						  alert('Email sent successfully!');
+					  }, function(error) {
+						  alert('Failed to send email. Error: ' + JSON.stringify(error));
+					  });
+			  });
+
+              async function getAccessToken() {
+
+                
+                // URL에서 code와 state 파라미터를 추출
+                const urlParams = new URLSearchParams(window.location.search);
+                const code = urlParams.get('code');
+                const state = urlParams.get('state');
+
+                const response = await fetch('/callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    code: code,
+                    grant_type: 'authorization_code',
+                    client_id: '8zESjIVD54_8K5PA_dIu',
+                    client_secret: 'wyWAH1uLEY'
+                })
+                });
+                
+                // // 토큰 정보 사용 예제
+                // const accessToken = tokenInfo.access_token;
+                alert('Access Token: ' + accessToken);
+                const tokenInfo = await response.json();
+                const accessToken = tokenInfo.access_token;
+                console.log("fetch전")
+                fetchFiles(accessToken);
+                }
+
+    function formatDateTime(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+        }
+
+
+        async function createEvent() {
+            const formData = {
+					  numworkers: document.getElementById('numworkers').value,
+					  workersnormal: document.getElementById('workers-normal').value,
+					  workershard: document.getElementById('workers-hard').value,
+					  workersmorning: document.getElementById('workers-morning').value,
+					  taskresult : document.getElementById("task-result").value,
+                      specialnotes: document.getElementById('specialnotes').value,
+					  overtime: document.getElementById('overtime').value
+				  };
+
+            const start = new Date();
+            start2 = formatDateTime(start)
+            console.log(start)
+
+            // const token = await getAccessToken();
+     
+
+            const event = {
+                summary: "Testmessage",
+                description: JSON.stringify(formData),
+               
+                recurrence:[],
+                recurringEventId:"TZID=Asia/Seoul:2025-04-05"
+            };
+            console.log("?????")
+            const response = await fetch('/create_event', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(event)
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = result.message;
+        };
+
+        // 3. 파일 조회 함수
+        async function fetchFiles(accessToken) {
+            const response = await fetch('https://www.worksapis.com/v1.0/sharedrives', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            const files = await response.json();
+            console.log(files);
+            // 파일 목록을 화면에 표시하는 함수 호출 (추가 작업 필요)
+            displayFiles(files);
+        }
+
+        // 4. 파일 목록을 화면에 표시하는 함수 (예제)
+        function displayFiles(files) {
+            const fileList = document.createElement('ul');
+            files.forEach(file => {
+                const listItem = document.createElement('li');
+                listItem.textContent = file.name; // 예시로 파일 이름을 표시
+                fileList.appendChild(listItem);
+            });
+            document.body.appendChild(fileList);
+        }
+
+        // async function getAccessToken() {
+        //     const clientId = '8zESjIVD54_8K5PA_dIu';
+        //     const redirectUri = "http://localhost:8080/Untitled-1.html";
+        //     const state = 'YOUR_STATE'; // 임의의 값
+        //     const clientSecret = "wyWAH1uLEY";
+        //     const authUrl = `https://auth.worksmobile.com/oauth2/v2.0/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=calendar&response_type=code&state=STATE_STRING`;
+
+        //     window.open(authUrl);
+
+        //     // Code to handle redirect and extract authorization code
+        //     const urlParams = new URLSearchParams(window.location.search);
+        //     const code = urlParams.get('code');
+
+        //     const tokenResponse = await fetch('https://auth.worksmobile.com/oauth2/v2.0/token', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded'
+        //         },
+        //         body: new URLSearchParams({
+        //             code: code,
+        //             grant_type: 'authorization_code',
+        //             client_id: clientId,
+        //             client_secret: clientSecret,
+        //             redirect_uri: redirectUri
+        //         })
+        //     });
+
+    
+            
+        //     const tokenInfo = await tokenResponse.json();
+        //     console.log(tokenInfo)
+        //     return tokenInfo.access_token;
+        // }
+
+            };
+
+
+        
+  	
+</script>
+
+{% endblock %}
