@@ -33,7 +33,9 @@ var editEvent = function (event, element, view) {
 
     addBtnContainer.hide();
     modifyBtnContainer.show();
-    eventModal.modal('show');
+    console.log(eventModal)
+
+    eventModal.removeClass('fade').modal('show');
 
     //업데이트 버튼 클릭시
     $('#updateEvent').unbind();
@@ -81,12 +83,41 @@ var editEvent = function (event, element, view) {
         //일정 업데이트
         $.ajax({
             type: "get",
-            url: "",
+            url: "/static/data/calendar.json",
             data: {
                 //...
             },
             success: function (response) {
-                alert('수정되었습니다.')
+
+                delete event['source'];
+                delete event['className']
+
+                var data = response
+                for(let i = 0; i < data.length; i++) {
+                    console.log(data[i]._id,event._id)
+                
+                    if (data[i]._id === Number(event._id)) {
+                        console.log(data[i])
+                        data[i] = event;
+                    }
+                }
+                console.log('data',data)
+                json_data =JSON.stringify(data)
+                $.ajax({
+                    url: '/calendar_edit', // 데이터를 저장할 서버의 URL
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({data:json_data}),
+                    success: function(response) {
+                        alert('Data Edited successfully:', response);
+                    },
+                    error: function(error) {
+                        alert('Error Edited data:', error);
+                    }
+                });
+
+
+              
             }
         });
 
@@ -99,16 +130,40 @@ $('#deleteEvent').on('click', function () {
     $('#deleteEvent').unbind();
     $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
     eventModal.modal('hide');
-
+    var this_id = $(this).data('id');
     //삭제시
     $.ajax({
         type: "get",
-        url: "",
+        url: "/static/data/calendar.json",
         data: {
             //...
         },
         success: function (response) {
-            alert('삭제되었습니다.');
+            var data = response
+            console.log(data)
+            for(let i = 0; i < data.length; i++) {
+                console.log(data[i]._id,this_id)
+            
+                if (data[i]._id === this_id) {
+                    console.log("여기")
+                    data = data.filter(item => item._id !== this_id);
+                }
+            }
+            console.log(data)
+            json_data =JSON.stringify(data)
+            $.ajax({
+                url: '/calendar_remove', // 데이터를 저장할 서버의 URL
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({data:json_data}),
+                success: function(response) {
+                    alert('Data remove successfully:', response);
+                },
+                error: function(error) {
+                    alert('Error remove data:', error);
+                }
+            });
+           
         }
     });
 

@@ -13,6 +13,10 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 세션 관리를 위해 필요한 키 설정
 
+
+
+
+
 CORS(app)
 app.config['COMPRESS_LEVEL'] = 4 #압축레벨 설정 
 Compress(app)
@@ -85,6 +89,46 @@ def survey():
 @nocache
 def calendar():
     return render_template('calendar.html')
+
+
+@app.route('/calendar_save', methods=['POST'])
+@nocache
+def calendar_save():
+    print(request.get_json())
+    data = request.get_json()['data']
+    file_path = './static/data/calendar.json'
+    data = json.loads(data)
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+    
+    return 'success'
+
+
+@app.route('/calendar_remove', methods=['POST'])
+@nocache
+def calendar_remove():
+    print(request.get_json())
+    data = request.get_json()['data']
+    file_path = './static/data/calendar.json'
+    data = json.loads(data)
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+    
+    return 'success'
+
+@app.route('/calendar_edit', methods=['POST'])
+@nocache
+def calendar_edit():
+    print(request.get_json())
+    print('request',request.form)
+    data = request.get_json()['data']
+    file_path = './static/data/calendar.json'
+    data = json.loads(data)
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+    
+    return 'success'
+
 
 @app.route('/productivity', methods=['GET'])
 @nocache

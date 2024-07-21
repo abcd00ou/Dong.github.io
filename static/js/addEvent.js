@@ -1,3 +1,6 @@
+
+
+
 var eventModal = $('#eventModal');
 
 var modalTitle = $('.modal-title');
@@ -29,7 +32,7 @@ var newEvent = function (start, end, eventType) {
     
     addBtnContainer.show();
     modifyBtnContainer.hide();
-    eventModal.modal('show');
+    eventModal.removeClass('fade').modal('show');
 
     /******** 임시 RAMDON ID - 실제 DB 연동시 삭제 **********/
     var eventId = 1 + Math.floor(Math.random() * 1000);
@@ -38,7 +41,7 @@ var newEvent = function (start, end, eventType) {
     //새로운 일정 저장버튼 클릭
     $('#save-event').unbind();
     $('#save-event').on('click', function () {
-
+       
         var eventData = {
             _id: eventId,
             title: editTitle.val(),
@@ -78,18 +81,37 @@ var newEvent = function (start, end, eventType) {
         eventModal.find('input, textarea').val('');
         editAllDay.prop('checked', false);
         eventModal.modal('hide');
-
+        console.log(eventData)
         //새로운 일정 저장
         $.ajax({
             type: "get",
-            url: "",
+            url: "/static/data/calendar.json",
             data: {
                 //.....
             },
             success: function (response) {
+                console.log(response)
+                var data = response; 
+
+                data.push(eventData);
+                console.log(data)
                 //DB연동시 중복이벤트 방지를 위한
                 //$('#calendar').fullCalendar('removeEvents');
                 //$('#calendar').fullCalendar('refetchEvents');
+                json_data = JSON.stringify(data)
+                console.log(json_data)
+                $.ajax({
+                    url: '/calendar_save', // 데이터를 저장할 서버의 URL
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({data:json_data}),
+                    success: function(response) {
+                        alert('Data saved successfully:', response);
+                    },
+                    error: function(error) {
+                        alert('Error saving data:', error);
+                    }
+                });
             }
         });
     });
