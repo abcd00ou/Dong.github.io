@@ -4,25 +4,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></scriptsrc>></script>
-   <script charset="utf-8" src="https://static.worksmobile.net/static/wm/woff/edge/3.6/sdk.js"></script>
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-   <!-- Vendor CSS Files -->
-   <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-   <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-   <link href="static/vendor/aos/aos.css" rel="stylesheet">
-   <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-   <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-
-   <!-- Main CSS File -->
-  <!-- <link href="static/css/main.css" rel="stylesheet"> -->
-  <link href="static/css/index.css" rel="stylesheet">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
    
-
    <script type="text/javascript">
        (function() {
            emailjs.init("_GKGc3e2Afedx7hjm")
@@ -30,116 +14,110 @@
    </script>
  
    <style>
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select,
+        textarea {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        } 
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        input[type="submit"] {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .flex-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .flex-container .col-4 {
+            flex: 1;
+            min-width: 150px;
+        }
+        .flex-container .col-4 button {
+            margin-left: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #36c1ae;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        } 
+        .flex-container .col-4 button:hover {
+            background-color: #2a978b;
+        }
+
+        .button{
+            margin-left: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #36c1ae;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
         .item_disable {
             pointer-events: none;
             opacity: 0.5;
         }
+
         .list_depth1 {
             display: none;
         }
         .list_depth1.active {
             display: block;
         }
-
-        
-
-       h2 {
-           color: #333;
-           text-align: center;
-           margin-bottom: 20px;
-       }
-
-       form {
-           background: #fff;
-           padding: 20px;
-           border-radius: 10px;
-           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-           width: 100%;
-           max-width: 1000px;
-           display: flex;
-           flex-direction: column;
-       }
-
-       label {
-           margin-bottom: 5px;
-           color: #555;
-           font-weight: bold;
-       }
-
-       input[type="number"],
-       input[type="text"],
-       select,
-       textarea {
-           border: 1px solid #ccc;
-           border-radius: 5px;
-           padding: 10px;
-           margin-bottom: 20px;
-           width: 100%;
-           box-sizing: border-box;
-       }
-
-       textarea {
-           resize: none;
-           height: 100px;
-       }
-
-       input[type="submit"] {
-           padding: 15px;
-           border: none;
-           border-radius: 5px;
-           font-size: 16px;
-           width: 100%;
-           background-color: #4CAF50;
-           color: white;
-           cursor: pointer;
-           transition: background-color 0.3s ease;
-       }
-
-       input[type="submit"]:hover {
-           background-color: #45a049;
-       }
-
-       .section {
-           margin-bottom: 20px;
-       }
-
-       .flex-container {
-           display: flex;
-           gap: 10px;
-           flex-wrap: wrap;
-       }
-
-       .flex-container .col-4 {
-           flex: 1;
-           min-width: 150px;
-       }
-
-       .flex-container .col-4 button {
-           margin-left: 10px;
-           padding: 10px;
-           border: none;
-           background-color: #36c1ae;
-           color: white;
-           border-radius: 5px;
-           cursor: pointer;
-           transition: background-color 0.3s ease;
-       }
-
-       .flex-container .col-4 button:hover {
-           background-color: #2a978b;
-       }
-       .button{
-        margin-left: 10px;
-        padding: 10px;
-        border: none;
-        background-color: #36c1ae;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-       }
-
    </style>
 </head>
 
