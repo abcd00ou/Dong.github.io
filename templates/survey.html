@@ -205,8 +205,8 @@
    <form id="survey-form" style="align-items: center;">
 
 
-    
-    <ul>
+    <label for='survey1'>작업 공수 기재</label>
+    <ul id ='survey1'>
         <li>
             <!-- 제조사 선택 -->
             <a href="#" class="link_item" onclick="showOptions('site')">
@@ -270,10 +270,15 @@
             <a href="#" class="link_item" onclick="showOptions('cat6')">
                 <strong class="tit_category">공수</strong>
             </a>
-                <ul class="list_depth1 list_search" id="cat6Options"></ul>
-                <span class="uiico uiico_arrow"></span>
+                <input type="number" id="effort" name="effort">
            
         </li>
+
+    </ul>
+
+    <label for='survey2'>인원 및 특이사항</label>
+    <ul id ='survey2'>
+
 
     </ul>
 
@@ -284,15 +289,7 @@
 </html>
 
 <script type="text/javascript">
-    //필수 데이터 로드 
-    // let data=null;
-    // Fetch the JSON data
-    // var data = fetch('/static/data/test.json')
-    // .then(response => response.json())
-    // .then(data => {
-    //     return JSON.parse(data)
-    // })
-    // .catch(error => console.error('Error fetching JSON:', error));
+
     var data =null ; 
     $.getJSON('/static/data/test.json', function(item) {
             data =  JSON.parse(item)
@@ -433,7 +430,7 @@
 
         }else if(category==="cat5"){
             cat4= value;
-            document.getElementById('cat5Item').classList.remove('item_disable');
+            document.getElementById('cat6Item').classList.remove('item_disable');
             
 
         }
@@ -658,39 +655,6 @@
             document.body.appendChild(fileList);
         }
 
-        // async function getAccessToken() {
-        //     const clientId = '8zESjIVD54_8K5PA_dIu';
-        //     const redirectUri = "http://localhost:8080/Untitled-1.html";
-        //     const state = 'YOUR_STATE'; // 임의의 값
-        //     const clientSecret = "wyWAH1uLEY";
-        //     const authUrl = `https://auth.worksmobile.com/oauth2/v2.0/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=calendar&response_type=code&state=STATE_STRING`;
-
-        //     window.open(authUrl);
-
-        //     // Code to handle redirect and extract authorization code
-        //     const urlParams = new URLSearchParams(window.location.search);
-        //     const code = urlParams.get('code');
-
-        //     const tokenResponse = await fetch('https://auth.worksmobile.com/oauth2/v2.0/token', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded'
-        //         },
-        //         body: new URLSearchParams({
-        //             code: code,
-        //             grant_type: 'authorization_code',
-        //             client_id: clientId,
-        //             client_secret: clientSecret,
-        //             redirect_uri: redirectUri
-        //         })
-        //     });
-
-    
-            
-        //     const tokenInfo = await tokenResponse.json();
-        //     console.log(tokenInfo)
-        //     return tokenInfo.access_token;
-        // }
 
             };
 
