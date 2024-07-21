@@ -278,12 +278,46 @@
 
     <label for='survey2'>인원 및 특이사항</label>
     <ul id ='survey2'>
+        <div class="flex-container">
+            <div class="col-4">
+                <label for="workers_add1">기본 근무자 추가:</label>
+                <input type="text" id="workers_add1">
+                <button id="add1" class="button" style="float:right">작업자 추가</button><br><br><br>
+                <label for="workers-normal">작업자 명:</label>
+                <textarea id="workers-normal" disabled=""></textarea>
+            </div>
+            <div class="col-4">
+                <label for="workers_add2">추가 근무자 추가:</label>
+                <input type="text" id="workers_add2">
+                <button id="add2" class="button" style="float:right">작업자 추가</button><br><br><br>
+                <label for="workers-hard">작업자 명:</label>
+                <textarea id="workers-hard" disabled=""></textarea>
+            </div>
+            <div class="col-4">
+                <label for="workers_add3">오전 근무자 추가:</label>
+                <input type="text" id="workers_add3">
+                <button id="add3" class="button" style="float:right">작업자 추가</button><br><br><br>
+                <label for="workers-morning">작업자 명:</label>
+                <textarea id="workers-morning" disabled=""></textarea>
+            </div>
+        </div>
+
+        <div class="section">
+            <label for="specialnotes">특이사항:</label>
+            <textarea id="specialnotes" name="specialnotes"></textarea>
+        </div>
+
+        <div class="section">
+            <label for="overtime">연장근무:</label>
+            <textarea id="overtime" name="overtime"></textarea>
+        </div>
 
 
     </ul>
 
 
    </form>
+   <input type="submit" value="Submit" id="submit">
 
 </body>
 </html>
