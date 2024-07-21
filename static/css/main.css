@@ -1799,7 +1799,7 @@ section,
   content: none !important;
 }
 
-.fc-day-header {
+/* .fc-day-header {
   text-transform: uppercase;
   font-size: 13px;
   font-weight: 500;
@@ -1812,7 +1812,7 @@ section,
 .fc-day-header a {
   text-decoration: none !important;
   color: #505363;
-}
+} */
 
 .fc-center h2 {
   text-transform: uppercase;
@@ -2010,4 +2010,60 @@ select.filter {
 #add-color,
 #edit-color {
   color: #d25565;
+}
+
+/*서베이 css*/
+/* 전체 리스트 항목 스타일 */
+/* ul {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+} */
+
+/* 링크 스타일 */
+.link_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 10px;
+  border: 1px solid red; /* 테두리 설정 */
+  background: #f9f9f9;
+}
+
+/* 카테고리 제목 스타일 */
+.tit_category {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* 화살표 아이콘 스타일 */
+.uiico_arrow {
+  margin-left: auto;
+}
+
+/* 하위 목록 숨기기 */
+.list_depth1 {
+  display: none;
+  margin-top: 10px;
+  padding-left: 0;
+  list-style: none;
+}
+
+/* 링크 아이템에 hover 시 하위 목록 보이기 */
+.link_item:hover .list_depth1 {
+  display: block;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  z-index: 1000;
+}
+
+/* 활성화된 리스트 항목 스타일 */
+.item_disable .link_item {
+  pointer-events: none;
+  opacity: 0.5;
 }

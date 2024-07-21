@@ -37,34 +37,34 @@ def nocache(view):
 # OAuth 2.0 인증 정보
 client_id = '8zESjIVD54_8K5PA_dIu'
 client_secret = 'wyWAH1uLEY'
-redirect_uri = 'http://localhost:8080/callback'
+redirect_uri = 'http://175.209.244.54:8080/callback'
 auth_url = 'https://auth.worksmobile.com/oauth2/v2.0/authorize'
 token_url = 'https://auth.worksmobile.com/oauth2/v2.0/token'
 userinfo_url = 'https://apis.worksmobile.com/r/api/user/v1/userinfo'
 
 
 print(redirect_uri)
-@app.route('/', methods=['GET'])
-def index():
-    if request.method=='GET':
-        #redirect_uri = url_for('callback', _external=True)
-        auth_params = {
-            'client_id': client_id,
-            'redirect_uri': redirect_uri,
-            'scope': 'calendar',
-            'response_type': 'code',
-            'state': 'random_state_string'
-        }
-        
-        auth_request_url = f"{auth_url}?{urlencode(auth_params)}"
-        return redirect(auth_request_url)
-
 # @app.route('/', methods=['GET'])
-# @nocache
-# def idx():
+# def index():
+#     if request.method=='GET':
+#         #redirect_uri = url_for('callback', _external=True)
+#         auth_params = {
+#             'client_id': client_id,
+#             'redirect_uri': redirect_uri,
+#             'scope': 'calendar',
+#             'response_type': 'code',
+#             'state': 'random_state_string'
+#         }
+        
+#         auth_request_url = f"{auth_url}?{urlencode(auth_params)}"
+#         return redirect(auth_request_url)
+
+@app.route('/', methods=['GET'])
+@nocache
+def idx():
     
-#     print("main gogo")
-#     return render_template("main.html")
+    print("main gogo")
+    return render_template("main.html")
 
 @app.route('/main', methods=['GET','POST'])
 @nocache
@@ -85,6 +85,13 @@ def survey():
 @nocache
 def calendar():
     return render_template('calendar.html')
+
+@app.route('/productivity', methods=['GET'])
+@nocache
+def productivity():
+    
+    print("main gogo")
+    return render_template("productivity.html")
 
 
 @app.route('/callback', methods=['GET'])

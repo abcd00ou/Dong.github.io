@@ -11,6 +11,16 @@
    <script charset="utf-8" src="https://static.worksmobile.net/static/wm/woff/edge/3.6/sdk.js"></script>
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+   <!-- Vendor CSS Files -->
+   <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+   <link href="static/vendor/aos/aos.css" rel="stylesheet">
+   <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+   <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+   <!-- Main CSS File -->
+  <!-- <link href="static/css/main.css" rel="stylesheet"> -->
+  <link href="static/css/index.css" rel="stylesheet">
    
 
    <script type="text/javascript">
@@ -132,127 +142,137 @@
 
    </style>
 </head>
-<body>
-    <body class="index-page" style="margin-top:100px;">
 
-        <header id="header" class="header fixed-top">
-          <div class="topbar d-flex align-items-center">
-            <div class="container d-flex justify-content-center justify-content-md-between">
-              <div class="contact-info d-flex align-items-center">
-                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@example.com</a></i>
-                <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
-              </div>
-              <div class="social-links d-none d-md-flex align-items-center">
-                <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-              </div>
+<body class="index-page" style="margin-top:100px;">
+
+    <header id="header" class="header fixed-top">
+        <div class="topbar d-flex align-items-center">
+        <div class="container d-flex justify-content-center justify-content-md-between">
+            <div class="contact-info d-flex align-items-center">
+            <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@example.com</a></i>
+            <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
             </div>
-          </div><!-- End Top Bar -->
-      
-          <div class="branding d-flex align-items-center">
-            <div class="container position-relative d-flex align-items-center justify-content-between">
-              <a href="{{ url_for('main') }}" class="logo d-flex align-items-center">
-                <img src="{{ url_for('static', filename='img/seowoologo.png') }}" alt="">
-                <h1 class="sitename">서우HR</h1>
-              </a>
-              <nav id="navmenu" class="navmenu">
-                <ul>
-                  <li><a href="#hero">Home</a></li>
-                  <li><a href="#about">About</a></li>
-                  <li><a href="#Services">Services</a></li>
-                  <li><a href="{{url_for('survey')}}" class = 'active'>Survey</a></li>
-                  <li><a href="{{url_for('calendar')}}">Calendar</a></li>
-                  <li><a href="#team">Team</a></li>
-                  <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                    <ul>
-                      <li><a href="#">Dropdown 1</a></li>
-                      <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                          <li><a href="#">Deep Dropdown 1</a></li>
-                          <li><a href="#">Deep Dropdown 2</a></li>
-                          <li><a href="#">Deep Dropdown 3</a></li>
-                          <li><a href="#">Deep Dropdown 4</a></li>
-                          <li><a href="#">Deep Dropdown 5</a></li>
-                        </ul>
-                      </li>
-                      <li><a href="#">Dropdown 2</a></li>
-                      <li><a href="#">Dropdown 3</a></li>
-                      <li><a href="#">Dropdown 4</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="#contact">Contact</a></li>
-                </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-              </nav>
+            <div class="social-links d-none d-md-flex align-items-center">
+            <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
             </div>
-          </div>
-        </header>
-        <h2>Survey Form</h2>
-   <form id="survey-form" style="align-items: center;">
+        </div>
+        </div><!-- End Top Bar -->
     
-    <ul class="list_carsearch">
+        <div class="branding d-flex align-items-center">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+            <a href="{{ url_for('main') }}" class="logo d-flex align-items-center">
+            <img src="{{ url_for('static', filename='img/seowoologo.png') }}" alt="">
+            <!-- <h1 class="sitename">서우HR</h1> -->
+            </a>
+            <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#Services">Services</a></li>
+                <li><a href="{{url_for('survey')}}" class = 'active'>Survey</a></li>
+                <li><a href="{{url_for('calendar')}}">Calendar</a></li>
+                <li><a href="{{url_for('productivity')}}">Productivity</a></li>
+                <li><a href="#team">Team</a></li>
+                <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                    <li><a href="#">Dropdown 1</a></li>
+                    <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li><a href="#">Deep Dropdown 1</a></li>
+                        <li><a href="#">Deep Dropdown 2</a></li>
+                        <li><a href="#">Deep Dropdown 3</a></li>
+                        <li><a href="#">Deep Dropdown 4</a></li>
+                        <li><a href="#">Deep Dropdown 5</a></li>
+                    </ul>
+                    </li>
+                    <li><a href="#">Dropdown 2</a></li>
+                    <li><a href="#">Dropdown 3</a></li>
+                    <li><a href="#">Dropdown 4</a></li>
+                </ul>
+                </li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+        </div>
+        </div>
+    </header>
+    <h2>Survey Form</h2>
+   
+   <form id="survey-form" style="align-items: center;">
+
+
+    
+    <ul>
         <li>
             <!-- 제조사 선택 -->
-            <a href="#" class="link_item" onclick="showOptions('manufacturer')">
-                <strong class="tit_category">제조사</strong>
-                <ul class="list_depth1" id="manufacturerOptions">
+            <a href="#" class="link_item" onclick="showOptions('site')">
+                <strong class="tit_category">작업 장소</strong>
+            </a>
+                <ul class="list_depth1 list_search" id="siteOptions">
                     <!-- Example options -->
-                    <li><a href="#" onclick="selectOption('manufacturer', '당진')">당진</a></li>
-                    <li><a href="#" onclick="selectOption('manufacturer', '마곡')">마곡</a></li>
-                    <li><a href="#" onclick="selectOption('manufacturer', '시흥')">시흥</a></li>
+                    <li><a href="#" onclick="selectOption('site', '당진')">당진</a></li>
+                    <li><a href="#" onclick="selectOption('site', '마곡')">마곡</a></li>
+                    <li><a href="#" onclick="selectOption('site', '시흥')">시흥</a></li>
                 </ul>
                 <span class="uiico uiico_arrow"></span>
-            </a>
+            
         </li>
-        <li id="modelItem" class="item_disable">
+        <li id="cat1Item" class="item_disable">
             <!-- 모델 선택 -->
-            <a href="#" class="link_item" onclick="showOptions('model')">
-                <strong class="tit_category">중분류</strong>
-                <ul class="list_depth1" id="modelOptions"></ul>
+            <a href="#" class="link_item" onclick="showOptions('cat1')">
+                <strong class="tit_category">중분류</strong></a>
+                <ul class="list_depth1 list_search" id="cat1Options"></ul>
                 <span class="uiico uiico_arrow"></span>
-            </a>
+           
         </li>
-        <li id="badgeItem" class="item_disable">
+        <li id="cat2Item" class="item_disable">
             <!-- 등급 선택 -->
-            <a href="#" class="link_item" onclick="showOptions('badge')">
+            <a href="#" class="link_item" onclick="showOptions('cat2')">
                 <strong class="tit_category">층</strong>
-                <ul class="list_depth1" id="badgeOptions"></ul>
-                <span class="uiico uiico_arrow"></span>
             </a>
+                <ul class="list_depth1 list_search" id="cat2Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+           
         </li>
-        <li id="badgeItem" class="item_disable">
+        <li id="cat3Item" class="item_disable">
             <!-- 등급 선택 -->
-            <a href="#" class="link_item" onclick="showOptions('badge')">
+            <a href="#" class="link_item" onclick="showOptions('cat3')">
                 <strong class="tit_category">구간</strong>
-                <ul class="list_depth1" id="badgeOptions"></ul>
-                <span class="uiico uiico_arrow"></span>
             </a>
+                <ul class="list_depth1" id="cat3Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+            
         </li>
-        <li id="badgeItem" class="item_disable">
+        <li id="cat4Item" class="item_disable">
             <!-- 등급 선택 -->
-            <a href="#" class="link_item" onclick="showOptions('badge')">
+            <a href="#" class="link_item" onclick="showOptions('cat4')">
                 <strong class="tit_category">세부구간</strong>
-                <ul class="list_depth1" id="badgeOptions"></ul>
-                <span class="uiico uiico_arrow"></span>
             </a>
+                <ul class="list_depth1 list_search" id="cat4Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+            
         </li>
-        <li id="badgeItem" class="item_disable">
+        <li id="cat5Item" class="item_disable">
             <!-- 등급 선택 -->
-            <a href="#" class="link_item" onclick="showOptions('badge')">
+            <a href="#" class="link_item" onclick="showOptions('cat5')">
                 <strong class="tit_category">작업내용</strong>
-                <ul class="list_depth1" id="badgeOptions"></ul>
-                <span class="uiico uiico_arrow"></span>
             </a>
+                <ul class="list_depth1 list_search" id="cat5Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+            
         </li>
-        <li id="badgeItem" class="item_disable">
+        <li id="cat6Item" class="item_disable">
             <!-- 등급 선택 -->
-            <a href="#" class="link_item" onclick="showOptions('badge')">
+            <a href="#" class="link_item" onclick="showOptions('cat6')">
                 <strong class="tit_category">공수</strong>
-                <ul class="list_depth1" id="badgeOptions"></ul>
-                <span class="uiico uiico_arrow"></span>
             </a>
+                <ul class="list_depth1 list_search" id="cat6Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+           
         </li>
 
     </ul>
@@ -264,7 +284,24 @@
 </html>
 
 <script type="text/javascript">
-
+    //필수 데이터 로드 
+    // let data=null;
+    // Fetch the JSON data
+    // var data = fetch('/static/data/test.json')
+    // .then(response => response.json())
+    // .then(data => {
+    //     return JSON.parse(data)
+    // })
+    // .catch(error => console.error('Error fetching JSON:', error));
+    var data =null ; 
+    $.getJSON('/static/data/test.json', function(item) {
+            data =  JSON.parse(item)
+            console.log(data)
+        }).fail(function() {
+            console.error('Error fetching JSON');
+        });
+    
+    
 
     function populateDropdown(id, options) {
                 const select = document.getElementById(id);
@@ -277,7 +314,7 @@
                 });
 	    	}
 
-        function filterData(level) {
+    function filterData(level) {
             if (!data) {
                 console.error('Data is not loaded yet.');
                 return;
@@ -289,66 +326,123 @@
 
             let filteredData = [];
             if (level === 'category') {
-                filteredData = data.filter(item => item['중분류'] === category);
-                populateDropdown('floor', [...new Set(filteredData.map(item => item['층']))]);
+                filteredData = data.filter(item => item['cat1'] === category);
+                populateDropdown('floor', [...new Set(filteredData.map(item => item['cat2']))]);
                 document.getElementById('section').innerHTML = '<option value="">Select</option>';
                 document.getElementById('subsection').innerHTML = '<option value="">Select</option>';
                 document.getElementById('task').innerHTML = '<option value="">Select</option>';
             } else if (level === 'floor') {
-                filteredData = data.filter(item => item['중분류'] === category && item['층'] === floor);
-                populateDropdown('section', [...new Set(filteredData.map(item => item['구간']))]);
+                filteredData = data.filter(item => item['cat1'] === category && item['cat2'] === floor);
+                populateDropdown('section', [...new Set(filteredData.map(item => item['cat3']))]);
                 document.getElementById('subsection').innerHTML = '<option value="">Select</option>';
                 document.getElementById('task').innerHTML = '<option value="">Select</option>';
             } else if (level === 'section') {
-                filteredData = data.filter(item => item['중분류'] === category && item['층'] === floor && item['구간'] === section);
-                populateDropdown('subsection', [...new Set(filteredData.map(item => item['세부구간']))]);
+                filteredData = data.filter(item => item['cat1'] === category && item['cat2'] === floor && item['cat3'] === section);
+                populateDropdown('subsection', [...new Set(filteredData.map(item => item['cat4']))]);
                 populateDropdown('task', [...new Set(filteredData.map(item => item['작업 내용']))]);
             }
         };
 
-    const models = {
-        'Toyota': ['Corolla', 'Camry', 'Prius'],
-        'Honda': ['Civic', 'Accord', 'Fit'],
-        'Ford': ['Focus', 'Mustang', 'Explorer']
-    };
-
-    const badges = {
-        'Corolla': ['Base', 'Sport', 'Luxury'],
-        'Camry': ['LE', 'SE', 'XLE'],
-        'Prius': ['Eco', 'Tech', 'Touring'],
-        'Civic': ['LX', 'EX', 'Touring'],
-        'Accord': ['Sport', 'EX-L', 'Touring'],
-        'Fit': ['DX', 'LX', 'EX'],
-        'Focus': ['S', 'SE', 'Titanium'],
-        'Mustang': ['EcoBoost', 'GT', 'Bullitt'],
-        'Explorer': ['XLT', 'Limited', 'Platinum']
-    };
 
     function showOptions(category) {
-        document.querySelectorAll('.list_depth1').forEach(el => el.classList.remove('active'));
-        document.getElementById(category + 'Options').classList.add('active');
+        console.log(document.getElementById(category + 'Options').classList)
+        console.log(document.getElementById(category + 'Options').classList.length)
+        
+        if(document.getElementById(category + 'Options').classList.contains("active")){
+            console.log("active있음")
+            document.querySelectorAll('.list_depth1').forEach(el => el.classList.remove('active'));
+            document.getElementById(category + 'Options').classList.remove('active');
+        
+        }else{
+            console.log("active없음")
+            document.querySelectorAll('.list_depth1').forEach(el => el.classList.remove('active'));
+            document.getElementById(category + 'Options').classList.add('active');
+        }
+        console.log(document.getElementById(category + 'Options').classList)
+        console.log(document.getElementById(category + 'Options').classList.length)
+        console.log(category)
+        console.log('aa')
     }
 
+    var site = null;
+    var cat1 = null;
+    var cat2 = null;
+    var cat3 = null;
+    var cat4 = null;
+    var cat5 = null;
+    var cat6 = null;
+    
+
     function selectOption(category, value) {
-        if (category === 'manufacturer') {
-            document.getElementById('modelItem').classList.remove('item_disable');
-            const modelOptions = document.getElementById('modelOptions');
-            modelOptions.innerHTML = models[value].map(model => 
-                `<li><a href="#" onclick="selectOption('model', '${model}')">${model}</a></li>`
+      
+        
+        if (category === 'site') {
+            site = value;
+            document.getElementById('cat1Item').classList.remove('item_disable');
+            const modelOptions = document.getElementById('cat1Options');
+            console.log(data)
+            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === value).map(item => item['중분류']))];
+            modelOptions.innerHTML = uniqueValues.map(model => 
+                `<li><a href="#" onclick="selectOption('cat1', '${model}'); showOptions('cat2');">${model}</a></li>`
             ).join('');
-        } else if (category === 'model') {
-            document.getElementById('badgeItem').classList.remove('item_disable');
-            const badgeOptions = document.getElementById('badgeOptions');
-            badgeOptions.innerHTML = badges[value].map(badge => 
-                `<li><a href="#">${badge}</a></li>`
+            document.getElementById(category + 'Options').classList.remove('active');
+            // modelOptions.innerHTML = data.filter(item=>item['작업장명']===value).map(model => 
+            //     `<li><a href="#" onclick="selectOption('cat1', '${model['cat1']}')">${model['cat1']}</a></li>`
+            // ).join('');
+        } else if (category === 'cat1') {
+     
+            cat1 = value;
+            document.getElementById('cat2Item').classList.remove('item_disable');
+            const modelOptions = document.getElementById('cat2Options');
+            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === value).map(item => item['층']))];
+            modelOptions.innerHTML = uniqueValues.map(model => 
+                `<li><a href="#" onclick="selectOption('cat2', '${model}'); showOptions('cat3');">${model}</a></li>`
             ).join('');
+            console.log(document.getElementById(category + 'Options'))
+            document.getElementById(category + 'Options').classList.remove('active');
+            console.log("Aa")
+        } else if(category==="cat2"){
+            cat2 = value;
+            document.getElementById('cat3Item').classList.remove('item_disable');
+            const modelOptions = document.getElementById('cat3Options');
+            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === value).map(item => item['구간']))];
+            modelOptions.innerHTML = uniqueValues.map(model => 
+                `<li><a href="#" onclick="selectOption('cat3', '${model}'); showOptions('cat4');">${model}</a></li>`
+            ).join('');
+       
+
+        }else if(category==="cat3"){
+            cat3 = value;
+            document.getElementById('cat4Item').classList.remove('item_disable');
+            const modelOptions = document.getElementById('cat4Options');
+            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === value).map(item => item['세부구간']))];
+            modelOptions.innerHTML = uniqueValues.map(model => 
+                `<li><a href="#" onclick="selectOption('cat4', '${model}'); showOptions('cat5');">${model}</a></li>`
+            ).join('');
+       
+
+        }else if(category==="cat4"){
+            cat4= value;
+            document.getElementById('cat5Item').classList.remove('item_disable');
+            const modelOptions = document.getElementById('cat5Options');
+            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === cat3&&item['세부구간'] === value).map(item => item['작업 내용']))];
+            modelOptions.innerHTML = uniqueValues.map(model => 
+                `<li><a href="#" onclick="selectOption('cat5', '${model}'); showOptions('cat6');">${model}</a></li>`
+            ).join('');
+      
+
+        }else if(category==="cat5"){
+            cat4= value;
+            document.getElementById('cat5Item').classList.remove('item_disable');
+            
+
         }
 
         // Hide the current options after selection
-        document.getElementById(category + 'Options').classList.remove('active');
+        
     }
 
-    
+     
 
     window.onload = function(){
 
@@ -408,18 +502,7 @@
 			   });
 
         
-    //필수 데이터 로드 
-    var data;
-
-    // Fetch the JSON data
-    fetch('/static/data/test.json')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        data = data;
-        
-    })
-    .catch(error => console.error('Error fetching JSON:', error));
+   
 
 
        

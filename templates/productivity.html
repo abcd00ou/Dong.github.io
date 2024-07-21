@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+{% block title %}Survey{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>작업 생산성</title>
+
+    <link rel="stylesheet" href="./static/css/tables.css">
+    
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="static/css/main.css">
+
+    <!-- Vendor CSS Files -->
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="static/vendor/aos/aos.css" rel="stylesheet">
+    <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    </head>
+
+<body class="index-page" style="margin-top:100px;">
+    <header id="header" class="header fixed-top">
+        <div class="topbar d-flex align-items-center">
+            <div class="container d-flex justify-content-center justify-content-md-between">
+              <div class="contact-info d-flex align-items-center">
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:seowoohr@seowoohr.com">Contact Email</a></i>
+                <i class="bi bi-phone d-flex align-items-centr ms-4"><span>Contact Number</span></i>
+              </div>
+              <div class="social-links d-none d-md-flex align-items-center">
+                <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div><!-- End Top Bar -->
+      
+          <div class="branding d-flex align-items-center">
+            <div class="container position-relative d-flex align-items-center justify-content-between">
+              <a href="{{ url_for('main') }}" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='img/seowoologo.png') }}" alt="">
+                <!-- <h1 class="sitename">서우HR</h1> -->
+              </a>
+              <nav id="navmenu" class="navmenu">
+                <ul>
+                  <li><a href="#hero">Home</a></li>
+                  <li><a href="#about">About</a></li>
+                  <li><a href="#Services">Services</a></li>
+                  <li><a href="{{url_for('survey')}}">Survey</a></li>
+                  <li><a href="{{url_for('calendar')}}" >Calendar</a></li>
+                  <li><a href="{{url_for('productivity')}}" class="active">Productivity</a></li>
+                  <li><a href="#team">Team</a></li>
+                  <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="#">Dropdown 1</a></li>
+                      <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><a href="#">Deep Dropdown 1</a></li>
+                          <li><a href="#">Deep Dropdown 2</a></li>
+                          <li><a href="#">Deep Dropdown 3</a></li>
+                          <li><a href="#">Deep Dropdown 4</a></li>
+                          <li><a href="#">Deep Dropdown 5</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Dropdown 2</a></li>
+                      <li><a href="#">Dropdown 3</a></li>
+                      <li><a href="#">Dropdown 4</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#contact">Contact</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+              </nav>
+            </div>
+          </div>
+      </header>
+
+<div id="bodyContent">
+  <div>
+    <div id="bgtables" >
+     <h1>작업 생산성</h1>
+    </div>
+
+    <img src="./static/img/premier/footlogo.png" alt="" style="width:100px;margin-left: 100px;margin-top:10px;margin-bottom:10px">
+      
+
+    <div id="scores">
+      <label for="" style="margin-left: 25px;">More</label>  
+      <label for="" style="margin-left: 20px;">Position</label>
+      <label for="" style="margin-left: 50px;">Club</label>
+      <label for="" style="margin-left: 310px;">Played</label>
+      <label for="" >Won</label>
+      <label for="">Drawn</label>
+      <label for="">Lost</label>
+      <label for="">GF</label>
+      <label for="">GA</label>
+      <label for="">Points</label>
+      <label for=""style="margin-left: 100px;">From</label>
+      <label for="" style="float: right;margin-right: 20px;">Next</label>
+    </div>
+  </div>
+
+
+</div>
+</body>
+
+  <script >
+
+  async function teams() {
+      var res = await fetch("./static/data/points_table_old.json");
+      var data = await res.json();
+
+      // console.log(data);
+
+      let { records } = data;
+      console.log('records',records);
+
+      var displayScore = document.getElementById("bodyContent");
+      for (var i = 0; i < records.length; i++) {
+        console.log(records[i]);
+        console.log(i);
+
+        var div = document.createElement("div");
+        div.setAttribute("id", "scoreDetails");
+        console.log(records[i].icon)
+        div.innerHTML = `
+  <span style='font-size:14px;'>&#8744;</span> <label id="lbl1"> ${[
+          i + 1,
+        ]}&nbsp;&nbsp;•</label> <label  id="lbl2" ><img src="./static/img/premier/img_icon${
+          i+1
+        }.png" style="float:left;margin-right:15px;padding-bottom:20px; width:25px"/> <span>${
+          records[i].team
+        }</span></label>
+        <label id="lbl3">${records[i].played}</label><label id="lbl4">${
+          records[i].win
+        }</label><label id="lbl5">${records[i].draw}</label><label id="lbl6">${
+          records[i].loss
+        }</label><label id="lbl7">${
+          records[i].goalsFor
+        }</label><label id="lbl8">${
+          records[i].goalsAgainst
+        }</label><label id="lbl10" style="font-weight: bold">${
+          records[i].points
+        }</label><label id="lbl11"><img src="./static/img/premier/img_icon${
+          records.length-i
+        }.png" style="float:left;margin-right:15px;padding-bottom:20px; width:25px"/>
+        </label><label id="lbl12"><img src="./static/img/premier/rank${
+          i+1
+        }.png" width:25px/></label>`;
+
+        displayScore.appendChild(div);
+      }
+    }
+
+  
+
+  teams();
+    
+  </script>
+
+
+
+</html>
+{% endblock %}
