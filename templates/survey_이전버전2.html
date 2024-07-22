@@ -1,179 +1,128 @@
 {% extends "layout.html" %}
 {% block title %}Survey{% endblock %}
-
-{% block head %}
-
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></scriptsrc>></script>
-
-<!-- Vendor CSS Files -->
-<link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-<link href="static/vendor/aos/aos.css" rel="stylesheet">
-<link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-<link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-
-<!-- Main CSS File -->
-<!-- <link href="static/css/main.css" rel="stylesheet"> -->
-<link href="static/css/index.css" rel="stylesheet">
-
-
-<script type="text/javascript">
-    (function() {
-        emailjs.init("_GKGc3e2Afedx7hjm")
-    })();
-</script>
-
-<style>
-
-    h2 {
-        color: #333;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    form {
-        background: #fff;
-        padding: 20px 0;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    label {
-        margin-bottom: 5px;
-        color: #555;
-        font-weight: bold;
-    }
-
-    input[type="number"],
-    input[type="text"],
-    select,
-    textarea {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 20px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    textarea {
-        resize: none;
-        height: 100px;
-    }
-
-    input[type="submit"] {
-        padding: 15px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        width: 100%;
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #45a049;
-    }
-
-    ul {
-        list-style: none;
-        padding-left: 0;
-        width: 100%;
-    }
-
-    .section {
-        margin-bottom: 20px;
-    }
-
-    .flex-container {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-
-    .flex-container .col-4 {
-        flex: 1;
-        min-width: 150px;
-    }
-
-    .flex-container .col-4 button {
-        margin-left: 10px;
-        padding: 10px;
-        border: none;
-        background-color: #36c1ae;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .flex-container .col-4 button:hover {
-        background-color: #2a978b;
-    }
-    .button{
-        margin-left: 10px;
-        padding: 10px;
-        border: none;
-        background-color: #36c1ae;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    .item_disable {
-        pointer-events: none;
-        opacity: 0.5;
-    }
-    .list_depth1 {
-        display: none;
-        position: fixed;
-        bottom: -100%;
-    }
-    .list_depth1.active {
-        display: block;
-        bottom: 0;
-    }
-    .survey_item {
-        border-top: 1px solid #dddddd;
-    }
-    .survey_item:last-child {
-        border-bottom: 1px solid #dddddd;
-    }
-    .survey_btn {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: 16px 12px;
-        text-align: left;
-        border: 0;
-        background-color: white;
-    }
-    .survey_btn_title {
-        display: flex;
-    }
-    .survey_btn_title_name {
-        width: 60px;
-        margin-right: 12px;
-        font-weight: bolder;
-    }
-    .survey_btn_title_data {
-
-    }
-
-</style>
-
-{% endblock %}
-
 {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+   
+   <script type="text/javascript">
+       (function() {
+           emailjs.init("_GKGc3e2Afedx7hjm")
+       })();
+   </script>
+ 
+   <style>
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select,
+        textarea {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        } 
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        input[type="submit"] {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .flex-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .flex-container .col-4 {
+            flex: 1;
+            min-width: 150px;
+        }
+        .flex-container .col-4 button {
+            margin-left: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #36c1ae;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        } 
+        .flex-container .col-4 button:hover {
+            background-color: #2a978b;
+        }
+
+        .button{
+            margin-left: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #36c1ae;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .item_disable {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .list_depth1 {
+            display: none;
+        }
+        .list_depth1.active {
+            display: block;
+        }
+   </style>
+</head>
 
 <body class="index-page" style="margin-top:100px;">
+
     <header id="header" class="header fixed-top">
         <div class="topbar d-flex align-items-center">
         <div class="container d-flex justify-content-center justify-content-md-between">
@@ -193,7 +142,8 @@
         <div class="branding d-flex align-items-center">
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a href="{{ url_for('main') }}" class="logo d-flex align-items-center">
-                <img src="{{ url_for('static', filename='img/seowoologo.png') }}" alt="">
+            <img src="{{ url_for('static', filename='img/seowoologo.png') }}" alt="">
+            <!-- <h1 class="sitename">서우HR</h1> -->
             </a>
             <nav id="navmenu" class="navmenu">
             <ul>
@@ -228,186 +178,90 @@
         </div>
         </div>
     </header>
-    
     <h2>Survey Form</h2>
    
    <form id="survey-form" style="align-items: center;">
 
+
     <label for='survey1'>작업 공수 기재</label>
     <ul id ='survey1'>
-        <li class="survey_item">
+        <li>
             <!-- 제조사 선택 -->
-            <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#siteModal">
-                <div class="survey_btn_title">
-                    <div class="survey_btn_title_name">작업 장소</div>
-                    <div class="survey_btn_title_data" id="site"></div>
-                </div>
-                <i class="bi bi-chevron-right"></i>
-            </button>
+            <a href="#" class="link_item" onclick="showOptions('site')">
+                <strong class="tit_category">작업 장소</strong>
+            </a>
+                <ul class="list_depth1 list_search" id="siteOptions">
+                    <!-- Example options -->
+                    <li><a href="#" onclick="selectOption('site', '당진')">당진</a></li>
+                    <li><a href="#" onclick="selectOption('site', '마곡')">마곡</a></li>
+                    <li><a href="#" onclick="selectOption('site', '시흥')">시흥</a></li>
+                </ul>
+                <span class="uiico uiico_arrow"></span>
             
-            <div class="modal fade" id="siteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">작업 장소</h1>
-                      </div>
-                      <ul class="modal-body">
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '당진')">당진</li>
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '마곡')">마곡</li>
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '서울')">서울</li>
-                      </ul>
-                    </div>
-                </div>
-            </div>
         </li>
-        <li id="cat1Item" class="item_disable survey_item">
+        <li id="cat1Item" class="item_disable">
             <!-- 모델 선택 -->
-            <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat1Modal">
-                <div class="survey_btn_title">
-                    <div class="survey_btn_title_name">중분류</div>
-                    <div class="survey_btn_title_data" id="cat1"></div>
-                </div>
-                <i class="bi bi-chevron-right"></i>
-            </button>
-            
-            <div class="modal fade" id="cat1Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">중분류</h1>
-                      </div>
-                      <ul class="modal-body" id="cat1Options">
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat1', '중분류1')">중분류1</li>
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat1', '중분류2')">중분류2</li>
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat1', '중분류3')">중분류3</li>
-                      </ul>
-                    </div>
-                </div>
-            </div>
+            <a href="#" class="link_item" onclick="showOptions('cat1')">
+                <strong class="tit_category">중분류</strong></a>
+                <ul class="list_depth1 list_search" id="cat1Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+           
         </li>
-        <li id="cat2Item" class="item_disable survey_item">
+        <li id="cat2Item" class="item_disable">
             <!-- 등급 선택 -->
-            <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat2Modal">
-                <div class="survey_btn_title">
-                    <div class="survey_btn_title_name">층</div>
-                    <div class="survey_btn_title_data" id="cat2"></div>
-                </div>
-                <i class="bi bi-chevron-right"></i>
-            </button>
-            
-            <div class="modal fade" id="cat2Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">층</h1>
-                      </div>
-                      <ul class="modal-body" id="cat2Options">
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat2', '층1')">층1</li>
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat2', '층2')">층2</li>
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat2', '층3')">층3</li>
-                      </ul>
-                    </div>
-                </div>
-            </div>
+            <a href="#" class="link_item" onclick="showOptions('cat2')">
+                <strong class="tit_category">층</strong>
+            </a>
+                <ul class="list_depth1 list_search" id="cat2Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+           
         </li>
-        <li id="cat3Item" class="item_disable survey_item">
+        <li id="cat3Item" class="item_disable">
             <!-- 등급 선택 -->
-            <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat3Modal">
-                <div class="survey_btn_title">
-                    <div class="survey_btn_title_name">구간</div>
-                    <div class="survey_btn_title_data" id="cat3"></div>
-                </div>
-                <i class="bi bi-chevron-right"></i>
-            </button>
+            <a href="#" class="link_item" onclick="showOptions('cat3')">
+                <strong class="tit_category">구간</strong>
+            </a>
+                <ul class="list_depth1" id="cat3Options"></ul>
+                <span class="uiico uiico_arrow"></span>
             
-            <div class="modal fade" id="cat3Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">구간</h1>
-                      </div>
-                      <ul class="modal-body" id="cat3Options">
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간1')">구간1</li>
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간2')">구간2</li>
-                        <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간3')">구간3</li>
-                      </ul>
-                    </div>
-                </div>
-            </div>
         </li>
-        <li id="cat4Item" class="item_disable survey_item">
+        <li id="cat4Item" class="item_disable">
             <!-- 등급 선택 -->
-            <button class="survey_btn" onclick="showOptions('cat4')">
+            <a href="#" class="link_item" onclick="showOptions('cat4')">
                 <strong class="tit_category">세부구간</strong>
-                <i class="bi bi-chevron-right"></i>
-            </button>
-            <ul class="list_depth1 list_search" id="cat4Options"></ul>
+            </a>
+                <ul class="list_depth1 list_search" id="cat4Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+            
         </li>
-        <li id="cat5Item" class="item_disable survey_item">
+        <li id="cat5Item" class="item_disable">
             <!-- 등급 선택 -->
-            <button class="survey_btn" onclick="showOptions('cat5')">
+            <a href="#" class="link_item" onclick="showOptions('cat5')">
                 <strong class="tit_category">작업내용</strong>
-                <i class="bi bi-chevron-right"></i>
-            </button>
-            <ul class="list_depth1 list_search" id="cat5Options"></ul>
+            </a>
+                <ul class="list_depth1 list_search" id="cat5Options"></ul>
+                <span class="uiico uiico_arrow"></span>
+            
         </li>
-        <li id="cat6Item" class="item_disable survey_item">
+        <li id="cat6Item" class="item_disable">
             <!-- 등급 선택 -->
-            <button class="survey_btn" onclick="showOptions('cat6')">
+            <a href="#" class="link_item" onclick="showOptions('cat6')">
                 <strong class="tit_category">공수</strong>
-                <i class="bi bi-chevron-right"></i>
-            </button>
-            <input type="number" id="effort" name="effort">
+            </a>
+                <input type="number" id="effort" name="effort">
+           
         </li>
 
     </ul>
 
     <label for='survey2'>인원 및 특이사항</label>
     <ul id ='survey2'>
-        <div class="flex-container">
-            <div class="col-4">
-                <label for="workers_add1">기본 근무자 추가:</label>
-                <input type="text" id="workers_add1">
-                <button id="add1" class="button" style="float:right">작업자 추가</button><br><br><br>
-                <label for="workers-normal">작업자 명:</label>
-                <textarea id="workers-normal" disabled=""></textarea>
-            </div>
-            <div class="col-4">
-                <label for="workers_add2">추가 근무자 추가:</label>
-                <input type="text" id="workers_add2">
-                <button id="add2" class="button" style="float:right">작업자 추가</button><br><br><br>
-                <label for="workers-hard">작업자 명:</label>
-                <textarea id="workers-hard" disabled=""></textarea>
-            </div>
-            <div class="col-4">
-                <label for="workers_add3">오전 근무자 추가:</label>
-                <input type="text" id="workers_add3">
-                <button id="add3" class="button" style="float:right">작업자 추가</button><br><br><br>
-                <label for="workers-morning">작업자 명:</label>
-                <textarea id="workers-morning" disabled=""></textarea>
-            </div>
-        </div>
-
-        <div class="section">
-            <label for="specialnotes">특이사항:</label>
-            <textarea id="specialnotes" name="specialnotes"></textarea>
-        </div>
-
-        <div class="section">
-            <label for="overtime">연장근무:</label>
-            <textarea id="overtime" name="overtime"></textarea>
-        </div>
 
 
     </ul>
 
 
    </form>
-   <input type="submit" value="Submit" id="submit">
 
 </body>
 </html>
@@ -464,6 +318,27 @@
             }
         };
 
+
+    function showOptions(category) {
+        console.log(document.getElementById(category + 'Options').classList)
+        console.log(document.getElementById(category + 'Options').classList.length)
+        
+        if(document.getElementById(category + 'Options').classList.contains("active")){
+            console.log("active있음")
+            document.querySelectorAll('.list_depth1').forEach(el => el.classList.remove('active'));
+            document.getElementById(category + 'Options').classList.remove('active');
+        
+        }else{
+            console.log("active없음")
+            document.querySelectorAll('.list_depth1').forEach(el => el.classList.remove('active'));
+            document.getElementById(category + 'Options').classList.add('active');
+        }
+        console.log(document.getElementById(category + 'Options').classList)
+        console.log(document.getElementById(category + 'Options').classList.length)
+        console.log(category)
+        console.log('aa')
+    }
+
     var site = null;
     var cat1 = null;
     var cat2 = null;
@@ -474,6 +349,8 @@
     
 
     function selectOption(category, value) {
+      
+        
         if (category === 'site') {
             site = value;
             document.getElementById('cat1Item').classList.remove('item_disable');
@@ -483,7 +360,10 @@
             modelOptions.innerHTML = uniqueValues.map(model => 
                 `<li><a href="#" onclick="selectOption('cat1', '${model}'); showOptions('cat2');">${model}</a></li>`
             ).join('');
-            document.getElementById('site').innerHTML = value;
+            document.getElementById(category + 'Options').classList.remove('active');
+            // modelOptions.innerHTML = data.filter(item=>item['작업장명']===value).map(model => 
+            //     `<li><a href="#" onclick="selectOption('cat1', '${model['cat1']}')">${model['cat1']}</a></li>`
+            // ).join('');
         } else if (category === 'cat1') {
      
             cat1 = value;
