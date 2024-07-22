@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>{% block title %}SeowooHR{% endblock %}</title>
+  <title>{% block title %}{% endblock %}</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -34,7 +34,7 @@
 
 <body class="index-page">
 
-  <!-- <header id="header" class="header fixed-top">
+  <header id="header" class="header fixed-top">
 
     <div class="topbar d-flex align-items-center">
       <div class="container d-flex justify-content-center justify-content-md-between">
@@ -54,18 +54,18 @@
     <div class="branding d-flex align-items-center">
 
       <div class="container position-relative d-flex align-items-center justify-content-between">
-
+        <a href="{{ url_for('main') }}" class="logo d-flex align-items-center">
           <img src="static/img/seowoologo.png" alt=""> 
         </a>
 
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="{{url_for('main')}}" id="nav_main">Home</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#Services">Services</a></li>
-            <li><a href="{{url_for('survey')}}">Survey</a></li>
-            <li><a href="{{url_for('calendar')}}">Calendar</a></li>
-            <li><a href="{{url_for('productivity')}}">Productivity</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="{{url_for('survey')}}" id="nav_survey">Survey</a></li>
+            <li><a href="{{url_for('calendar')}}" id="nav_calendar">Calendar</a></li>
+            <li><a href="{{url_for('productivity')}}" id="nav_productivity">Productivity</a></li>
             <li><a href="#team">Team</a></li>
             <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
@@ -92,11 +92,12 @@
 
     </div>
 
-  </header> -->
+  </header>
 
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
   
-  {% block content %}{% endblock %}
-
   <footer id="footer" class="footer position-relative dark-background">
     <div class="container footer-top">
       <div class="row gy-4">
@@ -165,10 +166,18 @@
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
-  <!-- <div id="preloader"></div> -->
+  <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
-  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='vendor/php-email-form/validate.js')}}"></script>
+  <script src="static/vendor/php-email-form/validate.js"></script>
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/vendor/aos/aos.js"></script>
+  <script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
+  <!-- Main JS File -->
   <script src="static/js/main.js"></script>
+
+  {% block script %}{% endblock %}

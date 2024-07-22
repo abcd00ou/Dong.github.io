@@ -2067,3 +2067,8 @@ select.filter {
   pointer-events: none;
   opacity: 0.5;
 }
+
+/* content */
+.content {
+  margin-top: 104px;
+}
