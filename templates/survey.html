@@ -12,12 +12,6 @@
 </script>
 
 <style>
-    h2 {
-        color: #333;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
     form {
         background: #fff;
         padding: 20px 0;
@@ -28,31 +22,26 @@
         flex-direction: column;
     }
 
-    label {
-        margin-bottom: 5px;
-        color: #555;
-        font-weight: bold;
-    }
-
     input[type="number"],
     input[type="text"],
     select,
     textarea {
         border: 1px solid #ccc;
         border-radius: 5px;
-        padding: 10px;
+        padding: 12px 24px;
         margin-bottom: 20px;
         width: 100%;
         box-sizing: border-box;
+        height: auto;
     }
 
     textarea {
         resize: none;
-        height: 100px;
+        min-height: 48px;
     }
 
     input[type="submit"] {
-        padding: 15px;
+        /* padding: 15px;
         border: none;
         border-radius: 5px;
         font-size: 16px;
@@ -60,17 +49,30 @@
         background-color: #4CAF50;
         color: white;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease; */
     }
 
     input[type="submit"]:hover {
-        background-color: #45a049;
+        /* background-color: #45a049; */
     }
 
     ul {
         list-style: none;
         padding-left: 0;
         width: 100%;
+    }
+
+    label {
+        margin-bottom: 5px;
+        color: #777777;
+        font-weight: bold;
+        padding: 0 24px;
+    }
+
+    .content-title {
+        color: #222222;
+        padding: 24px 0;
+        text-align: center;
     }
 
     .section {
@@ -103,18 +105,21 @@
         background-color: #2a978b;
     }
     .button{
-        margin-left: 10px;
+        /* margin-left: 10px;
         padding: 10px;
         border: none;
         background-color: #36c1ae;
         color: white;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease; */
     }
-    .item_disable {
+    .item-disable {
         pointer-events: none;
-        opacity: 0.5;
+    }
+    .item-disable > * {
+        color: #dddddd;
+        /* background-color: #dddddd; */
     }
     .list_depth1 {
         display: none;
@@ -136,7 +141,7 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        padding: 16px 12px;
+        padding: 16px 24px;
         text-align: left;
         border: 0;
         background-color: white;
@@ -146,22 +151,56 @@
     }
     .survey_btn_title_name {
         width: 60px;
-        margin-right: 12px;
+        margin-right: 24px;
         font-weight: bolder;
     }
-    .survey_btn_title_data {
-
+    .modal-content .modal-header{
+        justify-content: center;
+    }
+    .modal-icon {
+        display: flex;
+        position: absolute;
+        left: 16px;
+        width: 31px;
+        height: 31px;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-body-custom {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        overflow-y: auto;
+    }
+    .modal-body-custom > li, input {
+        width: 100%;
+        padding: 16px 24px;
+        border-bottom: 1px solid #dddddd;
+    }
+    .btn-add-task-area {
+        margin-bottom: 16px;
+    }
+    .btn-dark-custom {
+        background-color: #242424;
+        color: white;
+        transition-duration: 0.5s;
+        border: 0;
+        border-radius: 5px;
+        padding: 16px 0;
+    }
+    .btn-dark-custom:hover {
+        background-color: #333333;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<h2>Survey Form</h2>
+<h1 class="content-title">작업 기록</h1>
 
 <label for='survey1'>작업 공수 기재</label>
 <ul id ='survey1'>
     <li class="survey_item">
-        <!-- 제조사 선택 -->
+        <!-- 작업 장소 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#siteModal">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">작업 장소</div>
@@ -170,24 +209,26 @@
             <i class="bi bi-chevron-right"></i>
         </button>
         
+        <!-- modal -->
         <div class="modal fade" id="siteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">작업 장소</h1>
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">작업 장소</h1>
                     </div>
-                    <ul class="modal-body">
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '당진')">당진</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '마곡')">마곡</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '서울')">서울</li>
+                    <ul class="modal-body-custom">
+                        <!-- <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '당진')">당진</li> -->
+                        <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '당진')">당진</li>
+                        <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '마곡')">마곡</li>
+                        <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '서울')">서울</li>
                     </ul>
                 </div>
             </div>
         </div>
     </li>
-    <li id="cat1Item" class="item_disable survey_item">
-        <!-- 모델 선택 -->
+    <li id="cat1Item" class="item-disable survey_item">
+        <!-- 중분류 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat1Modal">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">중분류</div>
@@ -200,20 +241,16 @@
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">중분류</h1>
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">중분류</h1>
                     </div>
-                    <ul class="modal-body" id="cat1Options">
-                    <!-- <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat1', '중분류1')">중분류1</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat1', '중분류2')">중분류2</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat1', '중분류3')">중분류3</li> -->
-                    </ul>
+                    <ul class="modal-body-custom" id="cat1Options"></ul>
                 </div>
             </div>
         </div>
     </li>
-    <li id="cat2Item" class="item_disable survey_item">
-        <!-- 등급 선택 -->
+    <li id="cat2Item" class="item-disable survey_item">
+        <!-- 층 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat2Modal">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">층</div>
@@ -226,20 +263,16 @@
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">층</h1>
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">층</h1>
                     </div>
-                    <ul class="modal-body" id="cat2Options">
-                    <!-- <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat2', '층1')">층1</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat2', '층2')">층2</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat2', '층3')">층3</li> -->
-                    </ul>
+                    <ul class="modal-body-custom" id="cat2Options"></ul>
                 </div>
             </div>
         </div>
     </li>
-    <li id="cat3Item" class="item_disable survey_item">
-        <!-- 등급 선택 -->
+    <li id="cat3Item" class="item-disable survey_item">
+        <!-- 구간 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat3Modal">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">구간</div>
@@ -252,20 +285,16 @@
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">구간</h1>
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">구간</h1>
                     </div>
-                    <ul class="modal-body" id="cat3Options">
-                    <!-- <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간1')">구간1</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간2')">구간2</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간3')">구간3</li> -->
-                    </ul>
+                    <ul class="modal-body-custom" id="cat3Options"></ul>
                 </div>
             </div>
         </div>
     </li>
-    <li id="cat4Item" class="item_disable survey_item">
-        <!-- 등급 선택 -->
+    <li id="cat4Item" class="item-disable survey_item">
+        <!-- 세부구간 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat4Modal">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">세부구간</div>
@@ -278,20 +307,16 @@
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">세부구간</h1>
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">세부구간</h1>
                     </div>
-                    <ul class="modal-body" id="cat4Options">
-                    <!-- <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간1')">구간1</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간2')">구간2</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간3')">구간3</li> -->
-                    </ul>
+                    <ul class="modal-body-custom" id="cat4Options"></ul>
                 </div>
             </div>
         </div>
     </li>
-    <li id="cat5Item" class="item_disable survey_item">
-        <!-- 등급 선택 -->
+    <li id="cat5Item" class="item-disable survey_item">
+        <!-- 작업내용 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat5Modal">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">작업내용</div>
@@ -304,111 +329,141 @@
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">작업내용</h1>
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">작업내용</h1>
                     </div>
-                    <ul class="modal-body" id="cat5Options">
-                    <!-- <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간1')">구간1</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간2')">구간2</li>
-                    <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '구간3')">구간3</li> -->
+                    <ul class="modal-body-custom" id="cat5Options"></ul>
+                </div>
+            </div>
+        </div>
+    </li>
+
+    <li id="cat6Item" class="item-disable survey_item">
+        <!-- 공수 선택 -->
+        <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat6Modal">
+            <div class="survey_btn_title">
+                <div class="survey_btn_title_name">공수</div>
+                <div class="survey_btn_title_data" id="cat6"></div>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+        <div class="modal fade" id="cat6Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">공수</h1>
+                    </div>
+                    <ul class="modal-body-custom" id="cat6Options">
+                        <input type="number" id="effort" name="effort">                
                     </ul>
                 </div>
             </div>
         </div>
     </li>
 
-    <li id="cat6Item" class="item_disable survey_item">
-        <!-- 등급 선택 -->
-        <button class="survey_btn" onclick="showOptions('cat6')">
-
-            <strong class="tit_category">공수</strong>
-            <i class="bi bi-chevron-right"></i>
-        </button>
-        <input type="number" id="effort" name="effort">
-    </li>
-
 </ul>
-<button id="add-task" class="button" style="float:right">작업추가</button><br><br>
-<label for="task-result">작업내용:</label>
+
+<div class="d-grid btn-add-task-area">
+    <button id="add-task" class="btn-dark-custom">작업추가</button>
+</div>
+
+<label for="task-result">작업내용</label>
 <textarea id="task-result" disabled="" placeholder="작업을 추가하면 여기서 확인 가능합니다."></textarea>
 
 <label for='survey2'>인원 및 특이사항</label>
 <ul id ='survey2'>
-    <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#workersModal">
-        <div class="survey_btn_title">
-            <div class="survey_btn_title_name">인원 추가</div>
-            <div class="survey_btn_title_data" id="workers"></div>
-        </div>
-        <i class="bi bi-chevron-right"></i>
-    </button>
-    
-    <div class="modal fade" id="workersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-header">
-                <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">인원 추가</h1>
+    <li class="survey_item">
+        <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#workersModal">
+            <div class="survey_btn_title">
+                <div class="survey_btn_title_name">인원 추가</div>
+                <div class="survey_btn_title_data" id="workers"></div>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+        <div class="modal fade" id="workersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">인원 추가</h1>
+                    </div>
+                    <div class="modal-body-custom">
+                        <br>
+                        <label for="numworkers">작업인원</label>
+                        <input type="number" id="numworkers" name="numworkers" min="1">
+        
+                        <label for="workers_add1">기본 근무자 추가</label>
+                        <input type="text" id="workers_add1" placeholder="1일 근무자, 없으면 생략">
+                        <button id="add1" class="btn-dark-custom">작업자 추가</button>
+                        <br>
+
+                        <label for="workers-normal">작업자 명</label>
+                        <textarea id="workers-normal" disabled=""></textarea>
+        
+                        <label for="workers_add2">추가 근무자 추가</label>
+                        <input type="text" id="workers_add2" placeholder="초과 근무자, 없으면 생략">
+                        <button id="add2" class="btn-dark-custom">작업자 추가</button>
+                        <br>
+
+                        <label for="workers-hard">작업자 명</label>
+                        <textarea id="workers-hard" disabled=""></textarea>
+        
+                        <label for="workers_add3">오전 근무자 추가</label>
+                        <input type="text" id="workers_add3" placeholder="0.5일 작업, 없으면 생략">
+                        <button id="add3" class="btn-dark-custom">작업자 추가</button>
+                        <br>
+                        
+                        <label for="workers-morning">작업자 명</label>
+                        <textarea id="workers-morning" disabled=""></textarea>
+                    </div>
                 </div>
-                <ul class="modal-body">
-                <label for="numworkers">작업인원:</label>
-                <input type="number" id="numworkers" name="numworkers" min="1">
-
-                <label for="workers_add1">기본 근무자 추가:</label>
-                <input type="text" id="workers_add1" placeholder="1일 근무자, 없으면 생략">
-                <button id="add1" class="button" style="float:right">작업자 추가</button><br><br><br>
-                <label for="workers-normal">작업자 명:</label>
-                <textarea id="workers-normal" disabled=""></textarea>
-
-                <label for="workers_add2">추가 근무자 추가:</label>
-                <input type="text" id="workers_add2" placeholder="초과 근무자, 없으면 생략">
-                <button id="add2" class="button" style="float:right">작업자 추가</button><br><br><br>
-                <label for="workers-hard">작업자 명:</label>
-                <textarea id="workers-hard" disabled=""></textarea>
-
-                <label for="workers_add3">오전 근무자 추가:</label>
-                <input type="text" id="workers_add3" placeholder="0.5일 작업, 없으면 생략">
-                <button id="add3" class="button" style="float:right">작업자 추가</button><br><br><br>
-                <label for="workers-morning">작업자 명:</label>
-                <textarea id="workers-morning" disabled=""></textarea>
-                </ul>
             </div>
         </div>
-    </div>
-    <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#extraModal">
-        <div class="survey_btn_title">
-            <div class="survey_btn_title_name">특이사항</div>
-            <div class="survey_btn_title_data" id="extra"></div>
-        </div>
-        <i class="bi bi-chevron-right"></i>
-    </button>
+    </li>
     
-    <div class="modal fade" id="extraModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-header">
-                <i type="button" class="bi bi-chevron-left" data-bs-dismiss="modal" aria-label="Close"></i>
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">특이사항</h1>
+    <li class="survey_item">
+        <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#extraModal">
+            <div class="survey_btn_title">
+                <div class="survey_btn_title_name">특이사항</div>
+                <div class="survey_btn_title_data" id="extra"></div>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </button>
+        
+        <div class="modal fade" id="extraModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">특이사항</h1>
+                    </div>
+                    <ul class="modal-body-custom">
+                        <br>
+                        <label for="specialnotes">특이사항</label>
+                        <textarea id="specialnotes" name="specialnotes"></textarea>
+
+                        <label for="overtime">연장근무</label>
+                        <textarea id="overtime" name="overtime"></textarea>
+                        <button id="add4" class="btn-dark-custom" style="float:right">특이사항 추가</button>
+                        <br>
+
+                        <label for="additional">특이사항</label>
+                        <textarea id="additional" disabled=""></textarea>
+                    </ul>
                 </div>
-                <ul class="modal-body">
-                <label for="specialnotes">특이사항:</label>
-                    <textarea id="specialnotes" name="specialnotes"></textarea>
-                    <label for="overtime">연장근무:</label>
-                    <textarea id="overtime" name="overtime"></textarea>
-                    <button id="add4" class="button" style="float:right">특이사항 추가</button>
-                    <label for="additional">특이사항</label>
-                <textarea id="additional" disabled=""></textarea>
-                </ul>
             </div>
         </div>
-    </div>
+    </li>
 </ul>  
 
-<input type="submit" value="Submit" id="submit">
+<input type="submit" value="Submit" id="submit" class="btn-dark-custom">
 {% endblock %}
 
 {% block script %}
 <script src="static/js/jquery.min.js"></script>
-<script src="static/js/bootstrap.min.js"></script>
 <script src="static/js/moment.min.js"></script>
 <script src="static/js/fullcalendar.min.js"></script>
 <script src="static/js/ko.js"></script>
@@ -430,8 +485,6 @@
         }).fail(function() {
             console.error('Error fetching JSON');
         });
-    
-    
 
     function populateDropdown(id, options) {
                 const select = document.getElementById(id);
@@ -481,114 +534,89 @@
     var cat5 = null;
     var cat6 = null;
 
-    // function showOptions(category) {
-    //     console.log(document.getElementById(category + 'Options').classList)
-    //     console.log(document.getElementById(category + 'Options').classList.length)
-        
-    //     if(document.getElementById(category + 'Options').classList.contains("active")){
-    //         console.log("active있음")
-    //         document.querySelectorAll('.list_depth1').forEach(el => el.classList.remove('active'));
-    //         document.getElementById(category + 'Options').classList.remove('active');
-        
-    //     }else{
-    //         console.log("active없음")
-    //         document.querySelectorAll('.list_depth1').forEach(el => el.classList.remove('active'));
-    //         document.getElementById(category + 'Options').classList.add('active');
-    //     }
-    //     console.log(document.getElementById(category + 'Options').classList)
-    //     console.log(document.getElementById(category + 'Options').classList.length)
-    //     console.log(category)
-    //     console.log('aa')
-    // }
-    
-
     function selectOption(category, value) {
         if (category === 'site') {
             var site = value;
-            document.getElementById('cat1Item').classList.remove('item_disable');
+
+            document.getElementById('cat1Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat1Options');
             console.log(data)
             const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === value).map(item => item['중분류']))];
            
             modelOptions.innerHTML = uniqueValues.map(model => 
-                ` <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat1','${model}')"> ${model}</li>`
+                `<li type="button" data-bs-target="#cat2Modal" data-bs-toggle="modal" onclick="selectOption('cat1','${model}')"> ${model}</li>`
             ).join('');
             document.getElementById('site').innerHTML = value;
         } else if (category === 'cat1') {
-     
             var cat1 = value;
-            var site = document.getElementById('site').textContent
+            var site = document.getElementById('site').textContent;
             console.log(site)
             console.log(cat1)
-            document.getElementById('cat2Item').classList.remove('item_disable');
+
+            document.getElementById('cat2Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat2Options');
             console.log(data)
             const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === value).map(item => item['층']))];
             console.log(uniqueValues)
+
             modelOptions.innerHTML = uniqueValues.map(model => 
-                ` <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat2','${model}')"> ${model}</li>`
+                `<li type="button" data-bs-target="#cat3Modal" data-bs-toggle="modal" onclick="selectOption('cat2','${model}')"> ${model}</li>`
             ).join('');
             console.log(document.getElementById(category + 'Options'))
             document.getElementById(category + 'Options').classList.remove('active');
             document.getElementById('cat1').innerHTML = value;
-            console.log("Aa")
         } else if(category==="cat2"){
             var cat2 = value;
             var cat1 = document.getElementById('cat1').textContent;
-            var site = document.getElementById('site').textContent
-            document.getElementById('cat3Item').classList.remove('item_disable');
+            var site = document.getElementById('site').textContent;
+
+            document.getElementById('cat3Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat3Options');
             console.log(data)
             const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === value).map(item => item['구간']))];
+            
             modelOptions.innerHTML = uniqueValues.map(model => 
-               ` <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat3', '${model}')"> ${model}</li>`
+                `<li type="button" data-bs-target="#cat4Modal" data-bs-toggle="modal" onclick="selectOption('cat3', '${model}')"> ${model}</li>`
             ).join('');
             document.getElementById('cat2').innerHTML = value;
-       
-
         }else if(category==="cat3"){
             var cat3 = value;
             var cat2 = document.getElementById('cat2').textContent;
             var cat1 = document.getElementById('cat1').textContent;
-            var site = document.getElementById('site').textContent
-            document.getElementById('cat4Item').classList.remove('item_disable');
+            var site = document.getElementById('site').textContent;
+
+            document.getElementById('cat4Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat4Options');
             const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === value).map(item => item['세부구간']))];
             console.log(uniqueValues.length)            
+            
             modelOptions.innerHTML = uniqueValues.map(model => 
-                ` <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat4', '${model}')"> ${model}</li>`
+                `<li type="button" data-bs-target="#cat5Modal" data-bs-toggle="modal" onclick="selectOption('cat4', '${model}')"> ${model}</li>`
             ).join('');
-       
             document.getElementById('cat3').innerHTML = value;
         }else if(category==="cat4"){
-            var cat4= value;
+            var cat4 = value;
             var cat3 = document.getElementById('cat3').textContent;
             var cat2 = document.getElementById('cat2').textContent;
             var cat1 = document.getElementById('cat1').textContent;
-            var site = document.getElementById('site').textContent
-            document.getElementById('cat5Item').classList.remove('item_disable');
+            var site = document.getElementById('site').textContent;
+
+            document.getElementById('cat5Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat5Options');
             const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === cat3&&item['세부구간'] === value).map(item => item['작업 내용']))];
+
             modelOptions.innerHTML = uniqueValues.map(model => 
-                ` <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('cat5', '${model}')"> ${model}</li>`
+                `<li type="button" data-bs-target="#cat6Modal" data-bs-toggle="modal" onclick="selectOption('cat5', '${model}')"> ${model}</li>`
             ).join('');
             document.getElementById('cat4').innerHTML = value;
-      
-
         }else if(category==="cat5"){
             var cat5= value;
-            document.getElementById('cat6Item').classList.remove('item_disable');
-            
-
+            document.getElementById('cat6Item').classList.remove('item-disable');
+            document.getElementById('cat5').innerHTML = value;
         }
-
-        // Hide the current options after selection
-        
+        // Hide the current options after selection   
     }
 
-    
-
-     
 
     window.onload = function(){
         
@@ -705,29 +733,21 @@
 
 		// 	   });
 
-        
+    
+        // 1. 페이지 로드 시 인증을 위한 함수 호출
    
-
-
-       
-        
-
-
-    // 1. 페이지 로드 시 인증을 위한 함수 호출
-   
-
-       document.getElementById('submit').addEventListener('click', function(event) {
-           createEvent()
-           var task_result = document.getElementById('task-result');
-           const formData = {
-					  numworkers: document.getElementById('numworkers').value,
-					  workersnormal: document.getElementById('workers-normal').value,
-					  workershard: document.getElementById('workers-hard').value,
-					  workersmorning: document.getElementById('workers-morning').value,
-					  taskresult : document.getElementById("task-result").value,
-                      additional: document.getElementById('additional').value,
-					 
-				  };
+        document.getElementById('submit').addEventListener('click', function(event) {
+            createEvent()
+            var task_result = document.getElementById('task-result');
+            const formData = {
+                numworkers: document.getElementById('numworkers').value,
+                workersnormal: document.getElementById('workers-normal').value,
+                workershard: document.getElementById('workers-hard').value,
+                workersmorning: document.getElementById('workers-morning').value,
+                taskresult : document.getElementById("task-result").value,
+                additional: document.getElementById('additional').value,
+                
+            };
         var eventId = 1 + Math.floor(Math.random() * 1000);
         function getCurrentDateTime() {
             const now = new Date();
@@ -830,37 +850,35 @@
 		// 			  });
 		// 	  });
 
-              async function getAccessToken() {
+        async function getAccessToken() {
+        // URL에서 code와 state 파라미터를 추출
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
 
-                
-                // URL에서 code와 state 파라미터를 추출
-                const urlParams = new URLSearchParams(window.location.search);
-                const code = urlParams.get('code');
-                const state = urlParams.get('state');
+            const response = await fetch('/callback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                code: code,
+                grant_type: 'authorization_code',
+                client_id: '8zESjIVD54_8K5PA_dIu',
+                client_secret: 'wyWAH1uLEY'
+            })
+            });
+            
+            // // 토큰 정보 사용 예제
+            // const accessToken = tokenInfo.access_token;
+            alert('Access Token: ' + accessToken);
+            const tokenInfo = await response.json();
+            const accessToken = tokenInfo.access_token;
+            console.log("fetch전")
+            fetchFiles(accessToken);
+        }
 
-                const response = await fetch('/callback', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    code: code,
-                    grant_type: 'authorization_code',
-                    client_id: '8zESjIVD54_8K5PA_dIu',
-                    client_secret: 'wyWAH1uLEY'
-                })
-                });
-                
-                // // 토큰 정보 사용 예제
-                // const accessToken = tokenInfo.access_token;
-                alert('Access Token: ' + accessToken);
-                const tokenInfo = await response.json();
-                const accessToken = tokenInfo.access_token;
-                console.log("fetch전")
-                fetchFiles(accessToken);
-                }
-
-    function formatDateTime(date) {
+        function formatDateTime(date) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
@@ -874,14 +892,14 @@
 
         async function createEvent() {
             const formData = {
-					  numworkers: document.getElementById('numworkers').value,
-					  workersnormal: document.getElementById('workers-normal').value,
-					  workershard: document.getElementById('workers-hard').value,
-					  workersmorning: document.getElementById('workers-morning').value,
-					  taskresult : document.getElementById("task-result").value,
-                      specialnotes: document.getElementById('specialnotes').value,
-					  overtime: document.getElementById('overtime').value
-				  };
+                numworkers: document.getElementById('numworkers').value,
+                workersnormal: document.getElementById('workers-normal').value,
+                workershard: document.getElementById('workers-hard').value,
+                workersmorning: document.getElementById('workers-morning').value,
+                taskresult : document.getElementById("task-result").value,
+                specialnotes: document.getElementById('specialnotes').value,
+                overtime: document.getElementById('overtime').value
+            };
 
             const start = new Date();
             start2 = formatDateTime(start)
@@ -934,12 +952,7 @@
             });
             document.body.appendChild(fileList);
         }
+    };
 
-
-            };
-
-      
-        
-  	
 </script>
 {% endblock %}
