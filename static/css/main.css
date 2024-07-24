@@ -203,7 +203,7 @@ h6 {
 
 .header .branding {
   background-color: color-mix(in srgb, var(--default-color), transparent 95%);
-  min-height: 50px;
+  min-height: 64px;
 }
 
 .header .logo {
@@ -2066,9 +2066,4 @@ select.filter {
 .item_disable .link_item {
   pointer-events: none;
   opacity: 0.5;
-}
-
-/* content */
-.content {
-  margin-top: 104px;
 }
