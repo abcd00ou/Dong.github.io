@@ -1707,6 +1707,10 @@ section,
   /* Add your styles here */
 }
 
+/* navbar custom */
+#navmenu > ul {
+  width: auto;
+}
 
 
 /*  여기서부터 캘린더 */
@@ -1765,6 +1769,7 @@ section,
   margin-bottom: 10px;
 }
 
+/* 캘린더 일정 생성 */
 #contextMenu {
   position: absolute;
   display: none;
@@ -1773,6 +1778,40 @@ section,
 
 #contextMenu .dropdown-menu {
   border: none;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#contextMenu .dropdown-menu .dropdown-menu-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #dddddd;
+}
+
+#contextMenu .dropdown-menu .dropdown-menu-title > i {
+  display: flex;
+  position: absolute;
+  padding: 0 12px;
+  left: 0;
+}
+
+#contextMenu .dropdown-menu > li {
+  padding: 4px 12px;
+}
+
+#contextMenu .dropdown-menu li:hover {
+  /* 안 먹힘 */
+  background-color: #aaaaaa;
+}
+
+#contextMenu .dropdown-menu > li > a {
+  color: #222222;
+}
+
+.fc-event-container .fc-day-grid-event .fc-content {
+  font-size: 12px;
 }
 
 .opacityWeekend {
@@ -1799,6 +1838,57 @@ section,
   content: none !important;
 }
 
+@media screen and (max-width: 576px) {
+  .fc-toolbar.fc-header-toolbar {
+    display: flex;
+    flex-direction: column;
+    padding-top: 16px;
+  }
+  .fc-toolbar.fc-header-toolbar > div {
+    display: flex;
+    justify-content: center;
+  }
+  .fc-button {
+    font-size: 16px !important;
+  }
+  .fc-button.fc-state-default {
+    padding: 8px 16px;
+    height: auto;
+  }
+  
+}
+
+.fc-button.fc-state-default {
+  background-color: #444444;
+  color: white;
+  box-shadow: none;
+  border: none;
+  text-shadow: none;
+  margin-bottom: 8px;
+}
+
+.fc-state-default {
+  background-image: none;
+}
+
+.fc-day-header.fc-widget-header {
+  font-size: 12px;
+}
+
+.fc-day-number {
+  font-size: 12px;
+  color: #222222;
+  margin-right: 4px;
+}
+
+.fc-content-skeleton > table > thead {
+  min-height: 26px;
+  height: 26px;
+}
+.fc-day-grid-container > .fc-day-grid > .fc-row {
+  min-height: 56px;
+}
+
 /* .fc-day-header {
   text-transform: uppercase;
   font-size: 13px;
@@ -1814,6 +1904,49 @@ section,
   color: #505363;
 } */
 
+.panel-heading .panel-title {
+  font-size: 16px;
+  color: #666666;
+  font-weight: bold;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.panel label {
+  padding: 0;
+  color: #222222;
+}
+
+.panel .input-group {
+  margin-bottom: 8px;
+}
+
+.panel .input-group > span {
+  width: 100% !important;
+}
+
+.panel .input-group .select2-container--default.select2-container--focus .select2-selection--multiple {
+  border: 1px solid #aaaaaa;
+}
+
+.panel .input-group .select2 input {
+  padding: 0 8px;
+}
+.select2-container .select2-dropdown .select2-results > ul > li {
+  padding: 8px 12px;
+}
+
+.input-group .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: #444444;
+  color: white;
+}
+.panel .panel-body .col-lg-6 {
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #dddddd;
+}
+
 .fc-center h2 {
   text-transform: uppercase;
   font-size: 18px;
@@ -1823,7 +1956,7 @@ section,
 }
 
 .fc-toolbar.fc-header-toolbar {
-  margin-bottom: 22px;
+  margin-bottom: 16px;
   padding-top: 22px;
 }
 
@@ -1941,7 +2074,7 @@ section,
 }
 
 select.filter {
-  width: 500px !important;
+  width: 100%;
 }
 
 .popover {
@@ -2012,6 +2145,11 @@ select.filter {
   color: #d25565;
 }
 
+#wrapper {
+  margin-bottom: 16px;
+}
+
+
 /*서베이 css*/
 /* 전체 리스트 항목 스타일 */
 /* ul {
@@ -2066,4 +2204,186 @@ select.filter {
 .item_disable .link_item {
   pointer-events: none;
   opacity: 0.5;
+}
+
+
+/* 전체 custom css */
+form {
+  background: #fff;
+  padding: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="number"],
+input[type="text"],
+select,
+textarea {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 12px 24px;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  height: auto;
+}
+
+textarea {
+  resize: none;
+  min-height: 48px;
+}
+
+input[type="submit"] {
+  /* padding: 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease; */
+}
+
+input[type="submit"]:hover {
+  /* background-color: #45a049; */
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  width: 100%;
+}
+
+label {
+  margin-bottom: 5px;
+  color: #777777;
+  font-weight: bold;
+  padding: 0 24px;
+}
+
+.content-title {
+  color: #222222;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.flex-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.flex-container .col-4 {
+  flex: 1;
+  min-width: 150px;
+}
+
+.flex-container .col-4 button {
+  margin-left: 10px;
+  padding: 10px;
+  border: none;
+  background-color: #36c1ae;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.flex-container .col-4 button:hover {
+  background-color: #2a978b;
+}
+.button{
+  /* margin-left: 10px;
+  padding: 10px;
+  border: none;
+  background-color: #36c1ae;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; */
+}
+.item-disable {
+  pointer-events: none;
+}
+.item-disable > * {
+  color: #dddddd;
+  /* background-color: #dddddd; */
+}
+.list_depth1 {
+  display: none;
+  position: fixed;
+  bottom: -100%;
+}
+.list_depth1.active {
+  display: block;
+  bottom: 0;
+}
+.survey_item {
+  border-top: 1px solid #dddddd;
+}
+.survey_item:last-child {
+  border-bottom: 1px solid #dddddd;
+}
+.survey_btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px 24px;
+  text-align: left;
+  border: 0;
+  background-color: white;
+}
+.survey_btn_title {
+  display: flex;
+}
+.survey_btn_title_name {
+  width: 60px;
+  margin-right: 24px;
+  font-weight: bolder;
+}
+.modal-content .modal-header{
+  justify-content: center;
+}
+.modal-icon {
+  display: flex;
+  position: absolute;
+  left: 16px;
+  width: 31px;
+  height: 31px;
+  justify-content: center;
+  align-items: center;
+}
+.modal-body-custom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: auto;
+}
+.modal-body-custom > li, input {
+  width: 100%;
+  padding: 16px 24px;
+  border-bottom: 1px solid #dddddd;
+}
+.btn-add-task-area {
+  margin-bottom: 16px;
+}
+.btn-dark-custom {
+  background-color: #242424;
+  color: white;
+  transition-duration: 0.5s;
+  border: 0;
+  border-radius: 5px;
+  padding: 16px 0;
+}
+.btn-dark-custom:hover {
+  background-color: #333333;
 }

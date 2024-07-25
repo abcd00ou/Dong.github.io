@@ -2,23 +2,39 @@
 
 {% block title %}Calendar{% endblock %}
 
-{% block head %}
-{% endblock%}
-
 {% block content %}
+<head>
+    <link rel="stylesheet" href="static/css/fullcalendar.min.css" />
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href='static/css/select2.min.css' />
+    <link rel="stylesheet" href='static/css/bootstrap-datetimepicker.min.css' />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,600">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="static/css/main.css">
+
+    <!-- Vendor CSS Files -->
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="static/vendor/aos/aos.css" rel="stylesheet">
+    <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+</head>
+
 <div class="container">
 
     <!-- 일자 클릭시 메뉴오픈 -->
     <div id="contextMenu" class="dropdown clearfix">
-        <ul class="dropdown-menu dropNewEvent" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
-            <div class="dropdown-menu-title">
-                <i type="button" class="bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></i>
-                <div>일정 생성</div>
-            </div>
+        <ul class="dropdown-menu dropNewEvent" role="menu" aria-labelledby="dropdownMenu"
+            style="display:block;position:static;margin-bottom:5px;">
             <li><a tabindex="-1" href="#">카테고리1</a></li>
             <li><a tabindex="-1" href="#">카테고리2</a></li>
             <li><a tabindex="-1" href="#">카테고리3</a></li>
             <li><a tabindex="-1" href="#">카테고리4</a></li>
+            <li class="divider"></li>
+            <li><a tabindex="-1" href="#" data-role="close">Close</a></li>
         </ul>
     </div>
 
@@ -31,10 +47,11 @@
 
     <!-- 일정 추가 MODAL -->
     <div class="modal fade" tabindex="-1" role="dialog" id="eventModal">
-        <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <i type="button" class="bi bi-x-lg modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
@@ -116,7 +133,7 @@
     <div class="panel panel-default">
 
         <div class="panel-heading">
-            <div class="panel-title">필터</div>
+            <h3 class="panel-title">필터</h3>
         </div>
 
         <div class="panel-body">
@@ -136,11 +153,16 @@
             <div class="col-lg-6">
                 <label for="calendar_view">등록자별</label>
                 <div class="input-group">
-                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="정연" checked>정연</label>
-                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="다현" checked>다현</label>
-                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="사나" checked>사나</label>
-                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="나연" checked>나연</label>
-                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="지효" checked>지효</label>
+                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="정연"
+                            checked>정연</label>
+                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="다현"
+                            checked>다현</label>
+                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="사나"
+                            checked>사나</label>
+                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="나연"
+                            checked>나연</label>
+                    <label class="checkbox-inline"><input class='filter' type="checkbox" value="지효"
+                            checked>지효</label>
                 </div>
             </div>
 
@@ -156,6 +178,7 @@
 
 {% block script %}
 <script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
 <script src="static/js/moment.min.js"></script>
 <script src="static/js/fullcalendar.min.js"></script>
 <script src="static/js/ko.js"></script>

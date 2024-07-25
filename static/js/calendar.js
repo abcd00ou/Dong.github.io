@@ -43,8 +43,8 @@ var calendar = $('#calendar').fullCalendar({
   eventLongPressDelay       : 0,
   selectLongPressDelay      : 0,  
   header                    : {
-                                left   : 'today, prevYear, nextYear, viewWeekends',
-                                center : 'prev, title, next',
+                                left   : 'prevYear, prev, next, nextYear, today',
+                                center : ' title',
                                 right  : 'month, agendaWeek, agendaDay, listWeek'
                               },
   views                     : {
@@ -75,6 +75,7 @@ var calendar = $('#calendar').fullCalendar({
                                   }
                                 }
                                },
+  columnHeaderFormat        : 'ddd',
 
 
   eventRender: function (event, element, view) {
