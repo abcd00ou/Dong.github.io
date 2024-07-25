@@ -175,5 +175,57 @@
   <!-- Main JS File -->
   <script src="static/js/main.js"></script>
 
+  <script>
+    // 엑셀 만드는 코드 
+    function createExcel(data) {
+           
+
+           const workbook = new ExcelJS.Workbook();
+           const worksheet = workbook.addWorksheet('Sheet1');
+
+           // Adding headers
+           worksheet.addRow(["작 성 일 :", "2024년 07월 26일"]);
+           worksheet.addRow([]);
+           worksheet.addRow(["1. 공정작업내용"]);
+           worksheet.addRow(["일정", "공정", "총원", "장소", "투입", "연장", "작업 내용", "", "", "인원(명)", "사인"]);
+           worksheet.addRow(["", "", "", "", "", "", "# 주간작업", "", "", "", ""]);
+
+           // Parse taskresult and add rows
+           const tasks = data.taskresult.trim().split('\n').map(task => {
+               const parts = task.split('_');
+               const description = parts.slice(0, parts.length - 1).join('_');
+               const workers = parts[parts.length - 1];
+               return [description, workers];
+           });
+
+           tasks.forEach(([description, workers]) => {
+               worksheet.addRow(["", "", "", "", "", "", description, "", "", workers, ""]);
+           });
+
+           // Adding workers
+           const workersNormal = data.workersnormal.split(',').map(worker => worker.trim()).filter(worker => worker);
+           workersNormal.forEach(worker => {
+               worksheet.addRow([worker, "1", "", "", "", "", "", "", "", "", ""]);
+           });
+
+           worksheet.addRow(["합계", data.numworkers, "", "", "", "", "", "", "", "", ""]);
+           worksheet.addRow(["# 연장작업", "", "", "", "", "", "", "", "", "인원(명)", "사인"]);
+           worksheet.addRow(["합계", "0", "", "", "", "", "", "", "", "", ""]);
+           worksheet.addRow([]);
+           worksheet.addRow(["# 특이사항", "", "", "", "", "", "", "", "", "", ""]);
+
+           // Creating the Excel file and prompting download
+           workbook.xlsx.writeBuffer().then(buffer => {
+               const blob = new Blob([buffer], { type: "application/octet-stream" });
+               const link = document.createElement("a");
+               link.href = URL.createObjectURL(blob);
+               link.download = "output.xlsx";
+               link.click();
+           });
+       }
+
+
+  </script>
+
   {% block script %}{% endblock %}
 </body>

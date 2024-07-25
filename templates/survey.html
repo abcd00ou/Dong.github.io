@@ -3,7 +3,12 @@
 
 {% block head %}
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></scriptsrc>></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+<script src="static/js/moment.min.js"></script>
+<script src="static/js/fullcalendar.min.js"></script>
+<script src="static/js/calendar.js"></script>
+<script src="static/js/addEvent.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.min.js"></script>
 
 <script type="text/javascript">
     (function() {
@@ -526,29 +531,59 @@
 
 			   });
 
-        // document.getElementById('add-task').addEventListener('click', function(event) {
-		// 		  event.preventDefault();
-		// 		   var category = document.getElementById('category').value; 
-        //            var floor = document.getElementById('floor').value; 
-        //            var section = document.getElementById('section').value; 
-        //            var subsection = document.getElementById('subsection').value; 
-        //            var task = document.getElementById('task').value; 
-        //            var effort = document.getElementById('effort').value; 
-                   
-		// 		   var task_result = document.getElementById('task-result');
 
-		// 		   task_result.textContent += category+"_"+floor+"_"+section+"_"+subsection+"_"+task+"_"+effort+"\n"; 
-        //            document.getElementById('category').value = "";
-        //            document.getElementById('floor').value = "";
-        //            document.getElementById('section').value = "";
-        //            document.getElementById('subsection').value = "";
-        //            document.getElementById('task').value = "";
-        //            document.getElementById('effort').value = "";
-                   
+        // 엑셀 만드는 코드 
 
-		// 	   });
+      
 
-    
+        function createExcel(data) {
+           
+
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Sheet1');
+
+            // Adding headers
+            worksheet.addRow(["작 성 일 :", "2024년 07월 26일"]);
+            worksheet.addRow([]);
+            worksheet.addRow(["1. 공정작업내용"]);
+            worksheet.addRow(["일정", "공정", "총원", "장소", "투입", "연장", "작업 내용", "", "", "인원(명)", "사인"]);
+            worksheet.addRow(["", "", "", "", "", "", "# 주간작업", "", "", "", ""]);
+
+            // Parse taskresult and add rows
+            const tasks = data.taskresult.trim().split('\n').map(task => {
+                const parts = task.split('_');
+                const description = parts.slice(0, parts.length - 1).join('_');
+                const workers = parts[parts.length - 1];
+                return [description, workers];
+            });
+
+            tasks.forEach(([description, workers]) => {
+                worksheet.addRow(["", "", "", "", "", "", description, "", "", workers, ""]);
+            });
+
+            // Adding workers
+            const workersNormal = data.workersnormal.split(',').map(worker => worker.trim()).filter(worker => worker);
+            workersNormal.forEach(worker => {
+                worksheet.addRow([worker, "1", "", "", "", "", "", "", "", "", ""]);
+            });
+
+            worksheet.addRow(["합계", data.numworkers, "", "", "", "", "", "", "", "", ""]);
+            worksheet.addRow(["# 연장작업", "", "", "", "", "", "", "", "", "인원(명)", "사인"]);
+            worksheet.addRow(["합계", "0", "", "", "", "", "", "", "", "", ""]);
+            worksheet.addRow([]);
+            worksheet.addRow(["# 특이사항", "", "", "", "", "", "", "", "", "", ""]);
+
+            // Creating the Excel file and prompting download
+            workbook.xlsx.writeBuffer().then(buffer => {
+                const blob = new Blob([buffer], { type: "application/octet-stream" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "output.xlsx";
+                link.click();
+            });
+        }
+
+        
         // 1. 페이지 로드 시 인증을 위한 함수 호출
    
         document.getElementById('submit').addEventListener('click', function(event) {
@@ -588,7 +623,7 @@
             allDay: false
         };
 
-
+        createExcel(formData);
         $("#calendar").fullCalendar('renderEvent', eventData, true);
         eventModal.find('input, textarea').val('');
         editAllDay.prop('checked', false);
@@ -630,40 +665,6 @@
 
         })
 
-		//  document.getElementById('survey-form').addEventListener('submit', function(event) {
-                   
-		// 			 // Submit 시점에 required 속성 추가
-		// 		  document.getElementById('numworkers').required = true;
-		// 		  document.getElementById('specialnotes').required = true;
-		// 		  document.getElementById('overtime').required = true;
-
-		// 		  if (!document.getElementById('survey-form').checkValidity()) {
-		// 			  // required validation failed
-		// 			  event.preventDefault();
-		// 			  alert('Please fill all required fields.');
-		// 			  return;
-		// 		  }
-
-
-		// 		  event.preventDefault();
-
-		// 		  const formData = {
-		// 			  numworkers: document.getElementById('numworkers').value,
-		// 			  workersnormal: document.getElementById('workers-normal').value,
-		// 			  workershard: document.getElementById('workers-hard').value,
-		// 			  workersmorning: document.getElementById('workers-morning').value,
-		// 			  taskresult : document.getElementById("task-result").value,
-        //               specialnotes: document.getElementById('specialnotes').value,
-		// 			  overtime: document.getElementById('overtime').value
-		// 		  };
-
-		// 		  emailjs.send('service_odcgc2y', 'template_7pojdeh', formData)
-		// 			  .then(function(response) {
-		// 				  alert('Email sent successfully!');
-		// 			  }, function(error) {
-		// 				  alert('Failed to send email. Error: ' + JSON.stringify(error));
-		// 			  });
-		// 	  });
 
         async function getAccessToken() {
         // URL에서 code와 state 파라미터를 추출
@@ -770,4 +771,6 @@
     };
 
 </script>
+
+
 {% endblock %}
