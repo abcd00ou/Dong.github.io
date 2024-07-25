@@ -106,7 +106,7 @@
   padding-left: 30px;
   cursor: pointer;
   font-size: 15px;
-  width: 330px;
+  width: 200px;
   display: inline-block;
 }
 
@@ -114,7 +114,13 @@
   text-decoration: underline;
 }
 
-#bodyContent > div > #lbl3,
+#bodyContent > div > #lbl3 {
+  padding-left: 30px;
+  cursor: pointer;
+  font-size: 15px;
+  width: 100px;
+  display: inline-block;
+}
 #bodyContent > div > #lbl4,
 #bodyContent > div > #lbl5,
 #bodyContent > div > #lbl6,
