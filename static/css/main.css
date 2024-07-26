@@ -1947,6 +1947,54 @@ section,
   border-bottom: 1px solid #dddddd;
 }
 
+/* 일정 추가 modal custom */
+.modal-content .modal-body {
+  padding: 0;
+}
+
+.modal-body .row {
+  padding: 12px 20px;
+  margin: 0;
+  height: 66px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.modal-body .row:last-child {
+  border-bottom: 0;
+}
+
+.modal-body .row .col-xs-12 {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0;
+}
+
+.modal-body .row:last-child .col-xs-12 {
+  align-items: baseline;
+}
+
+.modal-body .row .col-xs-12 .col-xs-4 {
+  padding: 0;
+  margin: 0;
+  margin-right: 8px;
+  color: #222222;
+  min-width: 60px;
+}
+
+.modal-body .row .col-xs-12 .allDayNewEvent {
+  height: 20px;
+}
+
+.modal-body .row .col-xs-12 .inputModal {
+  width: 100%;
+  padding: 8px 16px;
+  margin-bottom: 0;
+}
+
+/* 일정 추가 modal custom 끝 */
+
 .fc-center h2 {
   text-transform: uppercase;
   font-size: 18px;
