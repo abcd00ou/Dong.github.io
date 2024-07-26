@@ -207,6 +207,9 @@
   border: 1px solid lightslategray;
 } */
 
+#bodyContent {
+  overflow-x: auto;
+}
 #bgtables {
   margin-bottom: 8px;
 }
