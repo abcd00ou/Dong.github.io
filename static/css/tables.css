@@ -1,8 +1,9 @@
-* {
+/* * {
   font-family: PremierSans-Regular, Arial, Helvetica Neue, Helvetica, sans-serif;
   margin: 0%;
   padding: 0%;
 }
+
 #bgtables {
   margin: auto;
   line-height: 35px;
@@ -12,8 +13,9 @@
   background-position: 0 100%;
   background-repeat: no-repeat;
   background-size: 100% 250px;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
+
 #bgtables > h1 {
   font-size: 65px;
   color: white;
@@ -61,6 +63,9 @@
   font-size: 15px;
   color: lightslategrey;
   padding-top: 15px;
+  margin: 0 20px;
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
 #scores > label {
@@ -200,4 +205,26 @@
   width: 20px;
   border-radius: 25px;
   border: 1px solid lightslategray;
+} */
+
+#bgtables {
+  margin-bottom: 8px;
+}
+
+#scores {
+  font-weight: bold;
+  font-size: 15px;
+  color: #222222;
+  margin: 0 20px;
+  overflow-x: scroll;
+  white-space: nowrap;
+  text-align: center;
+}
+
+#scores > thead > tr > th {
+  padding: 12px 24px;
+}
+
+#scores > tbody > tr > td {
+  padding: 12px 24px;
 }
