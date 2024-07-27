@@ -177,5 +177,17 @@
         "backgroundColor": "#D25565",
         "textColor": "#ffffff",
         "allDay": false
+    },
+    {
+        "description": "{\"numworkers\":\"3\",\"workersnormal\":\"\uae40\ubbfc\uc218, \ucd5c\ubbfc\uc218, \uc624\ubbfc\uc218 ,\",\"workershard\":\"\",\"workersmorning\":\"\",\"taskresult\":\"\ub9c8\uace1_\ub3c4\uae09_1_C_\uae30\ub465_\uac70\ud478\uc9d1 \uc124\uce58 \ubc0f \ubc18\ub3c4 \uc791\uc5c5_3\\n\",\"additional\":\"\ud2b9\uc774\uc0ac\ud56d: \ud2b9\uc774\uc0ac\ud56d \uc5c6\uc74c\\n\uc5f0\uc7a5\uadfc\ubb34: \"}\n\uc218\uc815",
+        "type": "\uce74\ud14c\uace0\ub9ac1",
+        "username": "\ub098\uc5f0",
+        "_id": "482",
+        "allDay": false,
+        "title": "\ub9c8\uace1",
+        "backgroundColor": "#D25565",
+        "textColor": "#ffffff",
+        "start": "2024-07-26 18:59",
+        "end": "2024-07-26 18:59"
     }
 ]
