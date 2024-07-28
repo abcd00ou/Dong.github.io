@@ -531,13 +531,6 @@
 
 			   });
 
-
-        
-
-      
-
-        
-
         
         // 1. 페이지 로드 시 인증을 위한 함수 호출
    
@@ -564,13 +557,15 @@
 
             return `${year}-${month}-${day} ${hours}:${minutes}`;
         }
-
+        var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n작업인원 : ${ document.getElementById('numworkers').value} \n작업자 명 :${document.getElementById('workers-normal').value}\n연장 근무자명 : ${document.getElementById('workers-hard').value}\n오전 근무자명 : ${document.getElementById('workers-morning').value}\n작업 내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n
+                        
+                        `
         var eventData = {
-            _id: eventId,
+            _id: Number(eventId),
             title: document.getElementById('site').textContent,
             start: getCurrentDateTime(),
             end: getCurrentDateTime(),
-            description: JSON.stringify(formData),
+            description: formtext,
             type: '카테고리1',
             username: '나연',
             backgroundColor: '#D25565',

@@ -144,9 +144,9 @@ $('#deleteEvent').on('click', function () {
             for(let i = 0; i < data.length; i++) {
                 console.log(data[i]._id,this_id)
             
-                if (data[i]._id === this_id) {
+                if (data[i]._id === Number(this_id)) {
                     console.log("여기")
-                    data = data.filter(item => item._id !== this_id);
+                    data = data.filter(item => item._id !== Number(this_id));
                 }
             }
             console.log(data)

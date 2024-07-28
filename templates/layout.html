@@ -11,7 +11,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- Favicons -->
-  <link href="static/img/favicon.png" rel="icon">
+  <link href="static/img/logo1.png" rel="icon">
   <link href="static/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Fonts -->
@@ -30,6 +30,11 @@
   <link href="static/vendor/aos/aos.css" rel="stylesheet">
   <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  
+  
+  <!-- 구글 애드센스-->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5327919508848179"
+  crossorigin="anonymous"></script> 
 
   <!-- Main CSS File -->
   <link href="static/css/main.css" rel="stylesheet">
@@ -50,35 +55,19 @@
 
       <div class="container position-relative d-flex align-items-center justify-content-between">
         <a href="{{ url_for('main') }}" class="logo d-flex align-items-center">
-          <img src="static/img/seowoologo.png" alt=""> 
+          <!-- <img src="static/img/seowoologo.png" style = "width:100%;height: 100%;margin: 0;">  -->
+          <H1>(주) 서우 에이치알</H1>
+          
         </a>
 
         <nav id="navmenu" class="navmenu">
           <ul>
             <li><a href="{{url_for('main')}}" id="nav_main">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="{{url_for('survey')}}" id="nav_survey">Survey</a></li>
-            <li><a href="{{url_for('calendar')}}" id="nav_calendar">Calendar</a></li>
-            <li><a href="{{url_for('productivity')}}" id="nav_productivity">Productivity</a></li>
-            <li><a href="#team">Team</a></li>
-            <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">Dropdown 1</a></li>
-                <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <li><a href="#">Deep Dropdown 1</a></li>
-                    <li><a href="#">Deep Dropdown 2</a></li>
-                    <li><a href="#">Deep Dropdown 3</a></li>
-                    <li><a href="#">Deep Dropdown 4</a></li>
-                    <li><a href="#">Deep Dropdown 5</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Dropdown 2</a></li>
-                <li><a href="#">Dropdown 3</a></li>
-                <li><a href="#">Dropdown 4</a></li>
-              </ul>
-            </li>
+            <li><a href="#about">회사소개</a></li>
+            <li><a href="#services">서비스</a></li>
+            <li><a href="{{url_for('survey')}}" id="nav_survey">작업일지</a></li>
+            <li><a href="{{url_for('calendar')}}" id="nav_calendar">일정관리</a></li>
+            <li><a href="{{url_for('productivity')}}" id="nav_productivity">생산성 조회</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
