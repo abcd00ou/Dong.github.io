@@ -47,7 +47,6 @@ token_url = 'https://auth.worksmobile.com/oauth2/v2.0/token'
 userinfo_url = 'https://apis.worksmobile.com/r/api/user/v1/userinfo'
 
 
-print(redirect_uri)
 # @app.route('/', methods=['GET'])
 # def index():
 #     if request.method=='GET':
@@ -68,6 +67,19 @@ print(redirect_uri)
 def idx():
     
     print("main gogo")
+    ## 원래는 로그인할때 해야함 
+    insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+    ## ID랑 비번 확인용 
+    ## id = request.form['ID']
+    ## pw = request.form['PW']
+    id = 'Login0'
+    pw='aaa'
+    filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
+    print(filterd_db)
+    session['NAME'] = filterd_db['성명'][0]
+    session['ADMIN'] = filterd_db['ADMIN'][0]
+
+    print(session['NAME'],session['ADMIN'])
     return render_template("main.html")
 
 @app.route('/main', methods=['GET','POST'])
@@ -77,6 +89,33 @@ def main():
 
     print("main gogo")
     return render_template("main.html")
+
+@app.route('/employee', methods=['GET','POST'])
+@nocache
+def employee():
+    
+    print("employee gogo") 
+    
+    return render_template("main.html")
+
+@app.route('/login', methods=['GET','POST'])
+@nocache
+def login():
+    if(request.method=='POST'):
+        ##로그인 성공
+        # ID랑 비번으로 계정 매핑  
+        insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+        print(insadb)
+        ## ID랑 비번 확인용 
+        ## id = request.form['ID']
+        ## pw = request.form['PW']
+        id = 'Login0'
+        pw='aaa'
+        filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
+        print(filterd_db)
+        session['NAME'] = filterd_db['성명'][0]
+        session['ADMIN'] = filterd_db['ADMIN'][0]
+        
 
 @app.route('/survey', methods=['GET'])
 @nocache
@@ -88,7 +127,14 @@ def survey():
 @app.route('/calendar', methods=['GET'])
 @nocache
 def calendar():
-    return render_template('calendar.html')
+
+    if session['ADMIN']=='Y':
+        name = session['NAME']
+    else:
+        name = session['NAME']
+    print(name)
+
+    return render_template('calendar.html',name = name)
 
 
 @app.route('/calendar_save', methods=['POST'])
@@ -111,6 +157,8 @@ def calendar_remove():
     data = request.get_json()['data']
     file_path = './static/data/calendar.json'
     data = json.loads(data)
+    
+
     with open(file_path, 'w') as outfile:
       json.dump(data, outfile, indent=4)
     

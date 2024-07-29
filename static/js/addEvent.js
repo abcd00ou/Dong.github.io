@@ -11,6 +11,8 @@ var editEnd = $('#edit-end');
 var editType = $('#edit-type');
 var editColor = $('#edit-color');
 var editDesc = $('#edit-desc');
+var editID = $('#edit-name');
+console.log(editID)
 
 var addBtnContainer = $('.modalBtnContainer-addEvent');
 var modifyBtnContainer = $('.modalBtnContainer-modifyEvent');
@@ -29,6 +31,8 @@ var newEvent = function (start, end, eventType) {
     editStart.val(start);
     editEnd.val(end);
     editDesc.val('');
+    console.log(editID.val())
+
     
     addBtnContainer.show();
     modifyBtnContainer.hide();
@@ -49,7 +53,7 @@ var newEvent = function (start, end, eventType) {
             end: editEnd.val(),
             description: editDesc.val(),
             type: editType.val(),
-            username: '사나',
+            username: editID.val(),
             backgroundColor: editColor.val(),
             textColor: '#ffffff',
             allDay: false
