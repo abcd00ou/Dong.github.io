@@ -16,13 +16,12 @@ Example of Continuous Integration with Flask, Coveralls and Travis CI
 
 ### 개발환경 갖추기
 
-먼저 virtualenv를 사용하여 개발환경을 갖추고, Flask와 필요한 라이브러리들을 설치합니다.
+먼저 virtualenv를 사용하여 개발환경을 갖추고, requirements의 라이브러리들을 설치합니다.
 
 ```shell
 $ virtualenv env
 $ source env/bin/activate
-(env) $ pip install Flask
-(env) $ pip install Flask-WTF
+(env) $ pip install -r requirements.txt
 ```
 
 맨 밑의 Flask-WTF 패키지 같은 경우는 사용하지 않아도 상관없습니다. 폼을 조금 더 잘 관리하도록 도와주는 패키지입니다.
