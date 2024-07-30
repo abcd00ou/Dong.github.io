@@ -226,28 +226,6 @@
         "allDay": false
     },
     {
-        "_id": 620,
-        "title": "123",
-        "start": "2024-07-02 20:35",
-        "end": "2024-07-02 21:35",
-        "description": "123",
-        "type": "\uce74\ud14c\uace0\ub9ac1",
-        "backgroundColor": "#D25565",
-        "textColor": "#ffffff",
-        "allDay": false
-    },
-    {
-        "_id": 978,
-        "title": "123",
-        "start": "2024-07-04 20:36",
-        "end": "2024-07-04 21:36",
-        "description": "123",
-        "type": "\uce74\ud14c\uace0\ub9ac1",
-        "backgroundColor": "#D25565",
-        "textColor": "#ffffff",
-        "allDay": false
-    },
-    {
         "_id": 687,
         "title": "14141",
         "start": "2024-07-05 20:37",

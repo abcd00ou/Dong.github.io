@@ -14,9 +14,6 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 세션 관리를 위해 필요한 키 설정
 
 
-
-
-
 CORS(app)
 app.config['COMPRESS_LEVEL'] = 4 #압축레벨 설정 
 Compress(app)
@@ -130,11 +127,13 @@ def calendar():
 
     if session['ADMIN']=='Y':
         name = session['NAME']
+        admin = 'Y'
     else:
         name = session['NAME']
+        admin='N'
     print(name)
 
-    return render_template('calendar.html',name = name)
+    return render_template('calendar.html',name = name,admin=admin)
 
 
 @app.route('/calendar_save', methods=['POST'])

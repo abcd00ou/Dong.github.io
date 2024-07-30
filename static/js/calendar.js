@@ -128,6 +128,7 @@ var calendar = $('#calendar').fullCalendar({
           }
           return array;
         });
+        console.log("fixedDate",fixedDate)
         callback(fixedDate);
       }
     });
@@ -188,6 +189,7 @@ var calendar = $('#calendar').fullCalendar({
         //...
       },
       success: function (response) {
+        console.log(response)
         alert('수정: ' + newDates.startDate + ' ~ ' + newDates.endDate);
       }
     });
@@ -261,7 +263,7 @@ var calendar = $('#calendar').fullCalendar({
 function getDisplayEventDate(event) {
 
   var displayEventDate;
-
+  
   if (event.allDay == false) {
     var startTimeEventInfo = moment(event.start).format('HH:mm');
     var endTimeEventInfo = moment(event.end).format('HH:mm');
@@ -276,13 +278,19 @@ function getDisplayEventDate(event) {
 function filtering(event) {
   var show_username = true;
   var show_type = true;
-
+  var admin_name = ['김서준','이동성'];
   var username = $('input:checkbox.filter:checked').map(function () {
     return $(this).val();
   }).get();
   var types = $('#type_filter').val();
-
-  show_username = username.indexOf(event.username) >= 0;
+  console.log(username)
+  if(admin_name.includes(username[0])){
+    console.log("여기아냐?")
+    show_username = true;
+  }else{
+    show_username = username.indexOf(event.username) >= 0;
+  }
+  
 
   if (types && types.length > 0) {
     if (types[0] == "all") {
@@ -291,7 +299,7 @@ function filtering(event) {
       show_type = types.indexOf(event.type) >= 0;
     }
   }
-
+  console.log("show_username",show_username,show_type)
   return show_username && show_type;
 }
 
