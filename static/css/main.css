@@ -2436,3 +2436,11 @@ label {
 .btn-dark-custom:hover {
   background-color: #333333;
 }
+
+#effort {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  border: 0;
+}

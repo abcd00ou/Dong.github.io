@@ -163,24 +163,13 @@
 
     <li id="cat6Item" class="item-disable survey_item">
         <!-- 공수 선택 -->
-        <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat6Modal">
+        <div class="survey_btn">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">공수</div>
-                <div class="survey_btn_title_data" id="cat6"></div>
-            </div>
-            <i class="bi bi-chevron-right"></i>
-        </button>
-
-        <div class="modal fade" id="cat6Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">공수</h1>
-                    </div>
-                    <ul class="modal-body-custom" id="cat6Options">
-                        <input type="number" id="effort" name="effort">                
-                    </ul>
+                <div class="survey_btn_title_data" id="cat6">
+                    <i class="bi bi-dash-lg" onclick="onEffortClicked(-0.1)"></i>
+                    <input type="number" id="effort" name="effort">
+                    <i class="bi bi-plus-lg" onclick="onEffortClicked(0.1)"></i>
                 </div>
             </div>
         </div>
@@ -426,15 +415,21 @@
             const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === cat3&&item['세부구간'] === value).map(item => item['작업 내용']))];
 
             modelOptions.innerHTML = uniqueValues.map(model => 
-                `<li type="button" data-bs-target="#cat6Modal" data-bs-toggle="modal" onclick="selectOption('cat5', '${model}')"> ${model}</li>`
+                `<li type="button" data-bs-dismiss="modal" onclick="selectOption('cat5', '${model}')"> ${model}</li>`
             ).join('');
             document.getElementById('cat4').innerHTML = value;
         }else if(category==="cat5"){
             var cat5= value;
+            document.getElementById('effort').focus();
             document.getElementById('cat6Item').classList.remove('item-disable');
             document.getElementById('cat5').innerHTML = value;
         }
         // Hide the current options after selection   
+    }
+
+    function onEffortClicked(num) {
+        const effortElement = document.getElementById('effort');
+        effortElement.value = (Number(effortElement.value) + num).toFixed(1);
     }
 
 
