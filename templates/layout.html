@@ -49,8 +49,8 @@
 
 <body class="index-page">
 
+  {% block header %}
   <header id="header" class="header fixed-top">
-
     <div class="branding d-flex align-items-center">
 
       <div class="container position-relative d-flex align-items-center justify-content-between">
@@ -65,23 +65,22 @@
             <li><a href="{{url_for('main')}}" id="nav_main">Home</a></li>
             <li><a href="#about">회사소개</a></li>
             <li><a href="#services">서비스</a></li>
-            <li><a href="{{url_for('survey')}}" id="nav_survey">작업일지</a></li>
-            <li><a href="{{url_for('calendar')}}" id="nav_calendar">일정관리</a></li>
-            <li><a href="{{url_for('productivity')}}" id="nav_productivity">생산성 조회</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li><a href="{{url_for('backoffice')}}">백오피스</a></li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
       </div>
 
     </div>
-
   </header>
+  {% endblock %}
 
   <div class="content">
     {% block content %}{% endblock %}
   </div>
   
+  {% block footer %}
   <footer id="footer" class="footer position-relative dark-background">
     <div class="container footer-top">
       <div class="row gy-4">
@@ -145,6 +144,7 @@
       </div>
     </div>
   </footer>
+  {% endblock %}
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

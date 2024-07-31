@@ -286,8 +286,11 @@ def create_event():
     else:
         print(response.text)
         return f"Failed to create event: {response.text}"
-    
-    
 
+@app.route('/backoffice', methods=['GET'])
+@nocache
+def backoffice():
+    return render_template("survey.html")
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080,debug=True)

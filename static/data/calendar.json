@@ -248,5 +248,17 @@
         "backgroundColor": "#D25565",
         "textColor": "#ffffff",
         "allDay": false
+    },
+    {
+        "_id": 923,
+        "title": "\ub2f9\uc9c4",
+        "start": "2024-07-31 15:58",
+        "end": "2024-07-31 15:58",
+        "description": "\uc791\uc5c5\uc7a5 : \ub2f9\uc9c4 \n\uc791\uc5c5\uc778\uc6d0 :  \n\uc791\uc5c5\uc790 \uba85 :\n\uc5f0\uc7a5 \uadfc\ubb34\uc790\uba85 : \n\uc624\uc804 \uadfc\ubb34\uc790\uba85 : \n\uc791\uc5c5 \ub0b4\uc6a9 : \ub2f9\uc9c4_\ub3c4\uae09_1_C_\uae30\ub465_\uac70\ud478\uc9d1 \uc124\uce58 \ubc0f \ubc18\ub3c4 \uc791\uc5c5_33\n\n\ud2b9\uc774\uc0ac\ud56d : \n\n                        \n                        ",
+        "type": "\uce74\ud14c\uace0\ub9ac1",
+        "username": "\ub098\uc5f0",
+        "backgroundColor": "#D25565",
+        "textColor": "#ffffff",
+        "allDay": false
     }
 ]
