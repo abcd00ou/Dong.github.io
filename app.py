@@ -290,7 +290,12 @@ def create_event():
 @app.route('/backoffice', methods=['GET'])
 @nocache
 def backoffice():
-    return render_template("survey.html")
+    return render_template("backoffice-main.html")
     
+@app.route('/register', methods=['GET'])
+@nocache
+def register():
+    return render_template("register.html")
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080,debug=True)
