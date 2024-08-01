@@ -292,10 +292,10 @@ def create_event():
 def backoffice():
     return render_template("backoffice-main.html")
     
-@app.route('/register', methods=['GET'])
+@app.route('/signup', methods=['GET'])
 @nocache
-def register():
-    return render_template("register.html")
+def signup():
+    return render_template("signup.html")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080,debug=True)

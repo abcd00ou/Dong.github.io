@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block title %}회원가입{% endblock %}
+
+{% block head %}
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    form .custom-form-item {
+        display: flex;
+        flex-direction: column;
+        padding: 0 20px;
+        margin-bottom: 16px;
+    }
+    form .custom-form-item > label,
+    form .custom-form-item > div,
+    form .custom-form-item > input {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        padding: 0;
+        color: #777777;
+    } 
+    #custom-radio-nationality > input {
+        width: 20px;
+        height: 20px;
+    }
+    #custom-radio-nationality > label {
+        margin: 0;
+        margin-right: 16px;
+        padding: 0 8px;
+        color: #222222;
+    }
+    .custom-form-item .form-control {
+        padding: 10px 16px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+    <h1 class="content-title">회원가입</h1>
+</div>
+<div>
+    <form>
+        <div class="custom-form-item">
+            <div id="custom-radio-nationality">
+                <input type="radio" name="nationality" id="radioNationality1" checked>
+                <label for="radioNationality1">내국인</label>
+                <input type="radio" name="nationality" id="radioNationality2">
+                <label for="radioNationality2">외국인</label>
+            </div>
+        </div>
+        <div class="custom-form-item">
+            <label for="identify" class="form-label">아이디</label>
+            <input type="text" class="form-control" id="identify">
+        </div>
+        <div class="custom-form-item">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" class="form-control" id="password">
+        </div>
+        <div class="custom-form-item">
+            <label for="passwordCheck" class="form-label">비밀번호 확인</label>
+            <input type="password" class="form-control" id="passwordCheck">
+        </div>
+        <div class="custom-form-item">
+            <label for="name" class="form-label">이름</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div class="custom-form-item">
+            <label for="contact" class="form-label">전화번호</label>
+            <input type="text" class="form-control" id="contact">
+        </div>
+        <div class="custom-form-item">
+            <label for="contact" class="form-label">국적</label>
+            <input type="text" class="form-control" id="contact">
+        </div>
+        <div class="custom-form-item">
+            <label for="contact" class="form-label">주민등록번호 / 여권번호</label>
+            <input type="text" class="form-control" id="contact">
+        </div>
+        <div class="custom-form-item">
+            <label for="contact" class="form-label">비자</label>
+            <input type="text" class="form-control" id="contact">
+        </div>
+        <div class="custom-form-item">
+            <label for="contact" class="form-label">주소</label>
+            <input type="text" class="form-control" id="contact">
+        </div>
+        <div class="custom-form-item">
+            <label for="contact" class="form-label">거푸집자격증 (선택)</label>
+            <input type="text" class="form-control" id="contact">
+        </div>
+        <div class="custom-form-item">
+            <label for="contact" class="form-label">고혈압 증상 여부 (선택)</label>
+            <input type="text" class="form-control" id="contact">
+        </div>
+        <button type="submit" class="btn btn-dark-custom">회원가입</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
