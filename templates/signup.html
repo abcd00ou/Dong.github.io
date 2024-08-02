@@ -11,18 +11,23 @@
     form .custom-form-item {
         display: flex;
         flex-direction: column;
-        padding: 0 20px;
+        padding: 0 24px;
         margin-bottom: 16px;
     }
     form .custom-form-item > label,
     form .custom-form-item > div,
-    form .custom-form-item > input {
+    form .custom-form-item > input,
+    form .custom-form-item > select {
         display: flex;
         align-items: center;
         margin-bottom: 8px;
         padding: 0;
         color: #777777;
     } 
+    form .custom-form-item > input,
+    form .custom-form-item > select {
+        border: 1px solid #cccccc;
+    }
     form .custom-form-item .invalid-feedback {
         display: none;
         width: 100%;
@@ -245,6 +250,10 @@ const addressValidation = () => {
     radioForeinger.addEventListener('change', (e) => {
         nationality.disabled = false;
     });
+
+    // 국적
+    nationality.disabled = true;
+    nationality.value = 'Korea, Republic of';
 
     // focus시 is-invalid 삭제
     const allInput = document.querySelectorAll('.needs-validation input');
