@@ -295,7 +295,11 @@ def backoffice():
 @app.route('/signup', methods=['GET'])
 @nocache
 def signup():
-    return render_template("signup.html")
+    file_path = './static/data/countries.json'
+    with open(file_path, 'r') as f:
+      countries = json.load(f)
+      f.close()
+    return render_template("signup.html", countries=countries['countries'])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080,debug=True)

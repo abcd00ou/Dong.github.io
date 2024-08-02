@@ -23,6 +23,15 @@
         padding: 0;
         color: #777777;
     } 
+    form .custom-form-item .invalid-feedback {
+        display: none;
+        width: 100%;
+        font-size: .875em;
+        color: var(--bs-form-invalid-color);
+    }
+    form .custom-form-item .is-invalid~.invalid-feedback {
+        display: block;
+    }
     #custom-radio-nationality > input {
         width: 20px;
         height: 20px;
@@ -44,7 +53,7 @@
     <h1 class="content-title">회원가입</h1>
 </div>
 <div>
-    <form>
+    <form class="needs-validation" id="signup" novalidate>
         <div class="custom-form-item">
             <div id="custom-radio-nationality">
                 <input type="radio" name="radioNationality" id="radioNationality1" checked>
@@ -56,6 +65,9 @@
         <div class="custom-form-item">
             <label for="identify" class="form-label">아이디</label>
             <input type="text" class="form-control" id="identify" required>
+            <div class="invalid-feedback">
+                내국인의 경우 한글만 입력해주세요.
+            </div>
         </div>
         <div class="custom-form-item">
             <label for="password" class="form-label">비밀번호</label>
@@ -64,6 +76,9 @@
         <div class="custom-form-item">
             <label for="passwordCheck" class="form-label">비밀번호 확인</label>
             <input type="password" class="form-control" id="passwordCheck" required>
+            <div class="invalid-feedback">
+                비밀번호를 확인해 주세요.
+            </div>
         </div>
         <div class="custom-form-item">
             <label for="name" class="form-label">이름</label>
@@ -71,11 +86,16 @@
         </div>
         <div class="custom-form-item">
             <label for="contact" class="form-label">전화번호</label>
-            <input type="text" class="form-control" id="contact">
+            <input type="text" class="form-control" id="contact" required>
         </div>
         <div class="custom-form-item">
             <label for="nationality" class="form-label">국적</label>
-            <input type="text" class="form-control" id="nationality" required>
+            <select id="nationality" class="form-control" required>
+            {% for contry in countries %}
+                <option value="{{ contry }}">{{ contry }}</option>
+            {% endfor %}
+            </select>
+            <!-- <input type="text" class="form-control" id="nationality" required> -->
         </div>
         <div class="custom-form-item">
             <label for="credential" class="form-label">주민등록번호 / 여권번호</label>
@@ -83,7 +103,7 @@
         </div>
         <div class="custom-form-item">
             <label for="visa" class="form-label">비자</label>
-            <input type="text" class="form-control" id="visa">
+            <input type="text" class="form-control" id="visa" required>
         </div>
         <div class="custom-form-item">
             <label for="address" class="form-label">주소</label>
@@ -103,4 +123,175 @@
 {% endblock %}
 
 {% block script %}
+<script>
+
+
+const identifyValidation = () => {
+    // 아이디 검증
+    // 빈칸 확인
+    const identify = document.querySelector('#identify');    
+    if (!identify.value) {
+        identify.classList.add('is-invalid');
+        return false
+    }
+
+    // 외국인이라면 통과
+    const radioKorean = document.querySelector('#radioNationality1');
+    if (!radioKorean.checked) {
+        return true
+    }
+
+    // 내국인이라면 한글 체크
+    if (/^[ㄱ-ㅎㅏ-ㅣ가-힣]+$/.test(identify.value)) {
+        return true
+    }
+    identify.classList.add('is-invalid');
+    return false
+}
+
+const passwordValidation = () => {
+    // 비밀번호 검증
+    // 빈칸 확인
+    const password = document.querySelector('#password');
+    if (!password.value) {
+        password.classList.add('is-invalid');
+        return false
+    }
+    return true
+}
+
+const passwordCheckValidation = () => {
+    // 비밀번호 확인 검증
+    // 빈칸 확인
+    const password = document.querySelector('#password');
+    const passwordCheck = document.querySelector('#passwordCheck');
+    if (!passwordCheck.value) {
+        passwordCheck.classList.add('is-invalid');
+        return false
+    }
+    
+    if (password.value === passwordCheck.value) {
+        return true
+    }
+    passwordCheck.classList.add('is-invalid');
+    return false
+}
+
+const nameValidation = () => {
+    // 이름 검증
+    // 빈칸 확인
+    const name = document.querySelector('#name');
+    if (!name.value) {
+        name.classList.add('is-invalid');
+        return false
+    }
+    return true
+}
+
+const contactValidation = () => {
+    // 전화번호 검증
+    // 빈칸 확인
+    const contact = document.querySelector('#contact');
+    if (!contact.value) {
+        contact.classList.add('is-invalid');
+        return false
+    }
+    return true
+}
+
+const credentialValidation = () => {
+    // 전화번호 검증
+    // 빈칸 확인
+    const credential = document.querySelector('#credential');
+    if (!credential.value) {
+        credential.classList.add('is-invalid');
+        return false
+    }
+    return true
+}
+
+const visaValidation = () => {
+    // 전화번호 검증
+    // 빈칸 확인
+    const visa = document.querySelector('#visa');
+    if (!visa.value) {
+        visa.classList.add('is-invalid');
+        return false
+    }
+    return true
+}
+
+const addressValidation = () => {
+    // 전화번호 검증
+    // 빈칸 확인
+    const address = document.querySelector('#address');
+    if (!address.value) {
+        address.classList.add('is-invalid');
+        return false
+    }
+    return true
+}
+
+(() => {
+    'use strict';
+    // 내국인/외국인 radio
+    const nationality = document.querySelector('#nationality');
+    const radioKorean = document.querySelector('#radioNationality1');
+    radioKorean.addEventListener('change', () => {
+        nationality.disabled = true;
+        nationality.value = 'Korea, Republic of';
+    });
+    const radioForeinger = document.querySelector('#radioNationality2');
+    radioForeinger.addEventListener('change', (e) => {
+        nationality.disabled = false;
+    });
+
+    // focus시 is-invalid 삭제
+    const allInput = document.querySelectorAll('.needs-validation input');
+    allInput.forEach((each) => {
+        each.addEventListener('focus', () => {
+            each.classList.remove('is-invalid');    
+        })
+    })
+
+    // Form 검증
+    const customValidity = () => {
+        let result = true;
+        if (!identifyValidation()) {
+            result = false;
+        }
+        if (!passwordValidation()) {
+            result = false;
+        }
+        if (!passwordCheckValidation()) {
+            result = false;
+        }
+        if (!nameValidation()) {
+            result = false;
+        }
+        if (!contactValidation()) {
+            result = false;
+        }
+        if (!visaValidation()) {
+            result = false;
+        }
+        if (!credentialValidation()) {
+            result = false;
+        }
+        if (!addressValidation()) {
+            result = false;
+        }
+        return result
+    }
+
+    const form = document.querySelector('.needs-validation');
+    form.addEventListener('submit', event => {
+        if (!customValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        
+    }, false);
+})()
+</script>
 {% endblock %}
