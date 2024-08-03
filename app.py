@@ -1,5 +1,5 @@
 # from app import create_app
-from flask import Flask, request, redirect, url_for, session,jsonify,render_template,make_response
+from flask import Flask, request, redirect, url_for, session,jsonify,render_template,make_response,flash
 from flask_cors import CORS
 from flask_compress import Compress 
 import requests
@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from functools import wraps
+from datetime import timedelta
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 세션 관리를 위해 필요한 키 설정
@@ -20,7 +21,7 @@ Compress(app)
 
 app.config['SAVE_FILES_DIR'] = '/static/data'
 app.config['JSON_AS_ASCII'] = False 
-
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 
 
@@ -64,19 +65,19 @@ userinfo_url = 'https://apis.worksmobile.com/r/api/user/v1/userinfo'
 def idx():
     
     print("main gogo")
-    ## 원래는 로그인할때 해야함 
-    insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
-    ## ID랑 비번 확인용 
-    ## id = request.form['ID']
-    ## pw = request.form['PW']
-    id = 'Login0'
-    pw='aaa'
-    filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
-    print(filterd_db)
-    session['NAME'] = filterd_db['성명'][0]
-    session['ADMIN'] = filterd_db['ADMIN'][0]
+    # ## 원래는 로그인할때 해야함 
+    # ## ID랑 비번 확인용 
+    # ## id = request.form['ID']
+    # ## pw = request.form['PW']
+    # id = 'Login0'
+    # pw='aaa'
+    # filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
+    # print(filterd_db)
+    # session['NAME'] = filterd_db['성명'][0]
+    # session['ADMIN'] = filterd_db['ADMIN'][0]
 
-    print(session['NAME'],session['ADMIN'])
+    # print(session['NAME'],session['ADMIN'])
+    # if len(filterd_db>0):
     return render_template("main.html")
 
 @app.route('/main', methods=['GET','POST'])
@@ -95,23 +96,33 @@ def employee():
     
     return render_template("main.html")
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/signin', methods=['GET','POST'])
 @nocache
-def login():
-    if(request.method=='POST'):
+def signin():
+
+    if(request.method=='GET'):
+        file_path = './static/data/countries.json'
+        with open(file_path, 'r') as f:
+            countries = json.load(f)
+            f.close()
+        return render_template("signup.html", countries=countries['countries'])
+    elif(request.method=='POST'):
         ##로그인 성공
         # ID랑 비번으로 계정 매핑  
         insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+
+        login_data  = request.get_json()
+        id = login_data['ID']
+        pw = login_data['PW']
         print(insadb)
-        ## ID랑 비번 확인용 
-        ## id = request.form['ID']
-        ## pw = request.form['PW']
-        id = 'Login0'
-        pw='aaa'
+    
         filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
         print(filterd_db)
         session['NAME'] = filterd_db['성명'][0]
+        session['ID'] = filterd_db['ID'][0]
         session['ADMIN'] = filterd_db['ADMIN'][0]
+        if len(filterd_db)>0:
+            return render_template("calendar.html")
         
 
 @app.route('/survey', methods=['GET'])
@@ -290,8 +301,18 @@ def create_event():
 @app.route('/backoffice', methods=['GET'])
 @nocache
 def backoffice():
+    if session['ID'] is not None:
+        print(session['ID'])
+        return redirect("/calendar")
+    else:
+      return render_template("backoffice-login.html")
+
+@app.route('/mainback', methods=['GET'])
+@nocache
+def mainback():
     return render_template("backoffice-main.html")
     
+
 @app.route('/signup', methods=['GET'])
 @nocache
 def signup():

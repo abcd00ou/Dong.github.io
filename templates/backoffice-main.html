@@ -1,144 +1,486 @@
-{% extends "layout.html" %}
+{% extends "layout-backoffice.html" %}
 
-{% block title %}백 오피스{% endblock %}
+{% block title %}SeowooHR{% endblock %}
 
 {% block head %}
-<style>
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-    form .custom-form-item {
-        display: flex;
-        flex-direction: column;
-        padding: 0 24px;
-        margin-bottom: 16px;
-    }
-    form .custom-form-item > label,
-    form .custom-form-item > div,
-    form .custom-form-item > input {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-        padding: 0;
-        color: #777777;
-    } 
-    form .custom-form-item > input {
-        border: 1px solid #cccccc;
-    }
-    form .custom-form-item .invalid-feedback {
-        display: none;
-        width: 100%;
-        font-size: .875em;
-        color: var(--bs-form-invalid-color);
-    }
-    form .custom-form-item .is-invalid~.invalid-feedback {
-        display: block;
-    }
-    .custom-form-item .form-control {
-        padding: 10px 16px;
-    }
-    .custom-signup > a {
-        display: block;
-        margin-bottom: 20px;
-    }
-</style>
+  <!-- =======================================================
+  * Template Name: Day
+  * Template URL: https://bootstrapmade.com/day-multipurpose-html-template-for-free/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 {% endblock %}
 
 {% block content %}
-<div>
-    <h1 class="content-title">백 오피스</h1>
-</div>
-<div>
-    <form class="needs-validation" id="signin" novalidate>
-        <div class="custom-form-item">
-            <label for="identify" class="form-label">아이디</label>
-            <input type="text" class="form-control" id="identify" required>
-            <div class="invalid-feedback">
-                아이디를 입력해주세요.
-            </div>
-        </div>
-        <div class="custom-form-item">
-            <label for="password" class="form-label">비밀번호</label>
-            <input type="password" class="form-control" id="password" required>
-            <div class="invalid-feedback">
-                비밀번호를 입력해주세요.
-            </div>
-        </div>
-        <button type="submit" class="btn btn-dark-custom">로그인</button>
-    </form>
-    <div class="custom-signup">
-        <a href="{{url_for('signup')}}" class="btn btn-dark-custom">회원가입</a>
-    </div>
-</div>
+<main class="main">
 
+  <!-- Hero Section -->
+  <section id="hero" class="hero section dark-background">
+
+    <img src="static/img/homejpg.gif" alt="" data-aos="fade-in">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row justify-content-start">
+        <div class="col-lg-8">
+          <h2>서우HR SERVICE</h2>
+          <p>서우HR SERVICE는 차별화된 서비스와 전문적인 업무 경험을 바탕으로 인력 관리 및 컨설팅 서비스를 제공하는 기업입니다.</p>
+          <a href="#about" class="btn-get-started">Get Started</a>
+        </div>
+      </div>
+    </div>
+
+  </section><!-- /Hero Section -->
+
+  <!-- About Section -->
+  <section id="about" class="about section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <span>회사 소개<br></span>
+      <h2>회사 소개<br></h2>
+      <p>서우는 차별화된 서비스와 전문적인 업무 경험을 바탕으로 인력 관리 및 컨설팅 서비스를 제공하는 기업입니다</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+
+      <div class="row gy-4">
+        <div class="col-lg-12 col-md-6 card" data-aos="fade-up" data-aos-delay="100">
+          <span> </span>
+          <h4>연혁</h4>
+          <p>2022년 설립 이후 매년 성장하며, 업계에서 평가받는 HR 서비스 회사로 성장했습니다.</p>
+        </div>
+        <div class="col-lg-12 col-md-6 card" data-aos="fade-up" data-aos-delay="100">
+          <h4>서비스</h4>
+          <p>다양한 HR 서비스로 인력 확보, 관리, 공도구 및 전문 교육 등을 지원합니다.</p>
+        </div>
+        <div class="col-lg-12 col-md-6 card" data-aos="fade-up" data-aos-delay="100">
+          <h4>비즈니스</h4>
+          <p>다양한 산업 분야의 대기업 및 중소기업까지 폭넓게 서비스를 제공합니다</p>
+        </div>
+      
+
+      </div>
+
+    </div>
+
+  </section><!-- /About Section -->
+
+  <!-- Cards Section -->
+  <section id="cards" class="cards section">
+    <div class="container section-title" data-aos="fade-up">
+      <span>기업 이념<br></span>
+      <h2>기업 이념<br></h2>
+      <p>서우는 열린 문화와 전문성을 앞세워 고객에게 비전과 가치를 제공합니다.</p>
+    </div>
+
+    <div class="container">
+
+      <div class="row no-gutters">
+      
+        <div class="col-lg-4 col-md-6 card" data-aos="fade-up" data-aos-delay="100">
+          <img src="static/img/Intro/intro1.png" class="img-fluid" alt="">
+          <H3>비전과 가치</H3>
+          <p>기술과 노하우가 있는 숙련된 작업자들과 활기차고 빠른 성장 속도를 가진 젊은 인재들이 함께 하는 회사입니다.</p>
+        </div><!-- End Card Item -->
+        <div class="col-lg-4 col-md-6 card" data-aos="fade-up" data-aos-delay="200">
+          <img src="static/img/Intro/intro2.png" class="img-fluid" alt="">
+          <H3>문화</H3>
+          <p>열린 조직 문화와 투명한 의사 소통을 바탕으로, 서로에게 개방적이고 협력적인 환경을 제공합니다.</p>
+        </div><!-- End Card Item -->
+        <div class="col-lg-4 col-md-6 card" data-aos="fade-up" data-aos-delay="300">
+          <img src="static/img/Intro/intro3.png" class="img-fluid" alt="">
+          <H3>전문성과 협력</H3>
+          <p>베테랑 작업자들과 빠르게 배우는 젊은 인재들이 서로의  보완점을 채워주고 함께 배우고 발전하며 성장 합니다.</p>
+        </div><!-- End Card Item -->
+
+
+      </div>
+
+    </div>
+
+  </section>
+  <!-- Services Section -->
+  <section id="services" class="services section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <span>Services</span>
+      <h2>Services</h2>
+      <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+
+      <div class="row gy-4">
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="service-item  position-relative">
+            <div class="icon">
+              <i class="bi bi-activity"></i>
+            </div>
+            <a href="#" class="stretched-link">
+              <h3>Nesciunt Mete</h3>
+            </a>
+            <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.</p>
+          </div>
+        </div><!-- End Service Item -->
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="service-item position-relative">
+            <div class="icon">
+              <i class="bi bi-broadcast"></i>
+            </div>
+            <a href="#" class="stretched-link">
+              <h3>Eosle Commodi</h3>
+            </a>
+            <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
+          </div>
+        </div><!-- End Service Item -->
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="service-item position-relative">
+            <div class="icon">
+              <i class="bi bi-easel"></i>
+            </div>
+            <a href="#" class="stretched-link">
+              <h3>Ledo Markt</h3>
+            </a>
+            <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
+          </div>
+        </div><!-- End Service Item -->
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="service-item position-relative">
+            <div class="icon">
+              <i class="bi bi-bounding-box-circles"></i>
+            </div>
+            <a href="#" class="stretched-link">
+              <h3>Asperiores Commodit</h3>
+            </a>
+            <p>Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.</p>
+            <a href="#" class="stretched-link"></a>
+          </div>
+        </div><!-- End Service Item -->
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+          <div class="service-item position-relative">
+            <div class="icon">
+              <i class="bi bi-calendar4-week"></i>
+            </div>
+            <a href="#" class="stretched-link">
+              <h3>Velit Doloremque</h3>
+            </a>
+            <p>Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi at autem alias eius labore.</p>
+            <a href="#" class="stretched-link"></a>
+          </div>
+        </div><!-- End Service Item -->
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+          <div class="service-item position-relative">
+            <div class="icon">
+              <i class="bi bi-chat-square-text"></i>
+            </div>
+            <a href="#" class="stretched-link">
+              <h3>Dolori Architecto</h3>
+            </a>
+            <p>Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure. Corrupti recusandae ducimus enim.</p>
+            <a href="#" class="stretched-link"></a>
+          </div>
+        </div><!-- End Service Item -->
+
+      </div>
+
+    </div>
+
+  </section><!-- /Services Section -->
+
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="portfolio section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <span>Portfolio</span>
+      <h2>Portfolio</h2>
+      <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+
+      <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+        <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+          <li data-filter="*" class="filter-active">All</li>
+          <li data-filter=".filter-app">App</li>
+          <li data-filter=".filter-product">Card</li>
+          <li data-filter=".filter-branding">Web</li>
+        </ul><!-- End Portfolio Filters -->
+
+        <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-1.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>App 1</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-2.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>Product 1</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-2.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-3.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>Branding 1</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-3.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-4.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>App 2</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-4.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-5.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>Product 2</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-5.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-6.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>Branding 2</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-6.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-7.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>App 3</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-7.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-8.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>Product 3</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-8.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+            <img src="static/img/masonry-portfolio/masonry-portfolio-9.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4>Branding 3</h4>
+              <p>Lorem ipsum, dolor sit</p>
+              <a href="static/img/masonry-portfolio/masonry-portfolio-9.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+              <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+            </div>
+          </div><!-- End Portfolio Item -->
+
+        </div><!-- End Portfolio Container -->
+
+      </div>
+
+    </div>
+
+  </section><!-- /Portfolio Section -->
+
+  <!-- Team Section -->
+  <section id="team" class="team section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <span>Team</span>
+      <h2>Team</h2>
+      <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+          <div class="member">
+            <img src="static/img/team/team-1.jpg" class="img-fluid" alt="">
+            <div class="member-content">
+              <h4>Walter White</h4>
+              <span>Web Development</span>
+              <p>
+                Magni qui quod omnis unde et eos fuga et exercitationem. Odio veritatis perspiciatis quaerat qui aut aut aut
+              </p>
+              <div class="social">
+                <a href=""><i class="bi bi-twitter-x"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Team Member -->
+
+        <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
+          <div class="member">
+            <img src="static/img/team/team-2.jpg" class="img-fluid" alt="">
+            <div class="member-content">
+              <h4>Sarah Jhinson</h4>
+              <span>Marketing</span>
+              <p>
+                Repellat fugiat adipisci nemo illum nesciunt voluptas repellendus. In architecto rerum rerum temporibus
+              </p>
+              <div class="social">
+                <a href=""><i class="bi bi-twitter-x"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Team Member -->
+
+        <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
+          <div class="member">
+            <img src="static/img/team/team-3.jpg" class="img-fluid" alt="">
+            <div class="member-content">
+              <h4>William Anderson</h4>
+              <span>Content</span>
+              <p>
+                Voluptas necessitatibus occaecati quia. Earum totam consequuntur qui porro et laborum toro des clara
+              </p>
+              <div class="social">
+                <a href=""><i class="bi bi-twitter-x"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Team Member -->
+
+      </div>
+
+    </div>
+
+  </section><!-- /Team Section -->
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <span>Contact</span>
+      <h2>Contact</h2>
+      <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gy-4">
+
+        <div class="col-lg-6">
+          <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+            <i class="bi bi-geo-alt"></i>
+            <h3>Address</h3>
+            <p>A108 Adam Street, New York, NY 535022</p>
+          </div>
+        </div><!-- End Info Item -->
+
+        <div class="col-lg-3 col-md-6">
+          <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+            <i class="bi bi-telephone"></i>
+            <h3>Call Us</h3>
+            <p>+1 5589 55488 55</p>
+          </div>
+        </div><!-- End Info Item -->
+
+        <div class="col-lg-3 col-md-6">
+          <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
+            <i class="bi bi-envelope"></i>
+            <h3>Email Us</h3>
+            <p>info@example.com</p>
+          </div>
+        </div><!-- End Info Item -->
+
+      </div>
+
+      <div class="row gy-4 mt-1">
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+          <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+        </div><!-- End Google Maps -->
+
+        <div class="col-lg-6">
+          <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="400">
+            <div class="row gy-4">
+
+              <div class="col-md-6">
+                <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+              </div>
+
+              <div class="col-md-6 ">
+                <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+              </div>
+
+              <div class="col-md-12">
+                <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+              </div>
+
+              <div class="col-md-12">
+                <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+              </div>
+
+              <div class="col-md-12 text-center">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                <button type="submit">Send Message</button>
+              </div>
+
+            </div>
+          </form>
+        </div><!-- End Contact Form -->
+
+      </div>
+
+    </div>
+
+  </section><!-- /Contact Section -->
+
+</main>
 {% endblock %}
 
 {% block script %}
 <script>
-const identifyValidation = () => {
-    // 아이디 검증
-    // 빈칸 확인
-    const identify = document.querySelector('#identify');    
-    if (!identify.value) {
-        identify.classList.add('is-invalid');
-        return false
-    }
-
-    // 외국인이라면 통과
-    const radioKorean = document.querySelector('#radioNationality1');
-    if (!radioKorean.checked) {
-        return true
-    }
-
-    // 내국인이라면 한글 체크
-    if (/^[ㄱ-ㅎㅏ-ㅣ가-힣]+$/.test(identify.value)) {
-        return true
-    }
-    identify.classList.add('is-invalid');
-    return false
-}
-
-const passwordValidation = () => {
-    // 비밀번호 검증
-    // 빈칸 확인
-    const password = document.querySelector('#password');
-    if (!password.value) {
-        password.classList.add('is-invalid');
-        return false
-    }
-    return true
-}
-
-(() => {
-    'use strict';
-    // focus시 is-invalid 삭제
-    const allInput = document.querySelectorAll('.needs-validation input');
-    allInput.forEach((each) => {
-        each.addEventListener('focus', () => {
-            each.classList.remove('is-invalid');    
-        })
-    })
-
-    // Form 검증
-    const customValidity = () => {
-        let result = true;
-        if (!identifyValidation()) {
-            result = false;
-        }
-        if (!passwordValidation()) {
-            result = false;
-        }
-        return result
-    }
-
-    const form = document.querySelector('.needs-validation');
-    form.addEventListener('submit', event => {
-        if (!customValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    }, false);
-})()
+  document.getElementById('nav_main').classList.add('active');
 </script>
 {% endblock %}

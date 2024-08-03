@@ -12,10 +12,10 @@
                 <i type="button" class="bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></i>
                 <div>일정 생성</div>
             </div>
-            <li><a tabindex="-1" href="#">카테고리1</a></li>
-            <li><a tabindex="-1" href="#">카테고리2</a></li>
-            <li><a tabindex="-1" href="#">카테고리3</a></li>
-            <li><a tabindex="-1" href="#">카테고리4</a></li>
+            <li><a tabindex="-1" href="#">당진</a></li>
+            <li><a tabindex="-1" href="#">송도</a></li>
+            <li><a tabindex="-1" href="#">마곡</a></li>
+            <li><a tabindex="-1" href="#">시흥</a></li>
         </ul>
     </div>
     <div class="panel panel-default">
@@ -27,23 +27,23 @@
         <div class="panel-body" style="display:auto;">
 
             <div class="col-lg-4">
-                <label for="calendar_view">구분별</label>
+                <label for="calendar_view">작업장별</label>
                 <div class="input-group">
                     <select class="filter" id="type_filter" multiple="multiple">
-                        <option value="카테고리1">카테고리1</option>
-                        <option value="카테고리2">카테고리2</option>
-                        <option value="카테고리3">카테고리3</option>
-                        <option value="카테고리4">카테고리4</option>
+                        <option value="당진">당진</option>
+                        <option value="송도">송도</option>
+                        <option value="마곡">마곡</option>
+                        <option value="시흥">시흥</option>
                     </select>
                 </div>
             </div>
             <div class="col-lg-4">
                 <label for="calendar_view">로그인 되었습니다.</label>
                 <div class="input-group">
-                    
-                    <label class="checkbox-inline"><input class='filter' type="checkbox" id ='edit-name' value="{{ name }}"
-                            checked>{{ name }}</label>
                 
+                <label class="checkbox-inline"><input class='filter' type="checkbox" id ='edit-name' value="{{ name }}"
+                        checked>{{ name }}</label>
+            
                 </div>
             </div>
 
@@ -97,12 +97,12 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <label class="col-xs-4" for="edit-type">구분</label>
+                            <label class="col-xs-4" for="edit-type">작업장명</label>
                             <select class="inputModal" type="text" name="edit-type" id="edit-type">
-                                <option value="카테고리1">카테고리1</option>
-                                <option value="카테고리2">카테고리2</option>
-                                <option value="카테고리3">카테고리3</option>
-                                <option value="카테고리4">카테고리4</option>
+                                <option value="당진">당진</option>
+                                <option value="송도">송도</option>
+                                <option value="마곡">마곡</option>
+                                <option value="시흥">시흥</option>
                             </select>
                         </div>
                     </div>

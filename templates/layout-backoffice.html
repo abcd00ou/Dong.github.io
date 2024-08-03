@@ -17,11 +17,11 @@
 
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a href="{{url_for('backoffice')}}">백오피스</a></li>
-                <li><a href="{{url_for('survey')}}" id="nav_survey">작업일지</a></li>
+                <!-- <li><a href="{{url_for('backoffice')}}">백오피스</a></li> -->
+                <li><a href="{{url_for('mainback')}}">홈</a></li>
                 <li><a href="{{url_for('calendar')}}" id="nav_calendar">일정관리</a></li>
-                <li><a href="{{url_for('productivity')}}" id="nav_productivity">생산성 조회</a></li>
-                <li><a href="{{url_for('main')}}">홈</a></li>
+                <li><a href="{{url_for('survey')}}" id="nav_survey">작업일지</a></li>
+                <li><a href="{{url_for('productivity')}}" id="nav_productivity">생산성 조회</a></li>    
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
