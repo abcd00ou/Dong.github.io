@@ -21,7 +21,8 @@
                 <li><a href="{{url_for('mainback')}}">홈</a></li>
                 <li><a href="{{url_for('calendar')}}" id="nav_calendar">일정관리</a></li>
                 <li><a href="{{url_for('survey')}}" id="nav_survey">작업일지</a></li>
-                <li><a href="{{url_for('productivity')}}" id="nav_productivity">생산성 조회</a></li>    
+                <li><a href="{{url_for('productivity')}}" id="nav_productivity">생산성 조회</a></li>
+                <li><button id="nav_logout" class="btn">Logout</button></li>        
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -29,6 +30,27 @@
 
     </div>
 </header>
+<!-- 일정 추가 MODAL -->
+<div class="modal fade" tabindex="-1" role="dialog" id="logoutModal">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i type="button" class="bi bi-x-lg modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                <h4 class="modal-title">로그아웃</h4>
+            </div>
+            <div class="modal-body">
+                <p>로그아웃 하시겠습니까?</p>
+            </div>
+            <div class="modal-footer modalBtnContainer-addEvent">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">아니오</button>
+                <button type="button" class="btn btn-dark" id="logoutevent">예</button>
+            </div>
+           
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  
+
 {% endblock %}
 
 {% block content %}
@@ -39,3 +61,36 @@
 
 {% block script %}
 {% endblock %}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+       $('#nav_logout').on('click',function(){
+
+        console.log("anjadfvfd")
+        $('#logoutModal').removeClass('fade').modal('show');
+       })
+        
+        $('#logout-event').unbind();
+        $('#logout-event').on('click', function () {
+            $.ajax({
+            url: '/logout',
+            method: 'POST',
+            contentType: 'application/json',
+            success: function(response) {
+                alert("로그아웃 되었습니다.");
+                window.location.href = 'main'
+
+            },
+            error: function(response) {
+                alert("서버오류입니다.");
+            }
+        });
+
+        });
+     
+
+    });
+    
+
+</script>

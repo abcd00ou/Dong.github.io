@@ -1,5 +1,5 @@
 # from app import create_app
-from flask import Flask, request, redirect, url_for, session,jsonify,render_template,make_response,flash
+from flask import Flask, request, redirect, url_for, session,jsonify,render_template,make_response,flash,abort
 from flask_cors import CORS
 from flask_compress import Compress 
 import requests
@@ -45,39 +45,13 @@ token_url = 'https://auth.worksmobile.com/oauth2/v2.0/token'
 userinfo_url = 'https://apis.worksmobile.com/r/api/user/v1/userinfo'
 
 
-# @app.route('/', methods=['GET'])
-# def index():
-#     if request.method=='GET':
-#         #redirect_uri = url_for('callback', _external=True)
-#         auth_params = {
-#             'client_id': client_id,
-#             'redirect_uri': redirect_uri,
-#             'scope': 'calendar',
-#             'response_type': 'code',
-#             'state': 'random_state_string'
-#         }
-        
-#         auth_request_url = f"{auth_url}?{urlencode(auth_params)}"
-#         return redirect(auth_request_url)
 
 @app.route('/', methods=['GET'])
 @nocache
 def idx():
     
     print("main gogo")
-    # ## 원래는 로그인할때 해야함 
-    # ## ID랑 비번 확인용 
-    # ## id = request.form['ID']
-    # ## pw = request.form['PW']
-    # id = 'Login0'
-    # pw='aaa'
-    # filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
-    # print(filterd_db)
-    # session['NAME'] = filterd_db['성명'][0]
-    # session['ADMIN'] = filterd_db['ADMIN'][0]
 
-    # print(session['NAME'],session['ADMIN'])
-    # if len(filterd_db>0):
     return render_template("main.html")
 
 @app.route('/main', methods=['GET','POST'])
@@ -99,7 +73,6 @@ def employee():
 @app.route('/signin', methods=['GET','POST'])
 @nocache
 def signin():
-
     if(request.method=='GET'):
         file_path = './static/data/countries.json'
         with open(file_path, 'r') as f:
@@ -112,17 +85,20 @@ def signin():
         insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
 
         login_data  = request.get_json()
-        id = login_data['ID']
-        pw = login_data['PW']
+        id = login_data['id']
+        pw = login_data['pw']
         print(insadb)
     
         filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
-        print(filterd_db)
-        session['NAME'] = filterd_db['성명'][0]
-        session['ID'] = filterd_db['ID'][0]
-        session['ADMIN'] = filterd_db['ADMIN'][0]
+        
         if len(filterd_db)>0:
+            print(filterd_db)
+            session['NAME'] = filterd_db['성명'][0]
+            session['ID'] = filterd_db['ID'][0]
+            session['ADMIN'] = filterd_db['ADMIN'][0]
             return render_template("calendar.html")
+        else:
+            abort(400, description="Session ID not found")
         
 
 @app.route('/survey', methods=['GET'])
@@ -135,16 +111,19 @@ def survey():
 @app.route('/calendar', methods=['GET'])
 @nocache
 def calendar():
+    print(session)
+    if 'ADMIN' in session:
+        if session['ADMIN']=='Y':
+            name = session['NAME']
+            admin = 'Y'
+        else:
+            name = session['NAME']
+            admin='N'
+        print(name)
 
-    if session['ADMIN']=='Y':
-        name = session['NAME']
-        admin = 'Y'
+        return render_template('calendar.html',name = name,admin=admin)
     else:
-        name = session['NAME']
-        admin='N'
-    print(name)
-
-    return render_template('calendar.html',name = name,admin=admin)
+        return render_template('backoffice-login.html')
 
 
 @app.route('/calendar_save', methods=['POST'])
@@ -195,54 +174,6 @@ def productivity():
     print("main gogo")
     return render_template("productivity.html")
 
-
-@app.route('/callback', methods=['GET'])
-@nocache
-def callback():
-
-    code = request.args.get('code')
-    state = request.args.get('state')
-
-    # 반환된 code와 state를 세션에 저장
-    session['code'] = code
-    session['state'] = state
-    # code= 'kr1clV3QVdhZFo5cDBMYlh4OQ'
-    # state='random_state'
-    #redirect_uri = url_for('callback', _external=True)
-    print(code,state)
-    token_data = {
-        'grant_type': 'authorization_code',
-        'code': code,
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'redirect_uri': redirect_uri
-    }
-
-    token_response = requests.post(token_url, data=token_data)
-    token_info = token_response.json()
-    print('token_info',token_info)
-
-    if 'error' in token_info:
-        return f"Error: {token_info['error_description']}"
-    else:
-        access_token = token_info['access_token']
-        session['access_token'] = access_token
-        print("session['access_token']",session['access_token'])
-        # # 사용자 정보 요청
-        # headers = {
-        #     'Authorization': f'Bearer {access_token}',
-        #     'Content-Type': 'application/json'
-        # }
-        # userinfo_response = requests.get(userinfo_url, headers=headers)
-        # userinfo = userinfo_response.json()
-        # print("userinfouserinfo",userinfo)
-        # if 'error' in userinfo:
-        #     return f"Error: {userinfo['error_description']}"
-        # else:
-        #     user_id = userinfo['id']  # 사용자 ID 추출
-        #     session['user_id'] = user_id  # 세션에 저장
-        #     print("session user",user_id)
-        return redirect(url_for('main'))
 
 @app.route('/create_event',methods=['POST'])
 @nocache
@@ -301,7 +232,7 @@ def create_event():
 @app.route('/backoffice', methods=['GET'])
 @nocache
 def backoffice():
-    if session['ID'] is not None:
+    if 'ID' in session:
         print(session['ID'])
         return redirect("/calendar")
     else:
@@ -321,6 +252,55 @@ def signup():
       countries = json.load(f)
       f.close()
     return render_template("signup.html", countries=countries['countries'])
+
+@app.route('/logout', methods=['POST'])
+@nocache
+def logout():
+    session.clear()
+    print("맞아?")
+    return jsonify("success")
+    
+@app.route('/register', methods=['POST'])
+@nocache
+def register():
+    # ID랑 비번으로 계정 매핑  
+    insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+
+    register_data  = request.get_json()
+    user_id = register_data['user_id']
+    user_pw = register_data['user_pw']
+    user_name = register_data['user_name']
+    user_contact = register_data['user_contact']
+    user_nationality = register_data['user_nationality']
+    user_credential = register_data['user_credential']
+    user_visa = register_data['user_visa']
+    user_address = register_data['user_address']
+    user_certificate = register_data['user_certificate']
+    user_highBlood = register_data['user_highBlood']
+
+    registerd_data = pd.DataFrame({
+        "성명":[user_name],
+        "영문명":[user_name],
+        "체류비자":[user_visa],
+        "국적":[user_nationality],
+        "KEY_ID":[user_credential],
+        "주소":[user_address],
+        "전화번호":[user_contact],
+        "자격증유무":[user_certificate],
+        "고혈압유무":[user_highBlood],
+        "ID":[user_id],
+        "PASSWORD":[user_pw],
+        "ADMIN":["N"]
+        
+    })
+
+    insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
+    insadb_new.to_excel("./static/data/INSA_DB.xlsx",index=False)
+
+    print(insadb_new)
+    
+    return jsonify("success")
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080,debug=True)

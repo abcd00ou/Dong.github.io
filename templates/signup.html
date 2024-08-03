@@ -70,9 +70,6 @@
         <div class="custom-form-item">
             <label for="identify" class="form-label">아이디</label>
             <input type="text" class="form-control" id="identify" required>
-            <div class="invalid-feedback">
-                내국인의 경우 한글만 입력해주세요.
-            </div>
         </div>
         <div class="custom-form-item">
             <label for="password" class="form-label">비밀번호</label>
@@ -88,6 +85,9 @@
         <div class="custom-form-item">
             <label for="name" class="form-label">이름</label>
             <input type="text" class="form-control" id="name" required>
+            <div class="invalid-feedback">
+                내국인의 경우 한글만 입력해주세요.
+            </div>
         </div>
         <div class="custom-form-item">
             <label for="contact" class="form-label">전화번호</label>
@@ -116,11 +116,20 @@
         </div>
         <div class="custom-form-item">
             <label for="certificate" class="form-label">거푸집자격증 (선택)</label>
-            <input type="text" class="form-control" id="certificate">
+            <select type="text" class="form-control" id="certificate">
+                <option value="">--선택--</option>
+                <option value="Y">네</option>
+                <option value="N">아니오</option>
+            </select>
         </div>
         <div class="custom-form-item">
             <label for="highBlood" class="form-label">고혈압 증상 여부 (선택)</label>
-            <input type="text" class="form-control" id="highBlood">
+            <select type="text" class="form-control" id="highBlood">
+                <option value="">--선택--</option>
+                <option value="Y">네</option>
+                <option value="N">아니오</option>
+            </select>
+            
         </div>
         <button type="submit" class="btn btn-dark-custom">회원가입</button>
     </form>
@@ -177,6 +186,8 @@ const passwordCheckValidation = () => {
     
     if (password.value === passwordCheck.value) {
         return true
+    }else{
+        alert("비밀번호가 다릅니다.")
     }
     passwordCheck.classList.add('is-invalid');
     return false

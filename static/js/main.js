@@ -201,4 +201,85 @@
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
 
+  // 로그인 로그아웃 기능 추가 
+  $('#signin').on('submit', function(event) {
+      event.preventDefault();
+      var id = $('#identify').val();
+      var pw = $('#password').val();
+
+      $.ajax({
+          url: '/signin',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({id: id, pw: pw}),
+          success: function(response) {
+              alert("로그인 되엇습니다. ");
+              window.location.href = 'calendar'
+          },
+          error: function(response) {
+              alert(response.responseJSON.message);
+          }
+      });
+  });
+
+  $('#register').on('submit', function(event) {
+      event.preventDefault();
+      //회원가입을 위한 정보 제공 
+  
+      var user_id = $('#identify').val();
+      var user_pw = $('#password').val();
+      var user_name = $('#name').val();
+      var user_contact = $('#contact').val();
+      var user_nationality = $('#nationality').val();
+      var user_credential = $('#credential').val();
+      var user_visa = $('#visa').val();
+      var user_address = $('#address').val();
+      var user_certificate = $('#certificate').val();
+      var user_highBlood = $('#highBlood').val();
+      
+
+
+      $.ajax({
+          url: '/register',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({user_id: user_id, user_pw: user_pw,user_name:user_name,
+            user_contact:user_contact,user_nationality:user_nationality,user_credential:user_credential,
+            user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood     
+          }),
+          success: function(response) {
+              alert('회원가입이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
+              window.location.href = 'backoffice'
+          },
+          error: function(response) {
+              alert(response.responseJSON.message);
+          }
+      });
+  });
+
+
+  $('#nav_logout').on('click',function(){
+
+    console.log("anjadfvfd")
+    $('#logoutModal').removeClass('fade').modal('show');
+   });
+    
+  $('#logoutevent').on('click', function () {
+    console.log("맞나???")
+      $.ajax({
+      url: '/logout',
+      method: 'POST',
+      contentType: 'application/json',
+      success: function(response) {
+          alert("로그아웃 되었습니다.");
+          window.location.href = 'main'
+
+      },
+      error: function(response) {
+          alert("서버오류입니다.");
+      }
+  });
+
+  });
+
 })();
