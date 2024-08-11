@@ -20,9 +20,18 @@
 {% block content %}
 <h1 class="content-title">작업 기록</h1>
 
+<label for='survey1'>작업 날짜 선택</label>
+<ul >
+    <li class ='survey_item' style="align-items: center;">
+    <!-- 작업 날짜 선택-->
+    <input type="date" id = 'date-input' >
+    </li>
+</ul>
+
 <label for='survey1'>작업 공수 기재</label>
 <ul id ='survey1'>
     <li class="survey_item">
+        
         <!-- 작업 장소 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#siteModal">
             <div class="survey_btn_title">
@@ -272,6 +281,9 @@
 </ul>  
 
 <input type="submit" value="Submit" id="submit" class="btn-dark-custom">
+<div style="display:none;" >
+    <textarea id="username">{{name}}</textarea>
+</div>
 {% endblock %}
 
 {% block script %}
@@ -542,8 +554,8 @@
                 
             };
         var eventId = 1 + Math.floor(Math.random() * 1000);
-        function getCurrentDateTime() {
-            const now = new Date();
+        function getCurrentDateTime(datestr) {
+            const now = new Date(datestr);
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
@@ -552,23 +564,22 @@
 
             return `${year}-${month}-${day} ${hours}:${minutes}`;
         }
-        var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n작업인원 : ${ document.getElementById('numworkers').value} \n작업자 명 :${document.getElementById('workers-normal').value}\n연장 근무자명 : ${document.getElementById('workers-hard').value}\n오전 근무자명 : ${document.getElementById('workers-morning').value}\n작업 내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n
-                        
-                        `
+        var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업자 명 :${document.getElementById('workers-normal').value}\n연장 근무자명 : ${document.getElementById('workers-hard').value}\n오전 근무자명 : ${document.getElementById('workers-morning').value}\n작업 내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
+        console.log(document.getElementById('date-input').value)
         var eventData = {
             _id: Number(eventId),
             title: document.getElementById('site').textContent,
-            start: getCurrentDateTime(),
-            end: getCurrentDateTime(),
+            start: getCurrentDateTime(datestr = document.getElementById('date-input').value),
+            end: getCurrentDateTime(datestr = document.getElementById('date-input').value),
             description: formtext,
-            type: '카테고리1',
-            username: '나연',
+            type: document.getElementById('site').textContent,
+            username: document.getElementById("username").textContent,
             backgroundColor: '#D25565',
             textColor: '#ffffff',
             allDay: false
         };
 
-        createExcel(formData);
+        //createExcel(formData);
         $("#calendar").fullCalendar('renderEvent', eventData, true);
         eventModal.find('input, textarea').val('');
         editAllDay.prop('checked', false);
@@ -599,6 +610,32 @@
                     data: JSON.stringify({data:json_data}),
                     success: function(response) {
                         alert('Data saved successfully:', response);
+
+                        const formData_db = {
+                                numworkers: document.getElementById('numworkers').value,
+                                workersnormal: document.getElementById('workers-normal').value,
+                                workershard: document.getElementById('workers-hard').value,
+                                workersmorning: document.getElementById('workers-morning').value,
+                                taskresult : document.getElementById("task-result").value,
+                                additional: document.getElementById('additional').value,
+                                date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
+                                username: document.getElementById("username").textContent
+                            };
+
+                        $.ajax({
+                            url: '/survey',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(formData_db),
+                            success: function (response) {
+                                console.log(response)
+                                alert("데이터가 저장되었습니다.")
+                            
+                            },
+                            error: function(error) {
+                                alert('데이터 저장에 실패했습니다.', error);
+                            }
+                        });
                     },
                     error: function(error) {
                         alert('Error saving data:', error);
@@ -606,9 +643,42 @@
                 });
             }
         });
+        
 
 
         })
+
+        // 오늘 날짜 구하기
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
+        const dd = String(today.getDate()).padStart(2, '0');
+
+        const todayStr = `${yyyy}-${mm}-${dd}`;
+
+        // 6개월 전 날짜 구하기
+        const pastDate = new Date(today);
+        pastDate.setMonth(today.getMonth() - 6);
+        const pastYyyy = pastDate.getFullYear();
+        const pastMm = String(pastDate.getMonth() + 1).padStart(2, '0');
+        const pastDd = String(pastDate.getDate()).padStart(2, '0');
+
+        const pastStr = `${pastYyyy}-${pastMm}-${pastDd}`;
+
+        // 6개월 후 날짜 구하기
+        const futureDate = new Date(today);
+        futureDate.setMonth(today.getMonth() + 6);
+        const futureYyyy = futureDate.getFullYear();
+        const futureMm = String(futureDate.getMonth() + 1).padStart(2, '0');
+        const futureDd = String(futureDate.getDate()).padStart(2, '0');
+
+        const futureStr = `${futureYyyy}-${futureMm}-${futureDd}`;
+
+        // input 요소에 값 설정
+        const dateInput = document.getElementById('date-input');
+        dateInput.value = todayStr;
+        dateInput.min = pastStr;
+        dateInput.max = futureStr;
 
 
         async function getAccessToken() {

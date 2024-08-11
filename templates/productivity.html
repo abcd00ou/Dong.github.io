@@ -28,7 +28,7 @@
           <th>C</th>
           <th>A</th>
           <th>L</th>
-          <th></th>
+          
         </tr>
       </thead>
       <tbody>
@@ -64,8 +64,7 @@
         <td id="lbl1"> 
           ${[i + 1]}&nbsp;&nbsp;•
         </td> 
-        <td id="lbl2">
-          <img src="./static/img/premier/img_icon${i + 1}.png" style="width: 25px;"/> 
+        <td id="lbl2">  
           <span>${records[i].현장}</span>
         </td>
         <td id="lbl3">${records[i]['총괄 이름']}</td>
@@ -74,9 +73,7 @@
         <td id="lbl6">${records[i].C}</td>
         <td id="lbl7">${records[i].G}</td>
         <td id="lbl8">${records[i].L}</td>
-        <td id="lbl10">
-          <img src="./static/img/premier/rank${i + 1}.png" style="height: 32px;"/>
-        </td>
+
       `;
 
       displayScore.appendChild(tr);

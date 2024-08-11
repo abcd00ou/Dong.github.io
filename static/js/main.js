@@ -213,11 +213,11 @@
           contentType: 'application/json',
           data: JSON.stringify({id: id, pw: pw}),
           success: function(response) {
-              alert("로그인 되엇습니다. ");
+              alert("로그인 되었습니다. ");
               window.location.href = 'calendar'
           },
           error: function(response) {
-              alert(response.responseJSON.message);
+              alert("로그인 정보를 확인해주세요.");
           }
       });
   });

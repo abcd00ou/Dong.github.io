@@ -86,11 +86,11 @@ def signin():
 
         login_data  = request.get_json()
         id = login_data['id']
-        pw = login_data['pw']
+        pw = int(login_data['pw'])
         print(insadb)
     
         filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
-        
+        print(filterd_db)
         if len(filterd_db)>0:
             print(filterd_db)
             session['NAME'] = filterd_db['성명'][0]
@@ -101,12 +101,113 @@ def signin():
             abort(400, description="Session ID not found")
         
 
-@app.route('/survey', methods=['GET'])
+@app.route('/survey', methods=['GET','POST'])
 @nocache
 def survey():
-   
-    print('aa')
-    return render_template("survey.html")    
+    if(request.method=='GET'):
+        print('aa')
+        name = session['NAME']
+        print(name)
+        return render_template("survey.html",name =name)    
+    elif(request.method=='POST'):
+
+        def save_double_column_df(df, file_name, startrow = 0, **kwargs):
+            '''Function to save doublecolumn DataFrame, to xlwriter'''
+            # https://stackoverflow.com/questions/52497554/blank-line-below-headers-created-when-using-multiindex-and-to-excel-in-python
+            
+            # inputs:
+            # df - pandas dataframe to save
+            # xl_writer - book for saving
+            # startrow - row from wich data frame will begins
+            # **kwargs - arguments of `to_excel` function of DataFrame`
+            with pd.ExcelWriter(file_name, mode='w') as writer:
+                df.drop(df.index).to_excel(writer, startrow = startrow, **kwargs)
+                df.to_excel(writer, startrow = startrow + 1, header = False, **kwargs)
+        ## 작업
+        survey_data  = request.get_json()
+        print("survey_data",survey_data)
+        numworkers = survey_data['numworkers']
+        workersnormal = survey_data['workersnormal'].split(",")
+        workershard = survey_data['workershard'].split(",")
+        workersmorning = survey_data['workersmorning'].split(",")
+        taskresult = survey_data['taskresult'].split("\n")
+        additional = survey_data['additional'].split("\n")
+        date = survey_data['date'].split(" ")[0]
+        username = survey_data['username']
+
+        work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+        worker_info  = pd.read_excel("./static/data/작업공수/작업자입력.xlsx",header=[0,1])
+        print('worker_info',worker_info)
+        print('work_info',work_info)
+
+        if("Unnamed" in worker_info.columns[0][1]):
+            worker_info = worker_info.iloc[:,1:]
+
+        new_columns = [
+            (("" if "Unnamed" in str(outer) else outer.strftime('%Y-%m-%d') if isinstance(outer, datetime) else outer), inner)
+            for outer, inner in worker_info.columns
+        ]
+
+        # 새로운 컬럼 이름을 적용
+        worker_info.columns = pd.MultiIndex.from_tuples(new_columns)
+
+        
+
+        if (date, '측정') in worker_info.columns:
+            print("있으니깐 패스")
+        else:
+            data2 = pd.DataFrame({
+                (date, '측정'): [],
+                (date, '실'): [],
+            })
+            worker_info = pd.concat([worker_info,data2],axis=0)
+
+        ## 사람만큼 공수 추가 (일반은 1, 오전,특수는 0.5)
+        for worker_name in workersnormal:
+            print(worker_name)
+            print(worker_info.loc[worker_info[('','성명')]==worker_name])
+            print(worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')])
+            if worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')].isna().any():
+                worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] = 0
+            worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += 1
+            print(worker_info.loc[worker_info[('','성명')]==worker_name] )
+
+        for worker_name in workershard:
+           
+            worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += 0.5
+
+        for worker_name in workersmorning:
+            
+            worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += 0.5
+
+        
+        
+        for task in taskresult:
+            task_info = task.split("_")
+            if len(task)>1:
+                print(task)
+                print(task_info)
+                temp_task = pd.DataFrame({"작업날짜":[date],
+                                        "위치_분류1":[task_info[2]],
+                                        "위치_분류2":[task_info[3]],
+                                        "작업_분류1":["??"],
+                                        "작업_분류3":[task_info[4]+" "+task_info[5]],
+                                        "공수":[int(task_info[6])],
+                                        "인원":[int(numworkers)],
+                                        "도급/직영":[task_info[1]],
+                                        "특이사항":[additional[0]]
+                                        })
+                work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
+        #worker_info.columns = pd.MultiIndex.from_tuples(worker_info.columns)
+        if(len(worker_info)>1):
+            print('worker_info',worker_info)
+            #worker_info.to_excel()
+            save_double_column_df(worker_info,"./static/data/작업공수/작업자입력.xlsx")
+        if(len(work_info)>1):
+            print('worker_info',work_info)
+            work_info.to_excel("./static/data/작업공수/작업입력.xlsx", index=False)
+        print(survey_data)
+        return jsonify("success")
 
 @app.route('/calendar', methods=['GET'])
 @nocache
