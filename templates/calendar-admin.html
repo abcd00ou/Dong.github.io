@@ -19,15 +19,22 @@
         </ul>
     </div>
     <div class="panel panel-default">
+        <div style="margin-top: 90px;justify-content:center;display: auto;">
 
-        <div class="panel-heading">
-            <h3 class="panel-title">필터</h3>
+        <button id="Attend-abled"  {% if attend == 'abled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>출근 활성화</button>
+        <button id="Attend-disabled"  {% if attend == 'disabled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>출근 비활성화</button>
+        <p>출근 체크 {% if attend == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p>
+        <button id="Leave-abled"  {% if leave == 'abled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>퇴근 활성화</button>
+        <button id="Leave-disabled"  {% if leave == 'disabled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>퇴근 비활성화</button>
+        <p>퇴근 체크 {% if leave == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p>
         </div>
+       
+       
 
-        <div class="panel-body" style="display:auto;">
+        <div class="panel-body" style="display:auto;margin-top: 30px;">
 
             <div class="col-lg-4">
-                <label for="calendar_view">작업장별</label>
+                <label for="calendar_view">작업장별 필터</label>
                 <div class="input-group">
                     <select class="filter" id="type_filter" multiple="multiple">
                         <option value="당진">당진</option>
@@ -37,15 +44,18 @@
                     </select>
                 </div>
             </div>
+            <div class="row">
             <div class="col-lg-4">
-                <label for="calendar_view">로그인 되었습니다.</label>
+                
                 <div class="input-group">
                 
-                <label class="checkbox-inline"><input class='filter' type="checkbox" id ='edit-name' value="{{ name }}"
-                        checked>{{ name }}</label>
-            
+                <label class="checkbox-inline">
+                <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">{{ name }}님 로그인 되었습니다.</label>
+               
                 </div>
             </div>
+         
+           </div>
 
             
 

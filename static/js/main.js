@@ -282,4 +282,115 @@
 
   });
 
+  // 출석체크 활성, 비활성화
+  $('#Attend-abled').on('click', function(event) {
+      event.preventDefault();
+      
+      $.ajax({
+          url: '/attend-abled',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({'Attend': 'abled'}),
+          success: function(response) {
+              alert("출근 체크 활성화 되었습니다. ");
+              window.location.reload();
+          },
+          error: function(response) {
+              alert("오류입니다.");
+          }
+      });
+  });
+
+  $('#Attend-disabled').on('click', function(event) {
+    event.preventDefault();
+    
+    $.ajax({
+        url: '/attend-disabled',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({'Attend': 'disabled'}),
+        success: function(response) {
+            alert("출근 체크 비활성화 되었습니다. ");
+            window.location.reload();
+        },
+        error: function(response) {
+            alert("오류입니다.");
+        }
+    });
+  });
+
+
+  $('#Attendcheck').on('click', function(event) {
+    event.preventDefault();
+    
+    $.ajax({
+        url: '/attend-check',
+        method: 'POST',
+        contentType: 'application/json',
+        success: function(response) {
+            alert("출근 확인 되었습니다.");
+            window.location.reload();
+        },
+        error: function(response) {
+            alert("오류입니다.");
+        }
+    });
+  });
+
+
+  $('#Leave-abled').on('click', function(event) {
+    event.preventDefault();
+    
+    $.ajax({
+        url: '/leave-abled',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({'Leave': 'abled'}),
+        success: function(response) {
+            alert("퇴근 체크 활성화 되었습니다. ");
+            window.location.reload();
+        },
+        error: function(response) {
+            alert("오류입니다.");
+        }
+    });
+});
+
+$('#Leave-disabled').on('click', function(event) {
+  event.preventDefault();
+  
+  $.ajax({
+      url: '/leave-disabled',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({'Leave': 'disabled'}),
+      success: function(response) {
+          alert("퇴근 체크 비활성화 되었습니다. ");
+          window.location.reload();
+      },
+      error: function(response) {
+          alert("오류입니다.");
+      }
+  });
+});
+
+
+$('#Leavecheck').on('click', function(event) {
+  event.preventDefault();
+  
+  $.ajax({
+      url: '/leave-check',
+      method: 'POST',
+      contentType: 'application/json',
+      success: function(response) {
+          alert("퇴근 확인 되었습니다.");
+          window.location.reload();
+      },
+      error: function(response) {
+          alert("오류입니다.");
+      }
+  });
+});
+
+
 })();

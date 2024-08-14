@@ -96,7 +96,37 @@ def signin():
             session['NAME'] = filterd_db['성명'][0]
             session['ID'] = filterd_db['ID'][0]
             session['ADMIN'] = filterd_db['ADMIN'][0]
-            return render_template("calendar.html")
+            if session['ADMIN']=='Y':
+                return render_template("calendar-admin.html")
+            else:
+               
+                ## 먼저 날짜 컬럼을 만들어야함 
+                today_day = datetime.now().strftime(format = "%Y-%m-%d")
+                today_time =  datetime.now().strftime(format = "%Y-%m-%d %H:%M")
+                cols1 = today_day+"(출근)"
+                cols2 = today_day+"(퇴근)"
+                
+                if cols1 in filterd_db.columns:
+                    print("yess")
+                    ## 여기에는 그냥 해당사람 시간 넣으면 됨 
+                    Attend_t = filterd_db[cols1].values[0] 
+                else:
+                    Attend_t = '--'
+                
+                if cols2 in filterd_db.columns:
+                    print("yess")
+                    ## 여기에는 그냥 해당사람 시간 넣으면 됨 
+                    Leave_t = filterd_db[cols2].values[0]
+                else:
+                    Leave_t = '--'
+                print(Attend_t==np.nan)
+                if pd.isna(Attend_t):
+                    Attend_t='none'
+                if pd.isna(Leave_t):
+                    Leave_t='none'
+
+                print('Attend,Leave',Attend_t,Leave_t)
+                return render_template("calendar-employee.html",Attend_t=Attend_t,Leave_t=Leave_t)
         else:
             abort(400, description="Session ID not found")
         
@@ -217,12 +247,60 @@ def calendar():
         if session['ADMIN']=='Y':
             name = session['NAME']
             admin = 'Y'
+            file_path = './static/data/Attend.json'
+            with open(file_path, 'r') as f:
+                attend = json.load(f)['Attend']
+
+            file_path = './static/data/Leave.json'
+            with open(file_path, 'r') as f:
+                leave = json.load(f)['Leave']
+            return render_template('calendar-admin.html',name = name,admin=admin,attend=attend,leave=leave)
         else:
             name = session['NAME']
             admin='N'
-        print(name)
+            file_path = './static/data/Attend.json'
+            with open(file_path, 'r') as f:
+                attend = json.load(f)['Attend']
 
-        return render_template('calendar.html',name = name,admin=admin)
+            file_path = './static/data/Leave.json'
+            with open(file_path, 'r') as f:
+                leave = json.load(f)['Leave']
+
+            insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+
+    
+        
+            filterd_db = insadb[insadb['ID']==session['ID']].reset_index(drop=True)
+            ## 먼저 날짜 컬럼을 만들어야함 
+            today_day = datetime.now().strftime(format = "%Y-%m-%d")
+            today_time =  datetime.now().strftime(format = "%Y-%m-%d %H:%M")
+            cols1 = today_day+"(출근)"
+            cols2 = today_day+"(퇴근)"
+            print(filterd_db)
+            if cols1 in filterd_db.columns:
+                print("yess")
+                ## 여기에는 그냥 해당사람 시간 넣으면 됨 
+                Attend_t = filterd_db[cols1].values[0]
+            else:
+                Attend_t = '--'
+            
+            if cols2 in filterd_db.columns:
+                print("yess")
+                ## 여기에는 그냥 해당사람 시간 넣으면 됨 
+                Leave_t = filterd_db[cols2].values[0]
+            else:
+                Leave_t = '--'
+         
+
+            if pd.isna(Attend_t):
+                Attend_t='none'
+            if pd.isna(Leave_t):
+                Leave_t='none'
+                
+            print('Attend,Leave',Attend_t,Leave_t)
+            
+            return render_template('calendar-employee.html',name = name,admin=admin,attend=attend,leave=leave,Attend_t=Attend_t,Leave_t=Leave_t)
+        
     else:
         return render_template('backoffice-login.html')
 
@@ -343,7 +421,111 @@ def backoffice():
 @nocache
 def mainback():
     return render_template("backoffice-main.html")
+
+
+
+
+@app.route('/attend-abled', methods=['POST'])
+@nocache
+def attendabled():
+    print(request.get_json())
+    data = request.get_json()
+    file_path = './static/data/Attend.json'
+    #data = json.loads(data)
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+    return jsonify('success')
+
+@app.route('/attend-disabled', methods=['POST'])
+@nocache
+def attenddisabled():
+    print(request.get_json())
+    data = request.get_json()
+    file_path = './static/data/Attend.json'
+    #data = json.loads(data)
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+    return jsonify('success')
+
+
+@app.route('/leave-abled', methods=['POST'])
+@nocache
+def leaveabled():
+    print(request.get_json())
+    data = request.get_json()
+    file_path = './static/data/Leave.json'
+    #data = json.loads(data)
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+    return jsonify('success')
+
+@app.route('/leave-disabled', methods=['POST'])
+@nocache
+def leavedisabled():
+    print(request.get_json())
+    data = request.get_json()
+    file_path = './static/data/Leave.json'
+    #data = json.loads(data)
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+    return jsonify('success')
+
+
+@app.route('/attend-check', methods=['POST'])
+@nocache
+def attendheck():
     
+    # ID랑 비번으로 계정 매핑  
+    insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+
+    ## 먼저 날짜 컬럼을 만들어야함 
+    today_day = datetime.now().strftime(format = "%Y-%m-%d")
+    today_time =  datetime.now().strftime(format = "%Y-%m-%d %H:%M")
+    cols = today_day+"(출근)"
+    if cols in insadb.columns:
+        print("yess")
+        ## 여기에는 그냥 해당사람 시간 넣으면 됨 
+        insadb.loc[insadb.ID==session['ID'],cols] = today_time
+
+    else:
+        print('no')
+        insadb[cols]=""
+        insadb.loc[insadb.ID==session['ID'],cols] = today_time
+
+    insadb.to_excel("./static/data/INSA_DB.xlsx",index=False)
+
+
+
+    return jsonify('success')
+
+
+
+
+@app.route('/leave-check', methods=['POST'])
+@nocache
+def leaveheck():
+    
+    # ID랑 비번으로 계정 매핑  
+    insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+
+    ## 먼저 날짜 컬럼을 만들어야함 
+    today_day = datetime.now().strftime(format = "%Y-%m-%d")
+    today_time =  datetime.now().strftime(format = "%Y-%m-%d %H:%M")
+    cols = today_day+"(퇴근)"
+    if cols in insadb.columns:
+        print("yess")
+        ## 여기에는 그냥 해당사람 시간 넣으면 됨 
+        insadb.loc[insadb.ID==session['ID'],cols] = today_time
+
+    else:
+        print('no')
+        insadb[cols]=""
+        insadb.loc[insadb.ID==session['ID'],cols] = today_time
+
+    insadb.to_excel("./static/data/INSA_DB.xlsx",index=False)
+
+    return jsonify('success')
+
 
 @app.route('/signup', methods=['GET'])
 @nocache
@@ -361,6 +543,8 @@ def logout():
     print("맞아?")
     return jsonify("success")
     
+
+
 @app.route('/register', methods=['POST'])
 @nocache
 def register():

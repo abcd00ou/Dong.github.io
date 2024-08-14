@@ -1,0 +1,180 @@
+{% extends "layout-backoffice.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <!-- 일자 클릭시 메뉴오픈 -->
+    <div id="contextMenu" class="dropdown clearfix">
+        <ul class="dropdown-menu dropNewEvent" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+            <div class="dropdown-menu-title">
+                <i type="button" class="bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></i>
+                <div>일정 생성</div>
+            </div>
+            <li><a tabindex="-1" href="#">당진</a></li>
+            <li><a tabindex="-1" href="#">송도</a></li>
+            <li><a tabindex="-1" href="#">마곡</a></li>
+            <li><a tabindex="-1" href="#">시흥</a></li>
+        </ul>
+    </div>
+    <div class="panel panel-default">
+        
+        <div>
+
+        <button id="Attendcheck" {% if attend == 'disabled' or Attend_t!= 'none' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %} >출근 체크</button>
+        <p>{% if Attend_t != 'none' %}출근 {{Attend_t}}에 되어있습니다.{% else %}출근 확인 필요합니다.{% endif %}</p>
+        <button id="Leavecheck" {% if leave == 'disabled'  or Leave_t!= 'none' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %} >퇴근 체크</button>
+        <p>{% if Leave_t != 'none' %}퇴근 {{Leave_t}}에 되어있습니다.{% else %}퇴근 확인 필요합니다.{% endif %}.</p>
+
+
+        </div>
+
+        <div class="panel-body" style="display:auto;margin-top: 30px;">
+
+            <div class="col-lg-4">
+                <label for="calendar_view">작업장별 필터</label>
+                <div class="input-group">
+                    <select class="filter" id="type_filter" multiple="multiple">
+                        <option value="당진">당진</option>
+                        <option value="송도">송도</option>
+                        <option value="마곡">마곡</option>
+                        <option value="시흥">시흥</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-4">
+                
+                <div class="input-group">
+                
+                <label class="checkbox-inline">
+                <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">{{ name }}님 로그인 되었습니다.</label>
+               
+                </div>
+            </div>
+         
+           </div>
+
+            
+
+        </div>
+    </div>
+    <!-- /.filter panel -->
+    
+    <div id="wrapper">
+        <div id="loading"></div>
+        <div id="calendar"></div>
+    </div>
+
+
+    <!-- 일정 추가 MODAL -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="eventModal">
+        <div class="modal-dialog modal-fullscreen" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i type="button" class="bi bi-x-lg modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="col-xs-4" for="edit-allDay">하루종일</label>
+                            <input class='allDayNewEvent' id="edit-allDay" type="checkbox"></label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="col-xs-4" for="edit-title">일정명</label>
+                            <input class="inputModal" type="text" name="edit-title" id="edit-title"
+                                required="required" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="col-xs-4" for="edit-start">시작</label>
+                            <input class="inputModal" type="text" name="edit-start" id="edit-start" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="col-xs-4" for="edit-end">끝</label>
+                            <input class="inputModal" type="text" name="edit-end" id="edit-end" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="col-xs-4" for="edit-type">작업장명</label>
+                            <select class="inputModal" type="text" name="edit-type" id="edit-type">
+                                <option value="당진">당진</option>
+                                <option value="송도">송도</option>
+                                <option value="마곡">마곡</option>
+                                <option value="시흥">시흥</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="col-xs-4" for="edit-color">색상</label>
+                            <select class="inputModal" name="color" id="edit-color">
+                                <option value="#D25565" style="color:#D25565;">빨간색</option>
+                                <option value="#9775fa" style="color:#9775fa;">보라색</option>
+                                <option value="#ffa94d" style="color:#ffa94d;">주황색</option>
+                                <option value="#74c0fc" style="color:#74c0fc;">파란색</option>
+                                <option value="#f06595" style="color:#f06595;">핑크색</option>
+                                <option value="#63e6be" style="color:#63e6be;">연두색</option>
+                                <option value="#a9e34b" style="color:#a9e34b;">초록색</option>
+                                <option value="#4d638c" style="color:#4d638c;">남색</option>
+                                <option value="#495057" style="color:#495057;">검정색</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="col-xs-4" for="edit-desc">설명</label>
+                            <textarea rows="4" cols="50" class="inputModal" name="edit-desc"
+                                id="edit-desc"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modalBtnContainer-addEvent">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-dark" id="save-event">저장</button>
+                </div>
+                <div class="modal-footer modalBtnContainer-modifyEvent">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-danger" id="deleteEvent">삭제</button>
+                    <button type="button" class="btn btn-dark" id="updateEvent">저장</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    
+
+    
+
+</div>
+<!-- /.container -->
+{% endblock %}
+
+{% block script %}
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/moment.min.js"></script>
+<script src="static/js/fullcalendar.min.js"></script>
+<script src="static/js/ko.js"></script>
+<script src="static/js/select2.min.js"></script>
+<script src="static/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="static/js/calendar.js"></script>
+<script src="static/js/addEvent.js"></script>
+<script src="static/js/editEvent.js"></script>
+<script src="static/js/etcSetting.js"></script>
+
+<script>
+    document.getElementById('nav_calendar').classList.add('active');
+</script>
+{% endblock %}
