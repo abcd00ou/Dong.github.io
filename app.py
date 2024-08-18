@@ -111,14 +111,14 @@ def signin():
                     ## 여기에는 그냥 해당사람 시간 넣으면 됨 
                     Attend_t = filterd_db[cols1].values[0] 
                 else:
-                    Attend_t = '--'
+                    Attend_t = 'none'
                 
                 if cols2 in filterd_db.columns:
                     print("yess")
                     ## 여기에는 그냥 해당사람 시간 넣으면 됨 
                     Leave_t = filterd_db[cols2].values[0]
                 else:
-                    Leave_t = '--'
+                    Leave_t = 'none'
                 print(Attend_t==np.nan)
                 if pd.isna(Attend_t):
                     Attend_t='none'
@@ -282,14 +282,14 @@ def calendar():
                 ## 여기에는 그냥 해당사람 시간 넣으면 됨 
                 Attend_t = filterd_db[cols1].values[0]
             else:
-                Attend_t = '--'
+                Attend_t = 'none'
             
             if cols2 in filterd_db.columns:
                 print("yess")
                 ## 여기에는 그냥 해당사람 시간 넣으면 됨 
                 Leave_t = filterd_db[cols2].values[0]
             else:
-                Leave_t = '--'
+                Leave_t = 'none'
          
 
             if pd.isna(Attend_t):
