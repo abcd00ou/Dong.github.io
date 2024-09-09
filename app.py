@@ -83,10 +83,12 @@ def signin():
         ##로그인 성공
         # ID랑 비번으로 계정 매핑  
         insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
-
+        insadb['PASSWORD'] = insadb['PASSWORD'].astype(str)
         login_data  = request.get_json()
         id = login_data['id']
-        pw = int(login_data['pw'])
+        pw = login_data['pw']
+        session['id'] = id
+        session['pw'] = pw
         print(insadb)
     
         filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
@@ -99,7 +101,11 @@ def signin():
             if session['ADMIN']=='Y':
                 return render_template("calendar-admin.html")
             else:
-               
+                ## 나머지 데이터가 있는지 확인 
+                db_cols = ['성명', '영문명', '체류비자', '국적', 'KEY_ID', '주소', '전화번호','자격증유무', '고혈압유무']
+                null_data = filterd_db[db_cols].isna().sum(axis=1).values[0]
+                if null_data!=0:
+                    sign_data = 'False'
                 ## 먼저 날짜 컬럼을 만들어야함 
                 today_day = datetime.now().strftime(format = "%Y-%m-%d")
                 today_time =  datetime.now().strftime(format = "%Y-%m-%d %H:%M")
@@ -126,10 +132,45 @@ def signin():
                     Leave_t='none'
 
                 print('Attend,Leave',Attend_t,Leave_t)
-                return render_template("calendar-employee.html",Attend_t=Attend_t,Leave_t=Leave_t)
+                return jsonify(sign_data=sign_data)
         else:
             abort(400, description="Session ID not found")
         
+@app.route('/gocalendar', methods=['GET'])
+@nocache
+def gocalendar():
+    insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+    insadb['PASSWORD'] = insadb['PASSWORD'].astype(str)
+    filterd_db = insadb[(insadb['ID']==session['id'])&(insadb['PASSWORD']==session['pw'])].reset_index(drop=True)
+    ## 먼저 날짜 컬럼을 만들어야함 
+    today_day = datetime.now().strftime(format = "%Y-%m-%d")
+    today_time =  datetime.now().strftime(format = "%Y-%m-%d %H:%M")
+    cols1 = today_day+"(출근)"
+    cols2 = today_day+"(퇴근)"
+    
+    if cols1 in filterd_db.columns:
+        print("yess")
+        ## 여기에는 그냥 해당사람 시간 넣으면 됨 
+        Attend_t = filterd_db[cols1].values[0] 
+    else:
+        Attend_t = 'none'
+    
+    if cols2 in filterd_db.columns:
+        print("yess")
+        ## 여기에는 그냥 해당사람 시간 넣으면 됨 
+        Leave_t = filterd_db[cols2].values[0]
+    else:
+        Leave_t = 'none'
+    print(Attend_t==np.nan)
+    if pd.isna(Attend_t):
+        Attend_t='none'
+    if pd.isna(Leave_t):
+        Leave_t='none'
+    name = session['NAME']
+
+    print('Attend,Leave',Attend_t,Leave_t)
+    return render_template("calendar-employee.html",Attend_t=Attend_t,Leave_t=Leave_t,name = name)
+
 
 @app.route('/survey', methods=['GET','POST'])
 @nocache
@@ -164,6 +205,8 @@ def survey():
         additional = survey_data['additional'].split("\n")
         date = survey_data['date'].split(" ")[0]
         username = survey_data['username']
+
+        
 
         work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
         worker_info  = pd.read_excel("./static/data/작업공수/작업자입력.xlsx",header=[0,1])
@@ -210,7 +253,9 @@ def survey():
             
             worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += 0.5
 
-        
+        file_path = "./static/data/test.json"
+        with open(file_path, 'r',encoding='utf-8') as outfile:
+            old_df = pd.DataFrame(json.loads(json.load(outfile)))
         
         for task in taskresult:
             task_info = task.split("_")
@@ -222,13 +267,20 @@ def survey():
                                         "위치_분류2":[task_info[3]],
                                         "작업_분류1":["??"],
                                         "작업_분류3":[task_info[4]+" "+task_info[5]],
-                                        "공수":[int(task_info[6])],
+                                        "공수":[float(task_info[6])],
                                         "인원":[int(numworkers)],
                                         "도급/직영":[task_info[1]],
                                         "특이사항":[additional[0]]
                                         })
                 work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
+                new_val = pd.DataFrame({"구간":[task_info[3]],"층":[task_info[2]],"세부구간":[task_info[4]],"중분류":[task_info[1]],"작업내용":[task_info[5]],"공수":[float(task_info[6])],"작업날짜":[date],"직종":["??"],"작업장명":[task_info[0]]})
+                new_df = pd.concat([old_df,new_val]).reset_index(drop=True)
         #worker_info.columns = pd.MultiIndex.from_tuples(worker_info.columns)
+        
+
+        with open(file_path, 'w',encoding='utf-8') as outfile:
+            json.dump(new_df.to_json(orient='records'), outfile, ensure_ascii=False, indent=4)
+
         if(len(worker_info)>1):
             print('worker_info',worker_info)
             #worker_info.to_excel()
@@ -562,22 +614,41 @@ def register():
     user_address = register_data['user_address']
     user_certificate = register_data['user_certificate']
     user_highBlood = register_data['user_highBlood']
+    radio_nationality = register_data['radio_nationality']
 
-    registerd_data = pd.DataFrame({
-        "성명":[user_name],
-        "영문명":[user_name],
-        "체류비자":[user_visa],
-        "국적":[user_nationality],
-        "KEY_ID":[user_credential],
-        "주소":[user_address],
-        "전화번호":[user_contact],
-        "자격증유무":[user_certificate],
-        "고혈압유무":[user_highBlood],
-        "ID":[user_id],
-        "PASSWORD":[user_pw],
-        "ADMIN":["N"]
-        
-    })
+    if radio_nationality=='총괄':
+        registerd_data = pd.DataFrame({
+            "성명":[user_name],
+            "영문명":[user_name],
+            "체류비자":[user_visa],
+            "국적":[user_nationality],
+            "KEY_ID":[user_credential],
+            "주소":[user_address],
+            "전화번호":[user_contact],
+            "자격증유무":[user_certificate],
+            "고혈압유무":[user_highBlood],
+            "ID":[user_id],
+            "PASSWORD":[user_pw],
+            "ADMIN":["Y"]
+            
+        })
+    else:
+        registerd_data = pd.DataFrame({
+            "성명":[user_name],
+            "영문명":[user_name],
+            "체류비자":[user_visa],
+            "국적":[user_nationality],
+            "KEY_ID":[user_credential],
+            "주소":[user_address],
+            "전화번호":[user_contact],
+            "자격증유무":[user_certificate],
+            "고혈압유무":[user_highBlood],
+            "ID":[user_id],
+            "PASSWORD":[user_pw],
+            "ADMIN":["N"]
+            
+        })
+
 
     insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
     insadb_new.to_excel("./static/data/INSA_DB.xlsx",index=False)

@@ -213,8 +213,15 @@
           contentType: 'application/json',
           data: JSON.stringify({id: id, pw: pw}),
           success: function(response) {
-              alert("로그인 되었습니다. ");
-              window.location.href = 'calendar'
+              
+              if(response.sign_data=='False'){
+                $('#warn-info').removeClass('fade').modal('show');
+             
+              }else{
+                alert("로그인 되었습니다. ");
+                window.location.href = 'calendar'
+              }
+             
           },
           error: function(response) {
               alert("로그인 정보를 확인해주세요.");
@@ -236,6 +243,8 @@
       var user_address = $('#address').val();
       var user_certificate = $('#certificate').val();
       var user_highBlood = $('#highBlood').val();
+      var radio_nationality = document.querySelector('input[name="radioNationality"]:checked');
+
       
 
 
@@ -245,7 +254,7 @@
           contentType: 'application/json',
           data: JSON.stringify({user_id: user_id, user_pw: user_pw,user_name:user_name,
             user_contact:user_contact,user_nationality:user_nationality,user_credential:user_credential,
-            user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood     
+            user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood,radio_nationality:radio_nationality    
           }),
           success: function(response) {
               alert('회원가입이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');

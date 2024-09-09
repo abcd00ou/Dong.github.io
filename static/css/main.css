@@ -812,7 +812,7 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  padding: 10px 0;
   scroll-margin-top: 100px;
   overflow: clip;
 }
@@ -821,7 +821,7 @@ section,
 
   section,
   .section {
-    scroll-margin-top: 66px;
+    scroll-margin-top: 30px;
   }
 }
 
@@ -830,7 +830,7 @@ section,
 --------------------------------------------------------------*/
 .section-title {
   text-align: center;
-  padding: 30px 0;
+  padding: 10px 0;
   margin-bottom: 30px;
   position: relative;
 }
@@ -880,9 +880,9 @@ section,
 --------------------------------------------------------------*/
 .hero {
   width: 100%;
-  min-height: 100vh;
+  min-height: 80vh;
   position: relative;
-  padding: 160px 0 100px 0;
+  padding: 00;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -900,10 +900,11 @@ section,
 
 .hero:before {
   content: "";
-  background: color-mix(in srgb, var(--background-color), transparent 30%);
+  background: color-mix(in srgb, var(--background-color), transparent 10%);
   position: absolute;
   inset: 0;
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .hero .container {
@@ -912,7 +913,8 @@ section,
 }
 
 .hero h2 {
-  margin: 0;
+  margin: 15;
+  margin-top:10px;
   font-size: 48px;
   text-transform: uppercase;
   font-weight: 700;
@@ -929,8 +931,8 @@ section,
   font-weight: 400;
   font-size: 15px;
   display: inline-block;
-  padding: 8px 30px;
-  margin: 30px 0 0 0;
+  padding: 10px 30px;
+  margin: 20px 0 0 0;
   transition: 0.5s;
   text-transform: uppercase;
   border: 2px solid color-mix(in srgb, var(--default-color), transparent 20%);
@@ -2399,6 +2401,8 @@ label {
   margin-right: 24px;
   font-weight: bolder;
 }
+
+
 .modal-content .modal-header{
   justify-content: center;
 }
@@ -2437,10 +2441,34 @@ label {
   background-color: #333333;
 }
 
+.btn-orange-custom {
+  background-color: #bb3810;
+  color: white;
+  transition-duration: 0.5s;
+  border: 0;
+  border-radius: 5px;
+  padding: 16px 0;
+}
+.btn-orange-custom:hover {
+  background-color: #333333;
+}
+
 #effort {
   width: auto;
   padding: 0;
   margin: 0;
   text-align: center;
   border: 0;
+}
+
+.responsive-img {
+  width: 100%;
+  height: auto;
+}
+
+
+.responsive-video {
+  width: 100%; /* 부모 요소의 가로 크기에 맞춤 */
+  max-width: 640px; /* 최대 너비를 제한 */
+  height: auto; /* 비율을 유지한 채 높이를 자동으로 설정 */
 }

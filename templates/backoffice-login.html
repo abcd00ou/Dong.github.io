@@ -71,6 +71,25 @@
         <a href="{{url_for('signup')}}" class="btn btn-dark-custom">회원가입</a>
     </div>
 </div>
+<!-- The Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="warn-info">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i type="button" class="bi bi-x-lg modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                <h4 class="modal-title">회원정보 입력</h4>
+            </div>
+            <div class="modal-body">
+                <p>회원정보가 입력되지 않았습니다. 회원정보 입력 페이지로 가시겠습니까?</p>
+            </div>
+            <div class="modal-footer modalBtnContainer-addEvent">
+                <a href="{{url_for('signup')}}" class="btn btn-orange-custom">지금 기입하기</a>
+                <a href="{{url_for('gocalendar')}}" class="btn btn-dark-custom">나중에</a>
+            </div>
+           
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
 {% endblock %}
 

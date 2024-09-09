@@ -53,7 +53,7 @@
                         <!-- <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '당진')">당진</li> -->
                         <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '당진')">당진</li>
                         <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '마곡')">마곡</li>
-                        <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '서울')">서울</li>
+                        <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '김포')">김포</li>
                     </ul>
                 </div>
             </div>
@@ -343,7 +343,7 @@
             } else if (level === 'section') {
                 filteredData = data.filter(item => item['cat1'] === category && item['cat2'] === floor && item['cat3'] === section);
                 populateDropdown('subsection', [...new Set(filteredData.map(item => item['cat4']))]);
-                populateDropdown('task', [...new Set(filteredData.map(item => item['작업 내용']))]);
+                populateDropdown('task', [...new Set(filteredData.map(item => item['작업내용']))]);
             }
         };
 
@@ -424,11 +424,22 @@
 
             document.getElementById('cat5Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat5Options');
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === cat3&&item['세부구간'] === value).map(item => item['작업 내용']))];
-
+            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === cat3&&item['세부구간'] === value).map(item => item['작업내용']))];
+            console.log('cat5',uniqueValues)
             modelOptions.innerHTML = uniqueValues.map(model => 
                 `<li type="button" data-bs-dismiss="modal" onclick="selectOption('cat5', '${model}')"> ${model}</li>`
             ).join('');
+
+            const additionalInputHTML = `
+                <li id='add_li'>
+                    <input type="text" id="additionalInput" placeholder="보기에 없는경우 직접 입력하세요" />
+                    <button type="button" onclick="addCustomOption()">작업 추가</button>
+                </li>
+            `;
+
+            // 추가 입력 필드를 modelOptions 요소에 추가
+            modelOptions.innerHTML += additionalInputHTML;
+
             document.getElementById('cat4').innerHTML = value;
         }else if(category==="cat5"){
             var cat5= value;
@@ -442,6 +453,31 @@
     function onEffortClicked(num) {
         const effortElement = document.getElementById('effort');
         effortElement.value = (Number(effortElement.value) + num).toFixed(1);
+    }
+
+    // 추가된 옵션을 처리하는 함수
+    function addCustomOption() {
+        const inputElement = document.getElementById('additionalInput');
+        const newValue = inputElement.value.trim();
+
+        if (newValue) {
+            const modelOptions = document.getElementById('cat5Options');
+            // 새로운 li 요소를 생성
+            const newLi = document.createElement('li');
+            newLi.setAttribute('type', 'button');
+            newLi.setAttribute('data-bs-dismiss', 'modal');
+            newLi.setAttribute('onclick', `selectOption('cat5', '${newValue}')`);
+            newLi.textContent = newValue;
+
+            // 새로운 li 요소를 add_li 요소 위에 삽입
+            const addLi = document.getElementById('add_li');
+            modelOptions.insertBefore(newLi, addLi);
+
+            // 입력 필드 초기화
+            inputElement.value = '';
+        } else {
+            alert('유효한 값을 입력하세요.');
+        }
     }
 
 
@@ -564,7 +600,7 @@
 
             return `${year}-${month}-${day} ${hours}:${minutes}`;
         }
-        var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업자 명 :${document.getElementById('workers-normal').value}\n연장 근무자명 : ${document.getElementById('workers-hard').value}\n오전 근무자명 : ${document.getElementById('workers-morning').value}\n작업 내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
+        var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업자 명 :${document.getElementById('workers-normal').value}\n연장 근무자명 : ${document.getElementById('workers-hard').value}\n오전 근무자명 : ${document.getElementById('workers-morning').value}\n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
         console.log(document.getElementById('date-input').value)
         var eventData = {
             _id: Number(eventId),

@@ -157,10 +157,11 @@ $('#deleteEvent').on('click', function () {
                 contentType: 'application/json',
                 data: JSON.stringify({data:json_data}),
                 success: function(response) {
-                    alert('Data remove successfully:', response);
+                    alert('데이터를 정상적으로 삭제하였습니다.:', response);
+                    location.reload();  // 성공 후 페이지 새로고침
                 },
                 error: function(error) {
-                    alert('Error remove data:', error);
+                    alert('에러 : 데이터 삭제 실패:', error);
                 }
             });
            
