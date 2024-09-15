@@ -19,7 +19,12 @@
         </ul>
     </div>
     <div class="panel panel-default">
-        <div style="margin-top: 90px;justify-content:center;display: auto;">
+
+  
+        <label class="checkbox-inline">
+        <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">{{place}} 담당 : {{ name }}님 로그인 되었습니다.</label>
+
+        <div style="margin-top: 20px;justify-content:center;display: auto;">
 
         <button id="Attend-abled"  {% if attend == 'abled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>출근 활성화</button>
         <button id="Attend-disabled"  {% if attend == 'disabled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>출근 비활성화</button>
@@ -33,7 +38,7 @@
 
         <div class="panel-body" style="display:auto;margin-top: 30px;">
             <div class="col-lg-4">
-                <label for="calendar_view">검색</label>
+                <label for="text_filter">검색</label>
                 <div class="d-flex">  
                     <input  type="text" id="text_filter" placeholder="검색할 단어 입력">
                     <button class="search-button" id= 'filter_btn'>
@@ -42,7 +47,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <label for="calendar_view">작업장별 필터</label>
+                <label for="type_filter">작업장별 필터</label>
                 <div class="input-group">
                     <select class="filter" id="type_filter" multiple="multiple">
                         <option value="당진">당진</option>
@@ -52,18 +57,7 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
-            <div class="col-lg-4">
-                
-                <div class="input-group">
-                
-                <label class="checkbox-inline">
-                <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">{{ name }}님 로그인 되었습니다.</label>
-               
-                </div>
-            </div>
-         
-           </div>
+            
 
             
 

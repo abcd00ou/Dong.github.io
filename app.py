@@ -89,6 +89,7 @@ def signin():
         pw = login_data['pw']
         session['id'] = id
         session['pw'] = pw
+
         print(insadb)
     
         filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
@@ -98,6 +99,7 @@ def signin():
             session['NAME'] = filterd_db['성명'][0]
             session['ID'] = filterd_db['ID'][0]
             session['ADMIN'] = filterd_db['ADMIN'][0]
+            session['PLACE'] = filterd_db['작업장'][0]
             if session['ADMIN']=='Y':
                 return render_template("calendar-admin.html")
             else:
@@ -132,6 +134,7 @@ def signin():
                     Leave_t='none'
 
                 print('Attend,Leave',Attend_t,Leave_t)
+
                 return jsonify(sign_data=sign_data)
         else:
             abort(400, description="Session ID not found")
@@ -167,9 +170,18 @@ def gocalendar():
     if pd.isna(Leave_t):
         Leave_t='none'
     name = session['NAME']
+    place = session['PLACE']
+    file_path = './static/data/Attend.json'
+    with open(file_path, 'r') as f:
+        attend = json.load(f)[place]['Attend']
+
+    file_path = './static/data/Leave.json'
+    with open(file_path, 'r') as f:
+        leave = json.load(f)[place]['Leave']
 
     print('Attend,Leave',Attend_t,Leave_t)
-    return render_template("calendar-employee.html",Attend_t=Attend_t,Leave_t=Leave_t,name = name)
+
+    return render_template("calendar-employee.html",Attend_t=Attend_t,Leave_t=Leave_t,name = name,attend=attend,leave=leave)
 
 
 @app.route('/survey', methods=['GET','POST'])
@@ -299,24 +311,27 @@ def calendar():
         if session['ADMIN']=='Y':
             name = session['NAME']
             admin = 'Y'
+            place = session['PLACE']
             file_path = './static/data/Attend.json'
             with open(file_path, 'r') as f:
-                attend = json.load(f)['Attend']
+                attend = json.load(f)[place]['Attend']
 
             file_path = './static/data/Leave.json'
             with open(file_path, 'r') as f:
-                leave = json.load(f)['Leave']
-            return render_template('calendar-admin.html',name = name,admin=admin,attend=attend,leave=leave)
+                leave = json.load(f)[place]['Leave']
+            
+            return render_template('calendar-admin.html',name = name,admin=admin,attend=attend,leave=leave,place = place)
         else:
             name = session['NAME']
+            place = session['PLACE']
             admin='N'
             file_path = './static/data/Attend.json'
             with open(file_path, 'r') as f:
-                attend = json.load(f)['Attend']
+                attend = json.load(f)[place]['Attend']
 
             file_path = './static/data/Leave.json'
             with open(file_path, 'r') as f:
-                leave = json.load(f)['Leave']
+                leave = json.load(f)[place]['Leave']
 
             insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
 
@@ -350,7 +365,7 @@ def calendar():
                 Leave_t='none'
                 
             print('Attend,Leave',Attend_t,Leave_t)
-            
+            print('attend',attend,leave)
             return render_template('calendar-employee.html',name = name,admin=admin,attend=attend,leave=leave,Attend_t=Attend_t,Leave_t=Leave_t)
         
     else:
@@ -483,9 +498,14 @@ def attendabled():
     print(request.get_json())
     data = request.get_json()
     file_path = './static/data/Attend.json'
-    #data = json.loads(data)
+    place = session['PLACE']
+
+    with open(file_path, 'r') as infile:
+        df_attend = json.load(infile)
+    df_attend[place] = data
+
     with open(file_path, 'w') as outfile:
-      json.dump(data, outfile, indent=4)
+      json.dump(df_attend, outfile, indent=4)
     return jsonify('success')
 
 @app.route('/attend-disabled', methods=['POST'])
@@ -494,9 +514,14 @@ def attenddisabled():
     print(request.get_json())
     data = request.get_json()
     file_path = './static/data/Attend.json'
-    #data = json.loads(data)
+    place = session['PLACE']
+
+    with open(file_path, 'r') as infile:
+        df_attend = json.load(infile)
+    df_attend[place] = data
+
     with open(file_path, 'w') as outfile:
-      json.dump(data, outfile, indent=4)
+      json.dump(df_attend, outfile, indent=4)
     return jsonify('success')
 
 
@@ -506,9 +531,14 @@ def leaveabled():
     print(request.get_json())
     data = request.get_json()
     file_path = './static/data/Leave.json'
-    #data = json.loads(data)
+
+    place = session['PLACE']
+    with open(file_path, 'r') as infile:
+        df_leave = json.load(infile)
+    df_leave[place] = data
+
     with open(file_path, 'w') as outfile:
-      json.dump(data, outfile, indent=4)
+      json.dump(df_leave, outfile, indent=4)
     return jsonify('success')
 
 @app.route('/leave-disabled', methods=['POST'])
@@ -517,9 +547,15 @@ def leavedisabled():
     print(request.get_json())
     data = request.get_json()
     file_path = './static/data/Leave.json'
-    #data = json.loads(data)
+
+    place = session['PLACE']
+    with open(file_path, 'r') as infile:
+        df_leave = json.load(infile)
+    df_leave[place] = data
+
     with open(file_path, 'w') as outfile:
-      json.dump(data, outfile, indent=4)
+      json.dump(df_leave, outfile, indent=4)
+
     return jsonify('success')
 
 
@@ -686,9 +722,13 @@ def register():
         })
 
     if user_id in insadb['ID'].unique():
-        insadb = insadb[insadb.ID!=user_id]
-        insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
-        insadb_new.to_excel("./static/data/INSA_DB.xlsx",index=False)
+        # insadb = insadb[insadb.ID!=user_id]
+        # insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
+        insadb_new = insadb.copy()
+        insadb.loc[insadb.ID!=user_id,
+                   ["성명","영문명","체류비자","국적","KEY_ID",
+                    "주소","전화번호","자격증유무","고혈압유무","ID","PASSWORD"]] = [user_name,user_name,user_visa,user_nationality,user_nationality,user_credential,user_address,user_contact,user_contact,user_certificate,user_highBlood,user_id,user_pw]
+        insadb.to_excel("./static/data/INSA_DB.xlsx",index=False)
     else:
         insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
         insadb_new.to_excel("./static/data/INSA_DB.xlsx",index=False)

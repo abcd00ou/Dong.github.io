@@ -106,6 +106,7 @@ var calendar = $('#calendar').fullCalendar({
       html: true,
       container: 'body'
     });
+    console.log('렌더링됨?')
     return filtering(event);
 
   },
@@ -293,51 +294,55 @@ function filtering(event) {
   }).get();
 
   var types = $('#type_filter').val();
-  $('#text_filter').on('input', function() {
-        var texts = $('#text_filter').val();
+  $('#filter_btn').on('click', function() {
+        var texts = [$('#text_filter').val()];
         console.log(texts); // 입력된 값을 콘솔에 출력
         
         if (texts && texts.length > 0) {
-          if(texts.indexOf(event.type) > 0){
-            show_type = false
-          }else if(texts.indexOf(event.description) > 0){
-            show_type = false
-          }else if(texts.indexOf(event.title) > 0){
-            show_type = false
-          }else if(texts.indexOf(event.username) > 0){
-            show_type = false
+ 
+          
+          if(texts.indexOf(event.type) >= 0){
+            show_type = true
+          }else if(texts.indexOf(event.description) >= 0){
+            show_type = true
+          }else if(texts.indexOf(event.title) >= 0){
+            show_type = true
+          }else if(texts.indexOf(event.username) >= 0){
+            show_type = true
           }else{
-            show_type=true
+            show_type=false
           }
-          console.log('show_type',show_type)
+         
           
         }
+        if(admin_name.includes(username[0])){
+  
+          show_username = true;
+        }else{
+          show_username = username.indexOf(event.username) >= 0;
+        }
+    
+
     });
   
-  console.log(username)
   if(admin_name.includes(username[0])){
-    console.log("여기아냐?")
+
     show_username = true;
   }else{
     show_username = username.indexOf(event.username) >= 0;
   }
   
-  console.log(types)
   
   if (types && types.length > 0) {
     if (types[0] == "all") {
       show_type = true;
     } else {
-      console.log(types)
+
       show_type = types.indexOf(event.type) >= 0;
-      console.log(show_type)
+
     }
   }
 
-  
-
-
-  console.log("show_username",show_username,show_type)
   return show_username && show_type;
 }
 
