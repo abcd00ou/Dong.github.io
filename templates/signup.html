@@ -133,7 +133,7 @@
             </select>
             
         </div>
-        <button type="submit" class="btn btn-dark-custom">회원가입</button>
+        <button type="submit" class="btn btn-dark-custom">정보 등록</button>
     </form>
 </div>
 {% endblock %}
@@ -141,6 +141,67 @@
 {% block script %}
 <script>
 
+
+const userData = {{info_list|tojson}}
+console.log(userData)
+// 해당 필드에 값이 있을 경우 값을 넣고 disabled 처리
+function populateAndDisableFields() {
+    const formFields = {
+        user_address: document.getElementById('address'),
+        user_certificate: document.getElementById('certificate'),
+        user_contact: document.getElementById('contact'),
+        user_credential: document.getElementById('credential'),
+        user_highBlood: document.getElementById('highBlood'),
+        user_id: document.getElementById('identify'),
+        user_name: document.getElementById('name'),
+        user_nationality: document.getElementById('nationality'),
+        user_visa: document.getElementById('visa')
+    };
+    console.log(formFields)
+    // 각 필드를 체크하여 값이 있으면 설정하고 disabled 처리
+    for (const key in userData) {
+        console.log(isNaN(userData[key]))
+        if ((userData[key] !== null || !isNaN(userData[key]))&& formFields[key]) {
+            console.log(userData[key])
+            formFields[key].value = userData[key];
+            // formFields[key].disabled = true;  // 값이 있으면 필드 비활성화
+        }
+    }
+}
+
+function checkNationalityAndDisableVisa() {
+        const radioNationality1 = document.getElementById('radioNationality1');
+        const radioNationality3 = document.getElementById('radioNationality3');
+        const visaField = document.getElementById('visa');
+        const nationality = document.getElementById('nationality');
+        console.log('radioNationality1',radioNationality1)
+        if (radioNationality1.checked) {
+            visaField.disabled = true;  // radioNationality1이 체크되면 비자 필드를 비활성화
+            nationality.disabled = true;
+            nationality.value = 'Korea, Republic of';
+
+        } else if(radioNationality3.checked){
+            visaField.disabled = true;  // radioNationality1이 체크되면 비자 필드를 비활성화
+            nationality.disabled = true;
+            nationality.value = 'Korea, Republic of';
+        }else {
+            visaField.disabled = false; // 다른 값이면 비자 필드를 활성화
+            
+        }
+    }
+
+   
+
+// 라디오 버튼 클릭할 때마다 변경 사항을 감지하고 처리
+document.getElementById('custom-radio-nationality').addEventListener('change', checkNationalityAndDisableVisa);
+
+
+
+window.onload = function() {
+    populateAndDisableFields();
+    checkNationalityAndDisableVisa();
+    // 필요시 다른 함수도 호출
+};
 
 const identifyValidation = () => {
     // 아이디 검증
@@ -232,11 +293,17 @@ const visaValidation = () => {
     // 전화번호 검증
     // 빈칸 확인
     const visa = document.querySelector('#visa');
-    if (!visa.value) {
-        visa.classList.add('is-invalid');
-        return false
+    if(visa.disabled==false){
+        if (!visa.value) {
+             visa.classList.add('is-invalid');
+
+            return false
+        }
+        return true
+    }else{
+        return true
     }
-    return true
+    
 }
 
 const addressValidation = () => {
@@ -308,9 +375,44 @@ const addressValidation = () => {
 
     const form = document.querySelector('.needs-validation');
     form.addEventListener('submit', event => {
-        if (!customValidity()) {
+        console.log('customValidity',customValidity())
+        if (customValidity()) {
             event.preventDefault();
             event.stopPropagation();
+
+                    
+            var user_id = $('#identify').val();
+            var user_pw = $('#password').val();
+            var user_name = $('#name').val();
+            var user_contact = $('#contact').val();
+            var user_nationality = $('#nationality').val();
+            var user_credential = $('#credential').val();
+            var user_visa = $('#visa').val();
+            var user_address = $('#address').val();
+            var user_certificate = $('#certificate').val();
+            var user_highBlood = $('#highBlood').val();
+            var radio_nationality = document.querySelector('input[name="radioNationality"]:checked');
+
+            
+            $.ajax({
+                url: '/register',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({user_id: user_id, user_pw: user_pw,user_name:user_name,
+                    user_contact:user_contact,user_nationality:user_nationality,user_credential:user_credential,
+                    user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood,radio_nationality:radio_nationality    
+                }),
+                success: function(response) {
+                    alert('회원가입이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
+                    window.location.href = 'backoffice'
+                },
+                error: function(response) {
+                    alert("정보를 모두 기입해주세요.")
+                }
+            });
+        }else{
+            event.preventDefault();
+            alert("정보를 모두 기입해주세요.--")
         }
         
     }, false);

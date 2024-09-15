@@ -229,42 +229,40 @@
       });
   });
 
-  $('#register').on('submit', function(event) {
-      event.preventDefault();
-      //회원가입을 위한 정보 제공 
+  // $('#register').on('submit', function(event) {
+  //     event.preventDefault();
+  //     //회원가입을 위한 정보 제공 
   
-      var user_id = $('#identify').val();
-      var user_pw = $('#password').val();
-      var user_name = $('#name').val();
-      var user_contact = $('#contact').val();
-      var user_nationality = $('#nationality').val();
-      var user_credential = $('#credential').val();
-      var user_visa = $('#visa').val();
-      var user_address = $('#address').val();
-      var user_certificate = $('#certificate').val();
-      var user_highBlood = $('#highBlood').val();
-      var radio_nationality = document.querySelector('input[name="radioNationality"]:checked');
-
-      
+  //     var user_id = $('#identify').val();
+  //     var user_pw = $('#password').val();
+  //     var user_name = $('#name').val();
+  //     var user_contact = $('#contact').val();
+  //     var user_nationality = $('#nationality').val();
+  //     var user_credential = $('#credential').val();
+  //     var user_visa = $('#visa').val();
+  //     var user_address = $('#address').val();
+  //     var user_certificate = $('#certificate').val();
+  //     var user_highBlood = $('#highBlood').val();
+  //     var radio_nationality = document.querySelector('input[name="radioNationality"]:checked');
 
 
-      $.ajax({
-          url: '/register',
-          method: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({user_id: user_id, user_pw: user_pw,user_name:user_name,
-            user_contact:user_contact,user_nationality:user_nationality,user_credential:user_credential,
-            user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood,radio_nationality:radio_nationality    
-          }),
-          success: function(response) {
-              alert('회원가입이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
-              window.location.href = 'backoffice'
-          },
-          error: function(response) {
-              alert(response.responseJSON.message);
-          }
-      });
-  });
+  //     $.ajax({
+  //         url: '/register',
+  //         method: 'POST',
+  //         contentType: 'application/json',
+  //         data: JSON.stringify({user_id: user_id, user_pw: user_pw,user_name:user_name,
+  //           user_contact:user_contact,user_nationality:user_nationality,user_credential:user_credential,
+  //           user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood,radio_nationality:radio_nationality    
+  //         }),
+  //         success: function(response) {
+  //             alert('회원가입이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
+  //             window.location.href = 'backoffice'
+  //         },
+  //         error: function(response) {
+  //             alert(response.responseJSON.message);
+  //         }
+  //     });
+  // });
 
 
   $('#nav_logout').on('click',function(){

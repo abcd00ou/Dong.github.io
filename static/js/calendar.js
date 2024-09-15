@@ -79,7 +79,7 @@ var calendar = $('#calendar').fullCalendar({
 
 
   eventRender: function (event, element, view) {
-
+    console.log('element',element)
     //일정에 hover시 요약
     element.popover({
       title: $('<div />', {
@@ -87,7 +87,9 @@ var calendar = $('#calendar').fullCalendar({
         text: event.title
       }).css({
         'background': event.backgroundColor,
-        'color': event.textColor
+        'color': event.textColor,
+        'font-size':'1px',
+        'z-index':'9'
       }),
       content: $('<div />', {
           class: 'popoverInfoCalendar'
@@ -96,7 +98,7 @@ var calendar = $('#calendar').fullCalendar({
         .append('<p><strong>시간:</strong> ' + getDisplayEventDate(event) + '</p>')
         .append('<div class="popoverDescCalendar"><strong>설명:</strong> ' + event.description + '</div>'),
       delay: {
-        show: "800",
+        show: "700",
         hide: "50"
       },
       trigger: 'hover',
@@ -104,7 +106,6 @@ var calendar = $('#calendar').fullCalendar({
       html: true,
       container: 'body'
     });
-
     return filtering(event);
 
   },
@@ -255,10 +256,18 @@ var calendar = $('#calendar').fullCalendar({
 
   //이벤트 클릭시 수정이벤트
   eventClick: function (event, jsEvent, view) {
+    console.log(jsEvent),
+    console.log(view)
+    console.log("event 왜안돼",event)
     editEvent(event);
+    console.log("You clicked at:", jsEvent.pageX, jsEvent.pageY);
+    // 클릭된 이벤트 정보 출력
+    console.log("Event clicked:", event);
   }
 
 });
+
+
 
 function getDisplayEventDate(event) {
 
@@ -278,11 +287,33 @@ function getDisplayEventDate(event) {
 function filtering(event) {
   var show_username = true;
   var show_type = true;
-  var admin_name = ['김서준','이동성'];
+  var admin_name = ['김서준','이동성','정병현'];
   var username = $('input:checkbox.filter:checked').map(function () {
     return $(this).val();
   }).get();
+
   var types = $('#type_filter').val();
+  $('#text_filter').on('input', function() {
+        var texts = $('#text_filter').val();
+        console.log(texts); // 입력된 값을 콘솔에 출력
+        
+        if (texts && texts.length > 0) {
+          if(texts.indexOf(event.type) > 0){
+            show_type = false
+          }else if(texts.indexOf(event.description) > 0){
+            show_type = false
+          }else if(texts.indexOf(event.title) > 0){
+            show_type = false
+          }else if(texts.indexOf(event.username) > 0){
+            show_type = false
+          }else{
+            show_type=true
+          }
+          console.log('show_type',show_type)
+          
+        }
+    });
+  
   console.log(username)
   if(admin_name.includes(username[0])){
     console.log("여기아냐?")
@@ -291,14 +322,21 @@ function filtering(event) {
     show_username = username.indexOf(event.username) >= 0;
   }
   
-
+  console.log(types)
+  
   if (types && types.length > 0) {
     if (types[0] == "all") {
       show_type = true;
     } else {
+      console.log(types)
       show_type = types.indexOf(event.type) >= 0;
+      console.log(show_type)
     }
   }
+
+  
+
+
   console.log("show_username",show_username,show_type)
   return show_username && show_type;
 }

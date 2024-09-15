@@ -32,7 +32,15 @@
        
 
         <div class="panel-body" style="display:auto;margin-top: 30px;">
-
+            <div class="col-lg-4">
+                <label for="calendar_view">검색</label>
+                <div class="d-flex">  
+                    <input  type="text" id="text_filter" placeholder="검색할 단어 입력">
+                    <button class="search-button" id= 'filter_btn'>
+                        <i class="fas fa-search"></i> <!-- Font Awesome 돋보기 아이콘 -->
+                    </button>
+                </div>
+            </div>
             <div class="col-lg-4">
                 <label for="calendar_view">작업장별 필터</label>
                 <div class="input-group">
@@ -177,5 +185,6 @@
 
 <script>
     document.getElementById('nav_calendar').classList.add('active');
+
 </script>
 {% endblock %}

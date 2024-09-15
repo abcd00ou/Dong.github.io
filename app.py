@@ -586,7 +586,43 @@ def signup():
     with open(file_path, 'r') as f:
       countries = json.load(f)
       f.close()
-    return render_template("signup.html", countries=countries['countries'])
+
+    # ID랑 비번으로 계정 매핑  
+    insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+
+    id = str(session['id']) 
+    pw = str(session['pw'])
+    print('id',id,pw)
+    print(insadb)
+    print(insadb[insadb['ID']==id])
+    try:
+        filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==int(pw))].reset_index(drop=True)
+    except:
+        filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
+    print(filterd_db)
+    if len(filterd_db)>0:## 정보가 있는경우 
+        filterd_db= filterd_db.fillna("")
+        user_name = filterd_db['성명'].values[0]
+        user_contact = filterd_db['전화번호'].values[0]
+        user_nationality = filterd_db['국적'].values[0]
+        user_credential = filterd_db['KEY_ID'].values[0]
+        user_visa = filterd_db['체류비자'].values[0]
+        user_address = filterd_db['주소'].values[0]
+        user_certificate = filterd_db['자격증유무'].values[0]
+        user_highBlood = filterd_db['고혈압유무'].values[0]
+        info_list = {'user_id':id,
+                     'user_name':user_name,
+                    'user_contact':user_contact,
+                    'user_nationality':user_nationality,
+                    'user_credential':user_credential,
+                    'user_visa':user_visa,
+                    'user_address':user_address,
+                    'user_certificate':user_certificate,
+                    'user_highBlood':user_highBlood}
+    else: 
+        info_list={}
+
+    return render_template("signup.html", countries=countries['countries'],info_list=info_list)
 
 @app.route('/logout', methods=['POST'])
 @nocache
@@ -649,9 +685,13 @@ def register():
             
         })
 
-
-    insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
-    insadb_new.to_excel("./static/data/INSA_DB.xlsx",index=False)
+    if user_id in insadb['ID'].unique():
+        insadb = insadb[insadb.ID!=user_id]
+        insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
+        insadb_new.to_excel("./static/data/INSA_DB.xlsx",index=False)
+    else:
+        insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
+        insadb_new.to_excel("./static/data/INSA_DB.xlsx",index=False)
 
     print(insadb_new)
     

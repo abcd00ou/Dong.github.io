@@ -2,7 +2,7 @@
  *  일정 편집
  * ************** */
 var editEvent = function (event, element, view) {
-
+    console.log("시작 되긴함?")
     $('#deleteEvent').data('id', event._id); //클릭한 이벤트 ID
 
     $('.popover.fade.top').remove();
@@ -110,6 +110,7 @@ var editEvent = function (event, element, view) {
                     data: JSON.stringify({data:json_data}),
                     success: function(response) {
                         alert('Data Edited successfully:', response);
+                        eventModal.addClass('fade');
                     },
                     error: function(error) {
                         alert('Error Edited data:', error);
@@ -129,6 +130,7 @@ $('#deleteEvent').on('click', function () {
     
     $('#deleteEvent').unbind();
     $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
+    eventModal.addClass("fade")
     eventModal.modal('hide');
     var this_id = $(this).data('id');
     //삭제시
@@ -147,7 +149,11 @@ $('#deleteEvent').on('click', function () {
                 if (data[i]._id === Number(this_id)) {
                     console.log("여기")
                     data = data.filter(item => item._id !== Number(this_id));
+                }else if(data[i]._id === this_id){
+                    data = data.filter(item => item._id !== this_id);
                 }
+
+              
             }
             console.log(data)
             json_data =JSON.stringify(data)

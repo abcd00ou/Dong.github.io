@@ -932,7 +932,7 @@ section,
   font-size: 15px;
   display: inline-block;
   padding: 10px 30px;
-  margin: 20px 0 0 0;
+  margin: 20px 5 5 0;
   transition: 0.5s;
   text-transform: uppercase;
   border: 2px solid color-mix(in srgb, var(--default-color), transparent 20%);
@@ -2471,4 +2471,16 @@ label {
   width: 100%; /* 부모 요소의 가로 크기에 맞춤 */
   max-width: 640px; /* 최대 너비를 제한 */
   height: auto; /* 비율을 유지한 채 높이를 자동으로 설정 */
+}
+
+.search-button {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  max-height:50px;
+}
+
+.search-button i {
+  font-size: 10px;
 }
