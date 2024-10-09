@@ -89,7 +89,7 @@ var calendar = $('#calendar').fullCalendar({
         'background': event.backgroundColor,
         'color': event.textColor,
         'font-size':'1px',
-        'z-index':'9'
+        'z-index':'99'
       }),
       content: $('<div />', {
           class: 'popoverInfoCalendar'
@@ -285,6 +285,8 @@ function getDisplayEventDate(event) {
   return displayEventDate;
 }
 
+
+
 function filtering(event) {
   var show_username = true;
   var show_type = true;
@@ -293,56 +295,65 @@ function filtering(event) {
     return $(this).val();
   }).get();
 
-  var types = $('#type_filter').val();
-  $('#filter_btn').on('click', function() {
-        var texts = [$('#text_filter').val()];
-        console.log(texts); // 입력된 값을 콘솔에 출력
-        
-        if (texts && texts.length > 0) {
- 
-          
-          if(texts.indexOf(event.type) >= 0){
-            show_type = true
-          }else if(texts.indexOf(event.description) >= 0){
-            show_type = true
-          }else if(texts.indexOf(event.title) >= 0){
-            show_type = true
-          }else if(texts.indexOf(event.username) >= 0){
-            show_type = true
-          }else{
-            show_type=false
-          }
-         
-          
-        }
-        if(admin_name.includes(username[0])){
-  
-          show_username = true;
-        }else{
-          show_username = username.indexOf(event.username) >= 0;
-        }
-    
+  // var types = $('#type_filter').val();
 
-    });
+  // if(admin_name.includes(username[0])){
+
+  //   show_username = true;
+  // }else{
+  //   show_username = username.indexOf(event.username) >= 0;
+  // }
   
+  
+  // if (types && types.length > 0) {
+  //   if (types[0] == "all") {
+  //     show_type = true;
+  //   } else {
+
+  //     show_type = types.indexOf(event.type) >= 0;
+
+  //   }
+  // }
+  // console.log(show_username,show_type)
+  // return show_username && show_type;
+
+  if($('#text_filter').val()!==""){
+    var texts = [$('#text_filter').val()];
+  }else{
+    var texts=[];
+  }
+  
+  console.log('texts',texts); // 입력된 값을 콘솔에 출력
+  console.log('texts',texts.length)
+  if (texts && texts.length > 0) {
+    console.log(texts[0])
+    console.log(event.type)
+    console.log(event.description)
+    console.log(event.title)
+    console.log(event.username)
+    
+    if(event.type.includes(texts[0])){
+      show_type = true
+    }else if(event.description.includes(texts[0])){
+      show_type = true
+    }else if(event.title.includes(texts[0])){
+      show_type = true
+    }else if(event.username.includes(texts[0])){
+      show_type = true
+    }else{
+      show_type=false
+    }
+   
+    
+  }
+
   if(admin_name.includes(username[0])){
 
     show_username = true;
   }else{
     show_username = username.indexOf(event.username) >= 0;
   }
-  
-  
-  if (types && types.length > 0) {
-    if (types[0] == "all") {
-      show_type = true;
-    } else {
-
-      show_type = types.indexOf(event.type) >= 0;
-
-    }
-  }
-
+  console.log(show_username,show_type)
   return show_username && show_type;
 }
 

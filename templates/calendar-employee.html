@@ -32,20 +32,12 @@
 
         <div class="panel-body" style="display:auto;margin-top: 30px;">
             <div class="col-lg-4">
-                <label for="calendar_view">검색</label>
+                <label for="text_filter">검색</label>
                 <div class="d-flex">  
                     <input  type="text" id="text_filter" placeholder="검색할 단어 입력">
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <label for="calendar_view">작업장별 필터</label>
-                <div class="input-group">
-                    <select class="filter" id="type_filter" multiple="multiple">
-                        <option value="당진">당진</option>
-                        <option value="송도">송도</option>
-                        <option value="마곡">마곡</option>
-                        <option value="시흥">시흥</option>
-                    </select>
+                    <button class="search-button btn-primary" id= 'filter_btn'>
+                        <i class="fas fa-search"></i> <!-- Font Awesome 돋보기 아이콘 -->
+                    </button>
                 </div>
             </div>
             <div class="row">

@@ -23,14 +23,14 @@
   
         <label class="checkbox-inline">
         <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">{{place}} 담당 : {{ name }}님 로그인 되었습니다.</label>
-
+            
         <div style="margin-top: 20px;justify-content:center;display: auto;">
 
-        <button id="Attend-abled"  {% if attend == 'abled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>출근 활성화</button>
-        <button id="Attend-disabled"  {% if attend == 'disabled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>출근 비활성화</button>
+        <button id="Attend-abled"  {% if attend == 'abled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>출근 활성화</button>
+        <button id="Attend-disabled"  {% if attend == 'disabled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>출근 비활성화</button>
         <p>출근 체크 {% if attend == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p>
-        <button id="Leave-abled"  {% if leave == 'abled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>퇴근 활성화</button>
-        <button id="Leave-disabled"  {% if leave == 'disabled' %}disabled class='btn btn-secondary btn-sm'{% else %}class = "btn btn-primary btn-sm"{% endif %}>퇴근 비활성화</button>
+        <button id="Leave-abled"  {% if leave == 'abled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>퇴근 활성화</button>
+        <button id="Leave-disabled"  {% if leave == 'disabled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>퇴근 비활성화</button>
         <p>퇴근 체크 {% if leave == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p>
         </div>
        
@@ -41,12 +41,12 @@
                 <label for="text_filter">검색</label>
                 <div class="d-flex">  
                     <input  type="text" id="text_filter" placeholder="검색할 단어 입력">
-                    <button class="search-button" id= 'filter_btn'>
+                    <button class="search-button btn-primary" id= 'filter_btn'>
                         <i class="fas fa-search"></i> <!-- Font Awesome 돋보기 아이콘 -->
                     </button>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <!-- <div class="col-lg-4">
                 <label for="type_filter">작업장별 필터</label>
                 <div class="input-group">
                     <select class="filter" id="type_filter" multiple="multiple">
@@ -56,7 +56,7 @@
                         <option value="시흥">시흥</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
             
 
             

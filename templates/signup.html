@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}회원가입{% endblock %}
+{% block title %}개인정보{% endblock %}
 
 {% block head %}
 <style>
@@ -55,7 +55,7 @@
 
 {% block content %}
 <div>
-    <h1 class="content-title">회원가입</h1>
+    <h1 class="content-title">개인정보</h1>
 </div>
 <div>
     <form class="needs-validation" id="register" novalidate>
@@ -208,22 +208,24 @@ const identifyValidation = () => {
     // 빈칸 확인
     const identify = document.querySelector('#identify');    
     if (!identify.value) {
+        console.log("여기야?!")
         identify.classList.add('is-invalid');
         return false
     }
 
-    // 외국인이라면 통과
-    const radioKorean = document.querySelector('#radioNationality1');
-    if (!radioKorean.checked) {
-        return true
-    }
+    // // 외국인이라면 통과
+    // const radioKorean = document.querySelector('#radioNationality1');
+    // if (!radioKorean.checked) {
+    //     console.log("여기야2?!")
+    //     return true
+    // }
 
-    // 내국인이라면 한글 체크
-    if (/^[ㄱ-ㅎㅏ-ㅣ가-힣]+$/.test(identify.value)) {
-        return true
-    }
-    identify.classList.add('is-invalid');
-    return false
+    // // 내국인이라면 한글 체크
+    // if (/^[ㄱ-ㅎㅏ-ㅣ가-힣]+$/.test(identify.value)) {
+    //     console.log("여기야?3!")
+    //     return true
+    // }
+    return true
 }
 
 const passwordValidation = () => {
@@ -264,7 +266,22 @@ const nameValidation = () => {
         name.classList.add('is-invalid');
         return false
     }
-    return true
+
+     // 외국인이라면 통과
+    const radioKorean = document.querySelector('#radioNationality1');
+    if (!radioKorean.checked) {
+        console.log("여기야2?!")
+        return true
+    }
+
+    // 내국인이라면 한글 체크
+    if (/^[ㄱ-ㅎㅏ-ㅣ가-힣]+$/.test(name.value)) {
+        console.log("여기야?3!")
+        return true
+    }
+    name.classList.add('is-invalid');
+    return false
+
 }
 
 const contactValidation = () => {
@@ -348,28 +365,32 @@ const addressValidation = () => {
         let result = true;
         if (!identifyValidation()) {
             result = false;
+            console.log("11")
         }
         if (!passwordValidation()) {
             result = false;
+            console.log("22")
         }
         if (!passwordCheckValidation()) {
             result = false;
+            console.log("33")
         }
         if (!nameValidation()) {
             result = false;
+            console.log("44")
         }
-        if (!contactValidation()) {
-            result = false;
-        }
-        if (!visaValidation()) {
-            result = false;
-        }
-        if (!credentialValidation()) {
-            result = false;
-        }
-        if (!addressValidation()) {
-            result = false;
-        }
+        // if (!contactValidation()) {
+        //     result = false;
+        // }
+        // if (!visaValidation()) {
+        //     result = false;
+        // }
+        // if (!credentialValidation()) {
+        //     result = false;
+        // }
+        // if (!addressValidation()) {
+        //     result = false;
+        // }
         return result
     }
 
@@ -403,7 +424,7 @@ const addressValidation = () => {
                     user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood,radio_nationality:radio_nationality    
                 }),
                 success: function(response) {
-                    alert('회원가입이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
+                    alert('개인정보 저장이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
                     window.location.href = 'backoffice'
                 },
                 error: function(response) {
@@ -412,7 +433,7 @@ const addressValidation = () => {
             });
         }else{
             event.preventDefault();
-            alert("정보를 모두 기입해주세요.--")
+            alert("정보를 모두 기입해주세요.")
         }
         
     }, false);

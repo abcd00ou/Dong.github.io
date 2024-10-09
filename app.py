@@ -725,9 +725,9 @@ def register():
         # insadb = insadb[insadb.ID!=user_id]
         # insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
         insadb_new = insadb.copy()
-        insadb.loc[insadb.ID!=user_id,
+        insadb.loc[insadb.ID==user_id,
                    ["성명","영문명","체류비자","국적","KEY_ID",
-                    "주소","전화번호","자격증유무","고혈압유무","ID","PASSWORD"]] = [user_name,user_name,user_visa,user_nationality,user_nationality,user_credential,user_address,user_contact,user_contact,user_certificate,user_highBlood,user_id,user_pw]
+                    "주소","전화번호","자격증유무","고혈압유무","ID","PASSWORD"]] = [user_name,user_name,user_visa,user_nationality,user_credential,user_address,user_contact,user_certificate,user_highBlood,user_id,user_pw]
         insadb.to_excel("./static/data/INSA_DB.xlsx",index=False)
     else:
         insadb_new = pd.concat([insadb,registerd_data]).reset_index(drop=True)
