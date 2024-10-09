@@ -54,6 +54,15 @@ def idx():
 
     return render_template("main.html")
 
+
+@app.route('/untitled', methods=['GET'])
+@nocache
+def untitled():
+    
+    print("main gogo")
+
+    return render_template("Untitled-2.html")
+
 @app.route('/main', methods=['GET','POST'])
 @nocache
 def main():
