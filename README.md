@@ -40,15 +40,34 @@ $ source env/bin/activate
 │   │   ├── controller.py
 │   │   └── forms.py
 │   ├── static
-│   └── templates
+│   │   ├── data ## 저장 및 관리 데이터 
+│   │   │   ├── 개인화폴더
+│   │   │   ├── 작업공수
+│   │   │   │   ├── 작업입력.xlsx
+│   │   │   │   ├── 작업자입력.xlsx
+│   │   │   ├── Attend.json            ## 출근 체크 허가 가능/불가능 체크    
+│   │   │   ├── calendar.json          ## 작업일지 작업한 데이터 파일 
+│   │   │   ├── countries.json         ## 개인 정보 작성시 작성 필요한 나라 정보  
+│   │   │   ├── INSA_DB.xlsx           ## 개인 정보 파일 
+│   │   │   ├── Leave.json             ## 퇴근 체크 허가 가능/불가능 체크   
+│   │   │   └── ranktable.csv          ## 각 사업장별 순위 
+│   │   └── js  ## js 함수 코드 (login, main, table관리, calendar 관리)
+│   └── templates ## 페이지 디자인 
 │       ├── auth
 │       │   ├── signin.html
 │       │   └── success.html
-│       └── index.html
-├── tests
-│   └── test.py
-├── requirements.txt
-├── run.py
+│       ├── backoffice-login.html   ## 임직원 로그인 페이지
+│       ├── backoffice-main.html    ## 임직원 메인 페이지
+│       ├── calendar-admin.html     ## 임직원 총괄 캘린더 페이지
+│       ├── calendar-employee.html  ## 임직원 직원 캘린더 페이지
+│       ├── layout-backoffice.html  ## 임직원 페이지 전체 틀 구성
+│       ├── layout.html             ## 일반 페이지 전체 틀 구성
+│       ├── productivity.html       ## 임직원 생산성 대시보드 페이지
+│       ├── signup.html             ## 임직원 기본정보 작성 페이지
+│       ├── survey.html             ## 임직원 작업일지 작성 페이지
+│       └── main.html               ## 일반 메인 페이지
+├── requirements.txt                ## 필요한 파이썬 패키지 요구사항 
+├── app.py                          ## 페이지 시작 코드 
 ├── setup.py
 ├── MANIFEST.in
 └── README.md
