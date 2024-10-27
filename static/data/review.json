@@ -1,0 +1,405 @@
+{
+    "A0001": {
+        "ID": [
+            "ADMIN4",
+            "ADMIN5",
+            "ADMIN2",
+            "ADMIN1",
+            "ADMIN9"
+        ],
+        "Comment": [
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4.",
+            "\uc2dc\uac04 \uc57d\uc18d\uc744 \uc9c0\ud0a4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4.",
+            "sfgbsgfbsfgb"
+        ],
+        "rate": [
+            "4",
+            "1",
+            "2",
+            "2",
+            "3"
+        ]
+    },
+    "A0002": {
+        "ID": [
+            "ADMIN2",
+            "ADMIN1",
+            "ADMIN5",
+            "ADMIN3"
+        ],
+        "Comment": [
+            "\uacf5\uc218 \ub2ec\uc131\ub960\uc774 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4.",
+            "\ub9e1\uc740 \uc5c5\ubb34\ub97c \uc131\uc2e4\ud788 \uc784\ud569\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "1",
+            "3",
+            "1",
+            "4"
+        ]
+    },
+    "A0003": {
+        "ID": [
+            "ADMIN5",
+            "ADMIN4",
+            "ADMIN2",
+            "ADMIN1"
+        ],
+        "Comment": [
+            "\uacf5\uc218 \ub2ec\uc131\ub960\uc774 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\ub9e1\uc740 \uc5c5\ubb34\ub97c \uc131\uc2e4\ud788 \uc784\ud569\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "3",
+            "1",
+            "5",
+            "3"
+        ]
+    },
+    "A0004": {
+        "ID": [
+            "ADMIN3",
+            "ADMIN1",
+            "ADMIN4",
+            "ADMIN2"
+        ],
+        "Comment": [
+            "\ub9e1\uc740 \uc5c5\ubb34\ub97c \uc131\uc2e4\ud788 \uc784\ud569\ub2c8\ub2e4.",
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4.",
+            "\uc5ec\ub7ec \uac00\uc9c0 \uacf5\ubc95\uc5d0 \ub300\ud55c \uc774\ud574\ub3c4\uac00 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "4",
+            "2",
+            "2",
+            "2"
+        ]
+    },
+    "A0005": {
+        "ID": [
+            "ADMIN2",
+            "ADMIN3",
+            "ADMIN1",
+            "ADMIN4"
+        ],
+        "Comment": [
+            "\uc2dc\uac04 \uc57d\uc18d\uc744 \uc9c0\ud0a4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+            "\uacf5\uc218 \ub2ec\uc131\ub960\uc774 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "1",
+            "1",
+            "2",
+            "5"
+        ]
+    },
+    "A0006": {
+        "ID": [
+            "ADMIN2",
+            "ADMIN5",
+            "ADMIN1",
+            "ADMIN4"
+        ],
+        "Comment": [
+            "\uc2dc\uac04 \uc57d\uc18d\uc744 \uc9c0\ud0a4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4.",
+            "\uacf5\uc218 \ub2ec\uc131\ub960\uc774 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "2",
+            "4",
+            "5",
+            "4"
+        ]
+    },
+    "A0007": {
+        "ID": [
+            "ADMIN4",
+            "ADMIN1",
+            "ADMIN3",
+            "ADMIN5"
+        ],
+        "Comment": [
+            "\uc5c5\ubb34 \uc815\ud655\ub3c4\uac00 \ubd80\uc871\ud569\ub2c8\ub2e4.",
+            "\ub9e1\uc740 \uc5c5\ubb34\ub97c \uc131\uc2e4\ud788 \uc784\ud569\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "2",
+            "1",
+            "3",
+            "2"
+        ]
+    },
+    "A0008": {
+        "ID": [
+            "ADMIN2",
+            "ADMIN4",
+            "ADMIN3",
+            "ADMIN1"
+        ],
+        "Comment": [
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4.",
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "4",
+            "3",
+            "5",
+            "4"
+        ]
+    },
+    "A0009": {
+        "ID": [
+            "ADMIN4",
+            "ADMIN5",
+            "ADMIN3",
+            "ADMIN1"
+        ],
+        "Comment": [
+            "\uc2dc\uac04 \uc57d\uc18d\uc744 \uc9c0\ud0a4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4.",
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "1",
+            "5",
+            "4",
+            "1"
+        ]
+    },
+    "A0010": {
+        "ID": [
+            "ADMIN4",
+            "ADMIN1",
+            "ADMIN5",
+            "ADMIN2"
+        ],
+        "Comment": [
+            "\uc5c5\ubb34 \uc815\ud655\ub3c4\uac00 \ubd80\uc871\ud569\ub2c8\ub2e4.",
+            "\uacf5\uc218 \ub2ec\uc131\ub960\uc774 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "3",
+            "3",
+            "4",
+            "3"
+        ]
+    },
+    "A0011": {
+        "ID": [
+            "ADMIN2",
+            "ADMIN5",
+            "ADMIN3",
+            "ADMIN4"
+        ],
+        "Comment": [
+            "\uc5c5\ubb34 \uc815\ud655\ub3c4\uac00 \ubd80\uc871\ud569\ub2c8\ub2e4.",
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4.",
+            "\uc5ec\ub7ec \uac00\uc9c0 \uacf5\ubc95\uc5d0 \ub300\ud55c \uc774\ud574\ub3c4\uac00 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "4",
+            "3",
+            "1",
+            "1"
+        ]
+    },
+    "A0012": {
+        "ID": [
+            "ADMIN1",
+            "ADMIN5",
+            "ADMIN4",
+            "ADMIN3"
+        ],
+        "Comment": [
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\uc2dc\uac04 \uc57d\uc18d\uc744 \uc9c0\ud0a4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+            "\uc5ec\ub7ec \uac00\uc9c0 \uacf5\ubc95\uc5d0 \ub300\ud55c \uc774\ud574\ub3c4\uac00 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\ub9e1\uc740 \uc5c5\ubb34\ub97c \uc131\uc2e4\ud788 \uc784\ud569\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "3",
+            "1",
+            "3",
+            "2"
+        ]
+    },
+    "A0013": {
+        "ID": [
+            "ADMIN2",
+            "ADMIN1",
+            "ADMIN3",
+            "ADMIN4"
+        ],
+        "Comment": [
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4.",
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\uc2dc\uac04 \uc57d\uc18d\uc744 \uc9c0\ud0a4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "4",
+            "1",
+            "1",
+            "4"
+        ]
+    },
+    "A0014": {
+        "ID": [
+            "ADMIN4",
+            "ADMIN3",
+            "ADMIN1",
+            "ADMIN2"
+        ],
+        "Comment": [
+            "\uc5ec\ub7ec \uac00\uc9c0 \uacf5\ubc95\uc5d0 \ub300\ud55c \uc774\ud574\ub3c4\uac00 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4.",
+            "\ub9e1\uc740 \uc5c5\ubb34\ub97c \uc131\uc2e4\ud788 \uc784\ud569\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "2",
+            "5",
+            "5",
+            "1"
+        ]
+    },
+    "A0015": {
+        "ID": [
+            "ADMIN3",
+            "ADMIN1",
+            "ADMIN2",
+            "ADMIN4"
+        ],
+        "Comment": [
+            "\uc5c5\ubb34 \uc815\ud655\ub3c4\uac00 \ubd80\uc871\ud569\ub2c8\ub2e4.",
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4.",
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "3",
+            "5",
+            "3",
+            "5"
+        ]
+    },
+    "A0016": {
+        "ID": [
+            "ADMIN5",
+            "ADMIN1",
+            "ADMIN3",
+            "ADMIN4"
+        ],
+        "Comment": [
+            "\uc2dc\uac04 \uc57d\uc18d\uc744 \uc9c0\ud0a4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4.",
+            "\uacf5\uc218 \ub2ec\uc131\ub960\uc774 \ub192\uc2b5\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "3",
+            "1",
+            "1",
+            "5"
+        ]
+    },
+    "A0017": {
+        "ID": [
+            "ADMIN2",
+            "ADMIN3",
+            "ADMIN5",
+            "ADMIN1"
+        ],
+        "Comment": [
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\uc2dc\uac04 \uc57d\uc18d\uc744 \uc9c0\ud0a4\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "1",
+            "5",
+            "5",
+            "5"
+        ]
+    },
+    "A0018": {
+        "ID": [
+            "ADMIN3",
+            "ADMIN5",
+            "ADMIN4",
+            "ADMIN2"
+        ],
+        "Comment": [
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4.",
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\uc5ec\ub7ec \uac00\uc9c0 \uacf5\ubc95\uc5d0 \ub300\ud55c \uc774\ud574\ub3c4\uac00 \ub192\uc2b5\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "5",
+            "5",
+            "1",
+            "1"
+        ]
+    },
+    "A0019": {
+        "ID": [
+            "ADMIN4",
+            "ADMIN2",
+            "ADMIN1",
+            "ADMIN3"
+        ],
+        "Comment": [
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4.",
+            "\ud559\uc2b5 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\uacf5\uc218 \ub2ec\uc131\ub960\uc774 \ub192\uc2b5\ub2c8\ub2e4.",
+            "\uae30\uc220 \uc2b5\ub4dd \ub2a5\ub825\uc774 \uc6b0\uc218\ud569\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "1",
+            "5",
+            "3",
+            "5"
+        ]
+    },
+    "A0020": {
+        "ID": [
+            "ADMIN2",
+            "ADMIN5",
+            "ADMIN4",
+            "ADMIN1"
+        ],
+        "Comment": [
+            "\ucc3d\uc758\uc801\uc778 \uc544\uc774\ub514\uc5b4\uac00 \ub9ce\uc2b5\ub2c8\ub2e4.",
+            "\ud300\uc6cc\ud06c\uac00 \uc88b\uc2b5\ub2c8\ub2e4.",
+            "\uc5c5\ubb34 \uc18d\ub3c4\uac00 \ube60\ub985\ub2c8\ub2e4.",
+            "\ub9e1\uc740 \uc5c5\ubb34\ub97c \uc131\uc2e4\ud788 \uc784\ud569\ub2c8\ub2e4."
+        ],
+        "rate": [
+            "3",
+            "2",
+            "1",
+            "4"
+        ]
+    }
+}

@@ -429,6 +429,47 @@ def productivity():
     print("main gogo")
     return render_template("productivity.html")
 
+##record-employee 
+@app.route('/record-employee', methods=['GET',"POST"])
+@nocache
+def record_employee():
+    if(request.method=='POST'):
+        id = request.get_json()['id']
+        print(id)
+        file_path = './static/data/review.json'
+
+        with open(file_path, 'r') as infile:
+            data = json.load(infile)
+      
+        print(data)
+        review = data[id]
+        return jsonify(review =review)    
+    elif(request.method=='GET'):
+    
+        print("employee gogo")
+        return render_template("record-employee.html")
+
+@app.route('/record-save', methods=["POST"])
+@nocache
+def record_save():
+    saved_data = request.get_json()
+    try:
+        ID = session['id']
+    except:
+        ID = 'ADMIN9'
+    file_path = './static/data/review.json'
+    with open(file_path, 'r') as infile:
+        data = json.load(infile)
+    userid = saved_data['user']
+    data[userid]['ID'].append(ID)
+    data[userid]['Comment'].append(saved_data['Comment'])
+    data[userid]['rate'].append(saved_data['rate'])
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+
+    return jsonify('success')    
+
+
 
 @app.route('/create_event',methods=['POST'])
 @nocache
@@ -641,7 +682,7 @@ def signup():
     print(insadb)
     print(insadb[insadb['ID']==id])
     try:
-        filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==int(pw))].reset_index(drop=True)
+        filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
     except:
         filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
     print(filterd_db)

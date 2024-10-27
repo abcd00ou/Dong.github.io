@@ -1,0 +1,488 @@
+{% extends "layout-backoffice-admin.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <h2>Filterable Table</h2>
+
+    <!-- 필터 입력 필드 -->
+    <input type="text" id="filter0" placeholder="이름" style="width: 25%;">
+    <input type="text" id="filter1" placeholder="국적"style="width: 25%;">
+    <input type="text" id="filter2" placeholder="성별"style="width: 25%;">
+
+    <!-- 테이블 구조 -->
+    <table id="filterTable" class="table">
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>국적</th>
+                <th>성별</th>
+                <th>기능인 등급</th>
+                <th>상세보기</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>김철수</td>
+                <td>한국</td>
+                <td>남자</td>
+                <td>상급</td>
+                <td><button onclick="showDetails(this, '김철수', 'A0001')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>박영희</td>
+                <td>한국</td>
+                <td>여자</td>
+                <td>중급</td>
+                <td><button onclick="showDetails(this, '박영희', 'A0002')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>이민준</td>
+                <td>베트남</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '이민준', 'A0003')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>최은지</td>
+                <td>중국</td>
+                <td>여자</td>
+                <td>상급</td>
+                <td><button onclick="showDetails(this, '최은지', 'A0004')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>정하늘</td>
+                <td>베트남</td>
+                <td>여자</td>
+                <td>중급</td>
+                <td><button onclick="showDetails(this, '정하늘', 'A0005')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>김지훈</td>
+                <td>한국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '김지훈', 'A0006')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>박서준</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>중급</td>
+                <td><button onclick="showDetails(this, '박서준', 'A0007')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>이지은</td>
+                <td>한국</td>
+                <td>여자</td>
+                <td>상급</td>
+                <td><button onclick="showDetails(this, '이지은', 'A0008')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>황현우</td>
+                <td>베트남</td>
+                <td>남자</td>
+                <td>상급</td>
+                <td><button onclick="showDetails(this, '황현우', 'A0009')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'A0010')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+            <tr>
+                <td>오민수</td>
+                <td>중국</td>
+                <td>남자</td>
+                <td>하급</td>
+                <td><button onclick="showDetails(this, '오민수', 'image.jpg')" class = 'w-btn w-btn-green'>상세보기</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 모달 구조 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalName"></h2>
+        <img id="modalImage" src="" alt="Profile Image" style="width: 150px; height: 150px;">
+        
+        <div style="height: 450px;">
+            <button class="w-btn w-btn-indigo" onclick="toggleSection('career')">경력</button>
+            <button class="w-btn w-btn-indigo" onclick="toggleSection('certificate')">자격증</button>
+            <button class="w-btn w-btn-indigo" onclick="toggleSection('evaluation')">한줄 평가</button>
+            <button class="w-btn w-btn-indigo" onclick="toggleSection('notes')">특이 사항</button>
+            <div id="career" class="toggle-content">
+                
+                <table class="Scroll table" style=" overflow-x: scroll;font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th>공법</th>
+                            <th>현장명</th>
+                            <th>기간</th>
+                            <th>공수 달성률</th>
+                            <th>비고</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>재래식</td>
+                            <td>인천광역시 서구 청라동 6-7, 6-8번지(인천경제자유구역 청라국제도시 C18BL)</td>
+                            <td>2023.01~2023.11</td>
+                            <td>75%</td>
+                            <td>계단 작업 가능</td>
+                        </tr>
+                        <tr>
+                            <td>갱폼</td>
+                            <td></td>
+                            <td></td>
+                            <td>60%</td>
+                            <td>갱폼 전 과정 작업 가능</td>
+                        </tr>
+                        <tr>
+                            <td>테이블</td>
+                            <td></td>
+                            <td></td>
+                            <td>70%</td>
+                            <td>테이블 제작 및 양중</td>
+                        </tr>
+                        <tr>
+                            <td>RCS</td>
+                            <td></td>
+                            <td></td>
+                            <td>60%</td>
+                            <td>RCS 설치 보조</td>
+                        </tr>
+                        <tr>
+                            <td>알폼</td>
+                            <td></td>
+                            <td></td>
+                            <td>55%</td>
+                            <td>경험 없음</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="certificate" class="toggle-content" style="display: none;">
+                <table class="Scroll table" style=" overflow-x: scroll;font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th>발급날짜</th>
+                            <th>종류</th>
+                            <th>발급기관</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>20220908</td>
+                            <td>거푸집 기능사 국가기술자격증</td>
+                            <td>한국산업인력공단</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div id="evaluation" class="toggle-content"style="display: none;">
+                <div >
+                    <h2>리뷰 남기기</h2>
+                    <form name="myform" id="myform" class="review-form">
+                        <fieldset>
+                            <input type="radio" name="reviewStar" value="5" id="rate1"><label
+                                for="rate1">★</label>
+                            <input type="radio" name="reviewStar" value="4" id="rate2"><label
+                                for="rate2">★</label>
+                            <input type="radio" name="reviewStar" value="3" id="rate3"><label
+                                for="rate3">★</label>
+                            <input type="radio" name="reviewStar" value="2" id="rate4"><label
+                                for="rate4">★</label>
+                            <input type="radio" name="reviewStar" value="1" id="rate5"><label
+                                for="rate5">★</label>
+                        </fieldset>
+                        <textarea id="review" rows="4" placeholder="리뷰 내용을 입력하세요" required></textarea>
+                        <button type="submit">리뷰 제출</button>
+                    </form>
+                </div>
+            
+                <div class="reviews">
+                    <h2>리뷰 목록</h2>
+                    <div id="reviewList">
+                        <!-- 리뷰가 여기에 추가됩니다 -->
+                    </div>
+                </div>
+             	
+            </div>
+            <div id="notes" class="toggle-content"style="display: none;">
+                <p>특이사항 없음</p>
+            </div>
+      
+        </div>
+        </div>
+    </div>
+  
+</div>
+<!-- /.container -->
+{% endblock %}
+
+{% block script %}
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/moment.min.js"></script>
+<script src="static/js/fullcalendar.min.js"></script>
+<script src="static/js/ko.js"></script>
+<script src="static/js/select2.min.js"></script>
+<script src="static/js/bootstrap-datetimepicker.min.js"></script>
+<script src="static/js/TableFilter.min.js"></script>
+
+<script src="static/js/etcSetting.js"></script>
+
+<script>
+
+// 필터 함수
+document.querySelectorAll('input[type="text"]').forEach((input, index) => {
+        input.addEventListener('keyup', function () {
+            let filterValue = this.value.toLowerCase();
+            let table = document.getElementById('filterTable');
+            let rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName('td');
+                let cellText = cells[index].textContent.toLowerCase();
+
+                if (cellText.indexOf(filterValue) > -1) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
+    });
+
+    // 모달 열기 및 상세보기 정보 표시
+    function showDetails(button, name, imageSrc) {
+        var modal = document.getElementById("myModal");
+        var modalName = document.getElementById("modalName");
+        var modalImage = document.getElementById("modalImage");
+        
+
+        modalName.textContent = name+"("+imageSrc+")";
+ 
+        real_img = "./static/data/개인화폴더/"+imageSrc+"/image.jpg"
+        modalImage.src = real_img;
+        console.log(imageSrc)
+        modal.style.display = "inline-block";
+        $.ajax({
+            url: '/record-employee',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({'id':imageSrc}),
+            success: function (response) {
+     
+                var data = response['review']; 
+                console.log(data)
+                // json_data = JSON.stringify(data)
+                // console.log(json_data)
+
+                // const reviewItem = document.createElement('div');
+                // reviewItem.classList.add('review');
+                // reviewItem.innerHTML = `
+                //     <h3>${name} 님의 리뷰</h3>
+                //     <p><strong>별점:</strong> ${rating}</p>
+                //     <p>${review}</p>
+                // `;
+
+                // 리뷰 목록에 추가
+                var reviewList = document.getElementById('reviewList')
+                reviewList.innerHTML="";
+                for (let i = 0; i < data.Comment.length; i++) {
+                    const name = data.ID[i];
+                    const rating = data.rate[i];
+                    let stars = '';
+                    for (let j = 0; j < rating; j++) {
+                        stars += '⭐'; // 또는 '<span class="star">★</span>'으로 스타일링 가능
+                    }
+
+                    const review = data.Comment[i];
+
+                    // 새로운 리뷰 항목 생성
+                    const reviewItem = document.createElement('div');
+                    reviewItem.classList.add('review');
+                    reviewItem.innerHTML = `
+                        <h3>${name} 님의 리뷰</h3>
+                        <p><strong>별점:</strong> ${stars}</p>
+                        <p>${review}</p>
+                    `;
+
+                    // 리뷰 목록에 추가
+                    reviewList.appendChild(reviewItem);
+                }
+               
+            },
+            error: function(error) {
+                console.log(error)
+               
+            }
+        });
+        
+      
+      
+
+
+    }
+
+    // 모달 닫기
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+
+    function toggleSection(sectionId) {
+        // 모든 .toggle-content 섹션을 닫음
+        var sections = document.querySelectorAll('.toggle-content');
+        sections.forEach(function(section) {
+            section.style.display = 'none';
+        });
+
+        // 클릭한 섹션만 토글함 (보여주거나 숨김)
+        var targetSection = document.getElementById(sectionId);
+        if (targetSection.style.display === 'block') {
+            targetSection.style.display = 'none';
+        } else {
+            targetSection.style.display = 'block';
+        }
+    }
+
+    // 모달을 클릭하면 닫히도록 설정
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+
+    //리뷰 달기 
+    document.getElementById('myform').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // 입력 값 가져오기
+            // const name = document.getElementById('name').value;
+            // const product = document.getElementById('product').value;
+            const name ="전문가1"
+            const review = document.getElementById('review').value;
+            const rating = document.querySelector('input[name="reviewStar"]:checked') ? document.querySelector('input[name="reviewStar"]:checked').value : '별점 없음';
+            console.log(name,review,rating)
+            let stars = '';
+            for (let j = 0; j < rating; j++) {
+                stars += '⭐'; // 또는 '<span class="star">★</span>'으로 스타일링 가능
+            }
+            // 리뷰 항목 생성
+            const reviewItem = document.createElement('div');
+            reviewItem.classList.add('review');
+            reviewItem.innerHTML = `
+                <h3>${name} 님의 리뷰</h3>
+                <p><strong>별점:</strong> ${stars}</p>
+                <p>${review}</p>
+            `;
+
+            // 리뷰 목록에 추가
+            document.getElementById('reviewList').appendChild(reviewItem);
+
+            // review rate에도 저장 
+            var modalName = document.getElementById("modalName").textContent;
+            console.log(modalName)
+            var userid = modalName.split("(")[1].split(")")[0]
+            console.log(userid)
+            saved_data = {'user':userid,"Comment":review,'rate':rating}
+
+            $.ajax({
+                url: '/record-save',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(saved_data),
+                success: function (response) {
+                    console.log(response)
+                    alert("데이터가 저장되었습니다.")
+                
+                },
+                error: function(error) {
+                    alert('데이터 저장에 실패했습니다.', error);
+                }
+            });
+                
+
+            // 입력 필드 초기화
+            document.getElementById('review').value = '';
+            const radios = document.querySelectorAll('input[name="rating"]');
+            radios.forEach((radio) => (radio.checked = false));
+        });
+</script>
+
+{% endblock %}

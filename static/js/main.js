@@ -264,7 +264,7 @@
   //     });
   // });
 
-
+  // 로그아웃 기능 
   $('#nav_logout').on('click',function(){
 
     console.log("anjadfvfd")
@@ -398,6 +398,8 @@ $('#Leavecheck').on('click', function(event) {
       }
   });
 });
+
+
 
 
 })();

@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout-backoffice-employee.html" %}
 
 {% block title %}개인정보{% endblock %}
 
@@ -143,7 +143,7 @@
 
 
 const userData = {{info_list|tojson}}
-console.log(userData)
+console.log('userDatauserData',userData)
 // 해당 필드에 값이 있을 경우 값을 넣고 disabled 처리
 function populateAndDisableFields() {
     const formFields = {
