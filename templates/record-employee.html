@@ -253,28 +253,76 @@
                 <div >
                     <h2>리뷰 남기기</h2>
                     <form name="myform" id="myform" class="review-form">
-                        <fieldset>
-                            <input type="radio" name="reviewStar" value="5" id="rate1"><label
-                                for="rate1">★</label>
-                            <input type="radio" name="reviewStar" value="4" id="rate2"><label
-                                for="rate2">★</label>
-                            <input type="radio" name="reviewStar" value="3" id="rate3"><label
-                                for="rate3">★</label>
-                            <input type="radio" name="reviewStar" value="2" id="rate4"><label
-                                for="rate4">★</label>
-                            <input type="radio" name="reviewStar" value="1" id="rate5"><label
-                                for="rate5">★</label>
-                        </fieldset>
+            
+                            <fieldset >
+                                <label for ='tech-rate' style="color:black;display: inline-block;float:left;padding:0">기술</label>
+                                <input type="radio" name="reviewStar1" value="5" id="tech-rate1"><label
+                                    for="tech-rate1">★</label>
+                                <input type="radio" name="reviewStar1" value="4" id="tech-rate2"><label
+                                    for="tech-rate2">★</label>
+                                <input type="radio" name="reviewStar1" value="3" id="tech-rate3"><label
+                                    for="tech-rate3">★</label>
+                                <input type="radio" name="reviewStar1" value="2" id="tech-rate4"><label
+                                    for="tech-rate4">★</label>
+                                <input type="radio" name="reviewStar1" value="1" id="tech-rate5"><label
+                                    for="tech-rate5">★</label>
+                            </fieldset>
+                       
+                            <fieldset >
+                                <label for ='quality-rate' style="color:black;display: inline-block;float:left;padding:0">품질</label>
+                                <input type="radio" name="reviewStar2" value="5" id="quality-rate1"><label
+                                    for="quality-rate1">★</label>
+                                <input type="radio" name="reviewSta2" value="4" id="quality-rate2"><label
+                                    for="quality-rate2">★</label>
+                                <input type="radio" name="reviewStar2" value="3" id="quality-rate3"><label
+                                    for="quality-rate3">★</label>
+                                <input type="radio" name="reviewStar2" value="2" id="quality-rate4"><label
+                                    for="quality-rate4">★</label>
+                                <input type="radio" name="reviewStar2" value="1" id="quality-rate5"><label
+                                    for="quality-rate5">★</label>
+                            </fieldset>
+                     
+                            <fieldset >
+                                <label for ='safety-rate' style="color:black;display: inline-block;float:left;padding:0">안전</label>
+                                <input type="radio" name="reviewStar3" value="5" id="safety-rate1"><label
+                                    for="safety-rate1">★</label>
+                                <input type="radio" name="reviewStar3" value="4" id="safety-rate2"><label
+                                    for="safety-rate2">★</label>
+                                <input type="radio" name="reviewStar3" value="3" id="safety-rate3"><label
+                                    for="safety-rate3">★</label>
+                                <input type="radio" name="reviewStar3" value="2" id="safety-rate4"><label
+                                    for="safety-rate4">★</label>
+                                <input type="radio" name="reviewStar3" value="1" id="safety-rate5"><label
+                                    for="safety-rate5">★</label>
+                            </fieldset>
+                 
+                            <fieldset>
+                                <label for ='personality-rate' style="color:black;display: inline-block;float:left;padding:0">매너</label>
+                                <input type="radio" name="reviewStar4" value="5" id="personality-ㄱate1"><label
+                                    for="personality-rate1">★</label>
+                                <input type="radio" name="reviewStar4" value="4" id="personality-rate2"><label
+                                    for="personality-rate2">★</label>
+                                <input type="radio" name="reviewStar4" value="3" id="personality-rate3"><label
+                                    for="personality-rate3">★</label>
+                                <input type="radio" name="reviewStar4" value="2" id="personality-rate4"><label
+                                    for="personality-rate4">★</label>
+                                <input type="radio" name="reviewStar4" value="1" id="personality-rate5"><label
+                                    for="personality-rate5">★</label>
+                            </fieldset>
+                 
+
                         <textarea id="review" rows="4" placeholder="리뷰 내용을 입력하세요" required></textarea>
                         <button type="submit">리뷰 제출</button>
                     </form>
                 </div>
             
                 <div class="reviews">
-                    <h2>리뷰 목록</h2>
+                    <details>
+                    <summary id = 'reviewhead'></summary>
                     <div id="reviewList">
                         <!-- 리뷰가 여기에 추가됩니다 -->
                     </div>
+                   </details>
                 </div>
              	
             </div>
@@ -346,20 +394,12 @@ document.querySelectorAll('input[type="text"]').forEach((input, index) => {
      
                 var data = response['review']; 
                 console.log(data)
-                // json_data = JSON.stringify(data)
-                // console.log(json_data)
-
-                // const reviewItem = document.createElement('div');
-                // reviewItem.classList.add('review');
-                // reviewItem.innerHTML = `
-                //     <h3>${name} 님의 리뷰</h3>
-                //     <p><strong>별점:</strong> ${rating}</p>
-                //     <p>${review}</p>
-                // `;
 
                 // 리뷰 목록에 추가
                 var reviewList = document.getElementById('reviewList')
+                var reviewhead = document.getElementById('reviewhead')
                 reviewList.innerHTML="";
+                reviewhead.textContent = `리뷰목록(${data.Comment.length})`
                 for (let i = 0; i < data.Comment.length; i++) {
                     const name = data.ID[i];
                     const rating = data.rate[i];
@@ -367,7 +407,6 @@ document.querySelectorAll('input[type="text"]').forEach((input, index) => {
                     for (let j = 0; j < rating; j++) {
                         stars += '⭐'; // 또는 '<span class="star">★</span>'으로 스타일링 가능
                     }
-
                     const review = data.Comment[i];
 
                     // 새로운 리뷰 항목 생성
