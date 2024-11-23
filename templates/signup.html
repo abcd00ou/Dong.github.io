@@ -70,16 +70,30 @@
             </div>
         </div>
         <div class="custom-form-item">
+            
+            <!-- 이미지 업로드 입력 -->
+            <input type="file" id="fileInput-selfie" accept="image/*" style="display: none;" onchange="displayImage(event,'selfie')">
+            
+            <!-- 미리보기 -->
+            <div id="preview-selfie" style="float:right;align-items: right;">
+                <img id ='no-image' src="static/img/selife.png" style="max-width:30%; height:auto;float:right;"  alt="">
+                <img id="previewImage-selfie" style="display:none; max-width:30%; height:auto;float:right;" />
+              
+            </div>
+            <button onclick="uploadImage('selfie')" class="btn btn-outline-secondary" style="height: 40px;width:160px;font-size:15px;">본인 사진 업로드</button>
+
+
+            
             <label for="identify" class="form-label">아이디</label>
-            <input type="text" class="form-control" id="identify" required>
+            <input type="text" class="form-control" id="identify" required placeholder="아이디">
         </div>
         <div class="custom-form-item">
             <label for="password" class="form-label">비밀번호</label>
-            <input type="password" class="form-control" id="password" required>
+            <input type="password" class="form-control" id="password" required placeholder="비밀번호">
         </div>
         <div class="custom-form-item">
-            <label for="passwordCheck" class="form-label">비밀번호 확인</label>
-            <input type="password" class="form-control" id="passwordCheck" required>
+            <!-- <label for="passwordCheck" class="form-label">비밀번호 확인</label> -->
+            <input type="password" class="form-control" id="passwordCheck" required  placeholder="비밀번호 확인">
             <div class="invalid-feedback">
                 비밀번호를 확인해 주세요.
             </div>
@@ -106,44 +120,171 @@
         </div>
         <div class="custom-form-item">
             <label for="credential" class="form-label">주민등록번호 / 여권번호</label>
-            <input type="text" class="form-control" id="credential" required>
+            <div class="col-12 col-sm-8 col-lg-4" style="display: flex; align-items: center;">
+            <input type="text" class="form-control" id="credential" required style="margin: 0; height: 40px;" placeholder="여기에 번호를 기재해주세요.">
+    
+            <button onclick="uploadImage('credential')" class="btn btn-outline-secondary" style="height: 40px;width:160px;font-size:14px;">신분증 업로드</button>
+            </div>
+            <!-- 이미지 업로드 입력 -->
+            <input type="file" id="fileInput-credential" accept="image/*" style="display: none;" onchange="displayImage(event,'credential')">
+            
+            <!-- 캡처 이미지 미리보기 -->
+            <video id="video-credential" width="320" height="240" autoplay style="display:none;"></video>
+            <canvas id="canvas-credential" width="320" height="240" style="display:none;"></canvas>
+            <button id="captureBtn-credential" onclick="snap()" style="display:none;">Capture</button>
+            
+            <!-- 미리보기 -->
+            <div id="preview-credential">
+                <img id="previewImage-credential" style="display:none; max-width:100%; height:auto;" />
+            </div>
+
         </div>
         <div class="custom-form-item">
             <label for="visa" class="form-label">비자</label>
-            <input type="text" class="form-control" id="visa" required>
+            <div style="display:flex">
+            <input type="text" class="form-control" id="visa" required style="margin: 0; height: 40px;" placeholder="비자는 외국인만 기재">
+            <button onclick="uploadImage('visa')" class="btn btn-outline-secondary" style="margin: 0; height: 40px;width:160px;">비자 업로드</button>
+            </div>
+
+            <!-- 이미지 업로드 입력 -->
+            <input type="file" id="fileInput-visa" accept="image/*" style="display: none;" onchange="displayImage(event,'visa')">
+            
+            <!-- 캡처 이미지 미리보기 -->
+            <video id="video-visa" width="320" height="240" autoplay style="display:none;"></video>
+            <canvas id="canvas-visa" width="320" height="240" style="display:none;"></canvas>
+            <button id="captureBtn-visa" onclick="snap()" style="display:none;">Capture</button>
+            
+            <!-- 미리보기 -->
+            <div id="preview-visa">
+                <img id="previewImage-visa" style="display:none; max-width:100%; height:auto;" />
+            </div>
+
         </div>
         <div class="custom-form-item">
             <label for="address" class="form-label">주소</label>
             <input type="text" class="form-control" id="address" required>
         </div>
         <div class="custom-form-item">
-            <label for="certificate" class="form-label">거푸집자격증 (선택)</label>
-            <select type="text" class="form-control" id="certificate">
-                <option value="">--선택--</option>
-                <option value="Y">네</option>
-                <option value="N">아니오</option>
-            </select>
+            <label for="certificate" class="form-label">자격증 업로드(선택)</label>
+            <div style="display:flex">
+            <button onclick="uploadImage('certificate1')" class="btn btn-outline-secondary" style="margin: 0; height: 40px;width:160px;">자격증1</button>
+            <button onclick="uploadImage('certificate2')" class="btn btn-outline-secondary" style="margin: 0; height: 40px;width:160px;">자격증2</button>
+            <button onclick="uploadImage('certificate3')" class="btn btn-outline-secondary" style="margin: 0; height: 40px;width:160px;">자격증3</button>
+            
+            </div>
+
+            <!-- 이미지 업로드 입력 -->
+            <input type="file" id="fileInput-certificate1" accept="image/*" style="display: none;" onchange="displayImage(event,'certificate1')">
+            <input type="file" id="fileInput-certificate2" accept="image/*" style="display: none;" onchange="displayImage(event,'certificate2')">
+            <input type="file" id="fileInput-certificate3" accept="image/*" style="display: none;" onchange="displayImage(event,'certificate3')">
+            
+            <!-- 미리보기 -->
+            <div id="preview-certificate1">
+                <img id="previewImage-certificate1" style="display:none; max-width:100%; height:auto;" />
+            </div>
+            <div id="preview-certificate2">
+                <img id="previewImage-certificate2" style="display:none; max-width:100%; height:auto;" />
+            </div>
+            <div id="preview-certificate3">
+                <img id="previewImage-certificate3" style="display:none; max-width:100%; height:auto;" />
+            </div>
         </div>
         <div class="custom-form-item">
             <label for="highBlood" class="form-label">고혈압 증상 여부 (선택)</label>
-            <select type="text" class="form-control" id="highBlood">
+            <select type="text" class="form-control" id="highBlood" onchange="toggleDiv()">
                 <option value="">--선택--</option>
-                <option value="Y">네</option>
+                <option value="Y">네(의사 소견서 제출)</option>
                 <option value="N">아니오</option>
             </select>
+            <div id="highblood-yes" style="display:none;">
+                <button onclick="uploadImage('highblood')" class="btn btn-outline-secondary" style="margin: 0; height: 40px;width:160px;">소견서 업로드</button>
             
+
+                <!-- 이미지 업로드 입력 -->
+                <input type="file" id="fileInput-highblood" accept="image/*" style="display: none;" onchange="displayImage(event,'highblood')">
+                
+                <!-- 캡처 이미지 미리보기 -->
+                <video id="video-highblood" width="320" height="240" autoplay style="display:none;"></video>
+                <canvas id="canvas-highblood" width="320" height="240" style="display:none;"></canvas>
+                <button id="captureBtn-highblood" onclick="snap()" style="display:none;">Capture</button>
+                
+                <!-- 미리보기 -->
+                <div id="preview-highblood">
+                    <img id="previewImage-highblood" style="display:none; max-width:100%; height:auto;" />
+                </div>
+            </div>
+                
         </div>
-        <button type="submit" class="btn btn-dark-custom">정보 등록</button>
+        <button type="submit" id="submit" class="btn btn-dark-custom">정보 등록</button>
     </form>
 </div>
 {% endblock %}
 
 {% block script %}
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script><!-- OCR 적용-->
+
 <script>
 
 
 const userData = {{info_list|tojson}}
-console.log('userDatauserData',userData)
+//고혈압
+function toggleDiv() {
+    const selectElement = document.getElementById("highBlood");
+    const displayDiv = document.getElementById("highblood-yes");
+
+    if (selectElement.value === "Y") {
+      displayDiv.style.display = "block";
+    } else {
+      displayDiv.style.display = "none";
+    }
+  }
+
+
+// 이미지 업로드 함수
+function uploadImage(id) {
+    event.preventDefault();
+    document.getElementById('fileInput-'+id).click();
+}
+
+// 이미지 파일을 선택한 후 미리보기
+function displayImage(event,id) {
+    event.preventDefault();
+    const file = event.target.files[0];
+    const previewImage = document.getElementById('previewImage-'+id);
+    if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        previewImage.src = e.target.result;
+        previewImage.style.display = 'block';
+        if(id=='selfie'){
+            document.getElementById('no-image').style.display='none'
+
+        }
+    };
+    reader.readAsDataURL(file);
+    }
+}
+
+
+
+// 캡처 버튼 클릭 시 이미지 캡처
+function snap() {
+    const canvas = document.getElementById('canvas');
+    const video = document.getElementById('video');
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // 캔버스 이미지 미리보기
+    const previewImage = document.getElementById('previewImage');
+    previewImage.src = canvas.toDataURL('image/png');
+    previewImage.style.display = 'block';
+
+    // 카메라 스트림 종료
+    video.srcObject.getTracks().forEach(track => track.stop());
+    video.style.display = 'none';
+    document.getElementById('captureBtn').style.display = 'none';
+}
+
 // 해당 필드에 값이 있을 경우 값을 넣고 disabled 처리
 function populateAndDisableFields() {
     const formFields = {
@@ -379,23 +520,12 @@ const addressValidation = () => {
             result = false;
             console.log("44")
         }
-        // if (!contactValidation()) {
-        //     result = false;
-        // }
-        // if (!visaValidation()) {
-        //     result = false;
-        // }
-        // if (!credentialValidation()) {
-        //     result = false;
-        // }
-        // if (!addressValidation()) {
-        //     result = false;
-        // }
         return result
     }
 
-    const form = document.querySelector('.needs-validation');
-    form.addEventListener('submit', event => {
+    //const form = document.querySelector('.needs-validation');
+    const form = document.getElementById("submit")
+    form.addEventListener('click', event => {
         console.log('customValidity',customValidity())
         if (customValidity()) {
             event.preventDefault();
@@ -437,6 +567,7 @@ const addressValidation = () => {
         }
         
     }, false);
+
 })()
 </script>
 {% endblock %}

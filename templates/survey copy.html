@@ -213,44 +213,36 @@
                     </div>
                     <div class="modal-body-custom">
                         <br>
-                        <label for="work-select">작업 선택</label>
-                        <div id ='work-select'></div>
-                        <div class="row" >
-                            <div class ='col-5'>
-                                <label for="workers_add1">근무자 추가</label>
-                                <input type="text" id="workers_add1" placeholder="이름입력" autocomplete="on">
-                                
-                            </div>
-                            
-                            <div class ='col-6' style="margin:auto;" >
-                                <label for="workers_effort">공수 추가</label>     
-                                <div style="display:flex;margin:auto;">
-                                    <i class="bi bi-dash-lg" onclick="onEffortClicked_workers(-0.1)"></i>
-                                    <input type="number" id="workers_effort" min=1 placeholder="1" step=0.1 value="1">
-                                    <i class="bi bi-plus-lg" onclick="onEffortClicked_workers(0.1)"></i>
-                                 </div>
-                            </div>
-                        </div>
-                        <div  style="margin:auto;float:center;">
-                            <button id="add1" class="btn-dark-custom">작업자 추가</button>
-                        </div>
+                        <label for="numworkers">총 작업인원</label>
+                        <input type="number" id="numworkers" name="numworkers" min="1" placeholder="1">
+        
+                        <label for="workers_add1">기본 근무자 추가</label>
+                        <input type="text" id="workers_add1" placeholder="1일 근무자, 없으면 생략" autocomplete="on">
                         <div id="autocomplete-list"></div>
+                        <button id="add1" class="btn-dark-custom">작업자 추가</button>
                         <br>
-                        <div class="row">
-                        <!-- <label for="workers-normal">작업자 명</label>
-                        <textarea id="workers-normal" disabled="" ></textarea> -->
-                        <label for="workers-table">작업자 기여도</label>
-                        <div id="workers-table"></div>
-                        </div>
+
+                        <label for="workers-normal">작업자 명</label>
+                        <textarea id="workers-normal" disabled=""></textarea>
+        
+                        <label for="workers_add2">추가 근무자 추가</label>
+                        <input type="text" id="workers_add2" placeholder="초과 근무자, 없으면 생략">
+                        <button id="add2" class="btn-dark-custom">작업자 추가</button>
+                        <br>
+
+                        <label for="workers-hard">작업자 명</label>
+                        <textarea id="workers-hard" disabled=""></textarea>
+        
+                        <label for="workers_add3">오전 근무자 추가</label>
+                        <input type="text" id="workers_add3" placeholder="0.5일 작업, 없으면 생략">
+                        <button id="add3" class="btn-dark-custom">작업자 추가</button>
+                        <br>
                         
-                    </div>
-                    <div class="d-grid btn-add-task-area">
-                        <button class="btn-dark-custom"  data-bs-dismiss="modal" aria-label="Close">완료</button>
+                        <label for="workers-morning">작업자 명</label>
+                        <textarea id="workers-morning" disabled=""></textarea>
                     </div>
                 </div>
             </div>
-            
-            
         </div>
     </li>
     
@@ -284,11 +276,7 @@
                         <textarea id="additional" disabled=""></textarea>
                     </ul>
                 </div>
-                <div class="d-grid btn-add-task-area">
-                    <button class="btn-dark-custom"  data-bs-dismiss="modal" aria-label="Close">완료</button>
-                </div>
             </div>
-            
         </div>
     </li>
 </ul>  
@@ -468,11 +456,6 @@
         effortElement.value = (Number(effortElement.value) + num).toFixed(1);
     }
 
-    function onEffortClicked_workers(num) {
-        const effortElement = document.getElementById('workers_effort');
-        effortElement.value = (Number(effortElement.value) + num).toFixed(1);
-    }
-
     // 추가된 옵션을 처리하는 함수
     function addCustomOption() {
         const inputElement = document.getElementById('additionalInput');
@@ -498,112 +481,8 @@
         }
     }
 
-    // Function to delete a row
-    function deleteRow(button) {
-        const row = button.parentElement.parentElement;
-        row.remove();
-
-        // Update contributions after deletion
-        updateContributions();
-
-        // Remove the table if no rows are left
-        const table = document.querySelector("#dynamicTable");
-        const tbody = table.querySelector("tbody");
-        if (!tbody.hasChildNodes()) {
-            table.remove();
-        }
-    };
-
-    // Function to update contribution percentages
-    function updateContributions() {
-            const table = document.querySelector("#dynamicTable");
-            const tbody = table.querySelector("tbody");
-            const rows = tbody.querySelectorAll("tr");
-
-            // Calculate total work
-            let totalWork = 0;
-            rows.forEach(row => {
-                const work = parseFloat(row.cells[1].textContent);
-                totalWork += work;
-            });
-
-            // Update each row's contribution
-            rows.forEach(row => {
-                const work = parseFloat(row.cells[1].textContent);
-                const contribution = totalWork > 0 ? ((work / totalWork) * 100).toFixed(2) : 0;
-                row.cells[2].textContent = `${contribution}%`;
-            });
-        }
-
 
     window.onload = function(){
-
-        // 사람, 공수 추가 테이블
-        const tableContainer = document.getElementById('workers-table');
-
-        // Add Button Event Listener
-        document.getElementById('add1').addEventListener('click', function () {
-            const name = document.getElementById('workers_add1').value.trim();
-            const work =Number(document.getElementById('workers_effort').value);
-            console.log(name,work)
-            if (!name || isNaN(work) || work <= 0) {
-                alert("이름과 공수를 올바르게 입력해주세요.");
-                return;
-            }
-
-            // Check if the table exists, if not, create one
-            let table = document.querySelector("#dynamicTable");
-            if (!table) {
-                table = createTable();
-                tableContainer.appendChild(table);
-            }
-
-            // Add row to table
-            addRow(name, work);
-        });
-
-        // Function to create a table
-        function createTable() {
-            const table = document.createElement('table');
-            table.id = "dynamicTable";
-            table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>이름</th>
-                        <th>공수</th>
-                        <th>기여도 (%)</th>
-                        <th>삭제</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            `;
-            return table;
-        }
-
-        // Function to add a row to the table
-        function addRow(name, work) {
-            const table = document.querySelector("#dynamicTable");
-            const tbody = table.querySelector("tbody");
-
-            // Create a new row
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${name}</td>
-                <td>${work}</td>
-                <td contenteditable='true'></td>
-                <td><button onclick="deleteRow(this)" class='btn btn-secondary'>삭제</button></td>
-            `;
-            tbody.appendChild(row);
-
-            // Update contributions
-            updateContributions();
-        }
-
-        
-
-        
-
-
 
         const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
         console.log('insadb',insadb)
@@ -675,8 +554,6 @@
             $('#cat5Options li').removeClass('selected');
             $(this).addClass('selected');
         });
-
-    
        
         $('#add-task').on('click', function() {
 			event.preventDefault();
@@ -718,6 +595,34 @@
 		   	document.getElementById('workers_add1').value = "";
 		   
 		 });
+  
+		document.getElementById('add2').addEventListener('click', function(event) {
+					event.preventDefault();
+				   var newbie = document.getElementById('workers_add2').value; 
+				   var work_list = document.getElementById('workers-hard');
+                    if( work_list.split(",").length>=2){
+                        work_list.textContent += ","+newbie; 
+                    }else{
+                        work_list.textContent += newbie; 
+                    }
+				   
+				  document.getElementById('workers_add2').value = "";
+
+			   });
+
+		document.getElementById('add3').addEventListener('click', function(event) {
+				  event.preventDefault();
+				   var newbie = document.getElementById('workers_add3').value; 
+				   var work_list = document.getElementById('workers-morning');
+
+				   if( work_list.split(",").length>=2){
+                        work_list.textContent += ","+newbie; 
+                    }else{
+                        work_list.textContent += newbie; 
+                    }
+				  document.getElementById('workers_add3').value = "";
+
+			   });
 
         document.getElementById('add4').addEventListener('click', function(event) {
 				  event.preventDefault();

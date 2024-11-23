@@ -197,10 +197,20 @@ def gocalendar():
 @nocache
 def survey():
     if(request.method=='GET'):
-        print('aa')
-        name = session['NAME']
-        print(name)
-        return render_template("survey.html",name =name)    
+        
+        
+        name = session.get('NAME')
+        if not name:
+            return redirect(url_for('backoffice'))
+        else:
+            name = session['NAME']
+            insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+
+            print(insadb)
+            insadb_json = insadb[['성명','작업장']].to_json(orient='records', force_ascii=False)
+
+            print(insadb_json)
+            return render_template("survey.html",name =name,insadb= insadb_json)    
     elif(request.method=='POST'):
 
         def save_double_column_df(df, file_name, startrow = 0, **kwargs):
@@ -540,7 +550,20 @@ def mainback():
     return render_template("backoffice-main.html")
 
 
+@app.route('/check_admin', methods=['GET'])
+@nocache
+def check_admin():
+    admin = session['ADMIN']
+    place = session['PLACE']
+    print('admin',admin)
+    print('place',place)
+    return jsonify({"ADMIN":admin,"PLACE":place})
 
+@app.route('/attend_qr', methods=['GET'])
+@nocache
+def attendqr():
+
+    return render_template('attend_qr.html')
 
 @app.route('/attend-abled', methods=['POST'])
 @nocache
@@ -664,7 +687,10 @@ def leaveheck():
 
     return jsonify('success')
 
-
+@app.route('/personal_agree', methods=['GET'])
+@nocache
+def personal_agree():
+    return render_template("personal_agree.html")
 @app.route('/signup', methods=['GET'])
 @nocache
 def signup():
@@ -675,40 +701,45 @@ def signup():
 
     # ID랑 비번으로 계정 매핑  
     insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+    
+    if 'id' in session and 'pw' in session:
+        id = str(session['id']) 
+        pw = str(session['pw'])
+        print('id',id,pw)
+        print(insadb)
+        print(insadb[insadb['ID']==id])
+        try:
+            filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
+        except:
+            filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
+        print(filterd_db)
+        if len(filterd_db)>0:## 정보가 있는경우 
+            filterd_db= filterd_db.fillna("")
+            user_name = filterd_db['성명'].values[0]
+            user_contact = filterd_db['전화번호'].values[0]
+            user_nationality = filterd_db['국적'].values[0]
+            user_credential = filterd_db['KEY_ID'].values[0]
+            user_visa = filterd_db['체류비자'].values[0]
+            user_address = filterd_db['주소'].values[0]
+            user_certificate = filterd_db['자격증유무'].values[0]
+            user_highBlood = filterd_db['고혈압유무'].values[0]
+            info_list = {'user_id':id,
+                        'user_name':user_name,
+                        'user_contact':user_contact,
+                        'user_nationality':user_nationality,
+                        'user_credential':user_credential,
+                        'user_visa':user_visa,
+                        'user_address':user_address,
+                        'user_certificate':user_certificate,
+                        'user_highBlood':user_highBlood}
+        else: 
+            info_list={}
 
-    id = str(session['id']) 
-    pw = str(session['pw'])
-    print('id',id,pw)
-    print(insadb)
-    print(insadb[insadb['ID']==id])
-    try:
-        filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
-    except:
-        filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
-    print(filterd_db)
-    if len(filterd_db)>0:## 정보가 있는경우 
-        filterd_db= filterd_db.fillna("")
-        user_name = filterd_db['성명'].values[0]
-        user_contact = filterd_db['전화번호'].values[0]
-        user_nationality = filterd_db['국적'].values[0]
-        user_credential = filterd_db['KEY_ID'].values[0]
-        user_visa = filterd_db['체류비자'].values[0]
-        user_address = filterd_db['주소'].values[0]
-        user_certificate = filterd_db['자격증유무'].values[0]
-        user_highBlood = filterd_db['고혈압유무'].values[0]
-        info_list = {'user_id':id,
-                     'user_name':user_name,
-                    'user_contact':user_contact,
-                    'user_nationality':user_nationality,
-                    'user_credential':user_credential,
-                    'user_visa':user_visa,
-                    'user_address':user_address,
-                    'user_certificate':user_certificate,
-                    'user_highBlood':user_highBlood}
-    else: 
+        return render_template("signup.html", countries=countries['countries'],info_list=info_list)
+    else:
+
         info_list={}
-
-    return render_template("signup.html", countries=countries['countries'],info_list=info_list)
+        return render_template("signup.html", countries=countries['countries'],info_list=info_list)
 
 @app.route('/logout', methods=['POST'])
 @nocache

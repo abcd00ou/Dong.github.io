@@ -1,0 +1,51 @@
+{% extends "layout-backoffice-admin.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+<style>
+    .back-text {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    animation: backgroundChange 1.5s infinite alternate;
+  }
+  @keyframes backgroundChange {
+    0% { background-color: yellow; }
+    50% { background-color: rgb(13, 173, 13); }
+    100% { background-color: rgb(44, 238, 238); }
+  }
+</style>
+<div class="container">
+
+    <img src="static/img/attend_qr.png" class="img-fluid" alt="">
+    
+    <div class="back-text" id="date-text"></div>
+</div>
+<!-- /.container -->
+{% endblock %}
+
+{% block script %}
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/moment.min.js"></script>
+<script src="static/js/fullcalendar.min.js"></script>
+<script src="static/js/ko.js"></script>
+<script src="static/js/select2.min.js"></script>
+<script src="static/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="static/js/calendar.js"></script>
+<script src="static/js/addEvent.js"></script>
+<script src="static/js/editEvent.js"></script>
+<script src="static/js/etcSetting.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const today = new Date();
+      const month = today.getMonth() + 1;
+      const day = today.getDate();
+      document.getElementById("date-text").innerText = `${month}월 ${day}일 근태 체크 QR코드`;
+    });
+</script>
+{% endblock %}

@@ -288,6 +288,26 @@
   });
 
   });
+  //출석체크 QR코드 
+  $('#Attend-QR').on('click', function(event) {
+      event.preventDefault();
+      
+      $.ajax({
+          url: '/check_admin',
+          method: 'GET',
+          success: function(response) {
+            console.log(response)
+            if(response.ADMIN=='Y'){
+              alert("출근 체크 활성화 되었습니다.");
+              window.location.href = '/attend_qr'
+            }
+              
+          },
+          error: function(response) {
+              alert("오류입니다.");
+          }
+      });
+  });
 
   // 출석체크 활성, 비활성화
   $('#Attend-abled').on('click', function(event) {

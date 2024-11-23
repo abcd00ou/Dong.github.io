@@ -889,7 +889,7 @@ section,
 }
 
 .hero img {
-  position: absolute;
+  position: relative;
   inset: 0;
   display: block;
   width: 100%;
@@ -910,6 +910,8 @@ section,
 .hero .container {
   position: relative;
   z-index: 3;
+  padding: 20px; /* 텍스트와 이미지 간 여백 추가 */
+  background: rgba(0, 0, 0, 0.5); /* 반투명 배경 추가 */
 }
 
 .hero h2 {
@@ -2672,3 +2674,24 @@ th {
 .review-form input[type=radio]:checked ~ label{
   text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
 }
+
+/* 자동완성 */
+.autocomplete-list {
+  position: absolute;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.autocomplete-list div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.autocomplete-list div:hover {
+  background-color: #f0f0f0;
+}
+
