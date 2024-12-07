@@ -218,16 +218,13 @@
         <button type="submit" id="submit" class="btn btn-dark-custom">정보 등록</button>
     </form>
 </div>
-{% endblock %}
-
-{% block script %}
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script><!-- OCR 적용-->
 
 <script>
 
-
-const userData = {{info_list|tojson}}
+const userData = {{info_list|tojson|safe}}
 //고혈압
+console.log('userData',userData)
 function toggleDiv() {
     const selectElement = document.getElementById("highBlood");
     const displayDiv = document.getElementById("highblood-yes");
@@ -260,6 +257,29 @@ function displayImage(event,id) {
             document.getElementById('no-image').style.display='none'
 
         }
+        // 저장하기 
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('textData', id);
+        console.log(formData)
+
+        fetch('/upload-image', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('이미지가 성공적으로 업로드되었습니다!');
+            } else {
+                alert('이미지 업로드에 실패했습니다.');
+            }
+        })
+        .catch(error => {
+            alert('서버 요청에 실패했습니다.');
+            
+        });
+
     };
     reader.readAsDataURL(file);
     }
@@ -543,7 +563,25 @@ const addressValidation = () => {
             var user_certificate = $('#certificate').val();
             var user_highBlood = $('#highBlood').val();
             var radio_nationality = document.querySelector('input[name="radioNationality"]:checked');
+            
 
+        //     fetch('/upload-image', {
+        //         method: 'POST',
+        //         body: formData,
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         if (data.success) {
+        //             alert('이미지가 성공적으로 업로드되었습니다!');
+        //         } else {
+        //             alert('이미지 업로드에 실패했습니다.');
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.error('Error:', error);
+        //         alert('서버 요청에 실패했습니다.');
+        //     });
+        // }
             
             $.ajax({
                 url: '/register',
@@ -554,13 +592,16 @@ const addressValidation = () => {
                     user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood,radio_nationality:radio_nationality    
                 }),
                 success: function(response) {
-                    alert('개인정보 저장이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
-                    window.location.href = 'backoffice'
+                    // alert('개인정보 저장이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
+                    // window.location.href = 'backoffice'
+                    console.log("정보 저장 끝")
                 },
                 error: function(response) {
                     alert("정보를 모두 기입해주세요.")
                 }
             });
+
+
         }else{
             event.preventDefault();
             alert("정보를 모두 기입해주세요.")
@@ -571,3 +612,4 @@ const addressValidation = () => {
 })()
 </script>
 {% endblock %}
+

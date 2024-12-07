@@ -184,6 +184,20 @@
         </div>
     </li>
 
+    <li id="cat7Item" class="item-disable survey_item">
+        <!-- 공수 선택 -->
+        <div class="survey_btn">
+            <div class="survey_btn_title">
+                <div class="survey_btn_title_name">진행률(%)</div>
+                <div class="survey_btn_title_data" id="cat7">
+                    <i class="bi bi-dash-lg" onclick="onProcessClicked(-5)"></i>
+                    <input type="number" id="process" name="process">
+                    <i class="bi bi-plus-lg" onclick="onProcessClicked(5)"></i>
+                </div>
+            </div>
+        </div>
+    </li>
+
 </ul>
 
 <div class="d-grid btn-add-task-area">
@@ -196,10 +210,10 @@
 <label for='survey2'>인원 및 특이사항</label>
 <ul id ='survey2'>
     <li class="survey_item">
-        <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#workersModal">
+        <button class="survey_btn" id="workers" data-bs-toggle="modal" data-bs-target="#workersModal">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">인원 추가</div>
-                <div class="survey_btn_title_data" id="workers"></div>
+                <div class="survey_btn_title_data" ></div>
             </div>
             <i class="bi bi-chevron-right"></i>
         </button>
@@ -297,11 +311,532 @@
 <div style="display:none;" >
     <textarea id="username">{{name}}</textarea>
 </div>
+
+<script src="static/js/survey.js"></script>
+<script type="text/javascript">
+    window.onload = function(){
+        
+    // 사람, 공수 추가 테이블
+    const tableContainer = document.getElementById('workers-table');
+
+    // Add Button Event Listener
+    document.getElementById('add1').addEventListener('click', function () {
+        const name = document.getElementById('workers_add1').value.trim();
+        const work =Number(document.getElementById('workers_effort').value);
+        const selected_task =document.getElementById('task-select').value;
+        console.log(selected_task)
+
+        console.log(name,work,selected_task)
+        if (!name || isNaN(work) || work <= 0||!selected_task) {
+            alert("이름과 공수, 작업을 올바르게 입력해주세요.");
+            return;
+        }
+
+        // Check if the table exists, if not, create one
+        let table = document.querySelector("#dynamicTable");
+        if (!table) {
+            table = createTable();
+            tableContainer.appendChild(table);
+        }
+
+        // Add row to table
+        addRow(selected_task,name, work);
+    });
+
+    // Function to create a table
+    function createTable() {
+        const table = document.createElement('table');
+        table.id = "dynamicTable";
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>공수</th>
+                    <th class="hidden-column">작업</th>
+                    <th>기여도 (%)</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+        return table;
+    }
+
+    // Function to add a row to the table
+    function addRow(task,name, work) {
+        const table = document.querySelector("#dynamicTable");
+        const tbody = table.querySelector("tbody");
+
+        const maxValue = parseInt(task.split("_").pop());
+        let currentSum = 0;
+        tbody.querySelectorAll("tr").forEach(row => {
+        const taskCell = row.querySelector(".hidden-column"); // Task 열
+        const editableCell = row.cells[1]; // 2rd column (editable)
+
+        if (taskCell && taskCell.textContent.trim() === task) {
+            const value = parseInt(editableCell.innerText.trim()) || 0; // Get user input or default to 0
+            currentSum += value;
+        }
+         });
+
+        const workValue = parseFloat(work) || 0;
+        if (currentSum + workValue > maxValue) {
+            alert(`작업의 총합(${currentSum + workValue})이 최대값(${maxValue})을 초과할 수 없습니다.`);
+            return;
+        }
+
+        // Create a new row 
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${name}</td>
+            <td>${work}</td>
+            <td contenteditable='true'></td>
+            <td class="hidden-column">${task}</td>
+            <td><button onclick="deleteRow(this)" class='btn btn-secondary'>삭제</button></td>
+        `;
+        tbody.appendChild(row);
+
+        // Update contributions
+        updateContributions();
+    }
+
+    const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
+    console.log('insadb',insadb)
+    // DOM 요소 가져오기
+    const input = document.getElementById('workers_add1');
+    const autocompleteList = document.getElementById('autocomplete-list');
+
+    // 입력 필드 이벤트 리스너 추가
+    input.addEventListener('input', function() {
+        const query = input.value;
+        console.log(query)
+        autocompleteList.innerHTML = ''; // 기존 항목 제거
+
+        if (!query) return;
+        console.log("여기까지")
+        // 이름 필터링
+        const filtered = insadb.filter(worker =>
+            worker.성명 && worker.성명.includes(query)
+        );
+        console.log('filtered',filtered)
+        // 자동완성 항목 표시
+        filtered.forEach(worker => {
+            const div = document.createElement('div');
+            div.textContent = worker.성명;
+            div.addEventListener('click', () => {
+                input.value = worker.성명; // 선택된 이름으로 채우기
+                autocompleteList.innerHTML = ''; // 목록 초기화
+            });
+            autocompleteList.appendChild(div);
+        });
+    });
+
+    // 자동완성 목록 숨기기
+    document.addEventListener('click', function(e) {
+        if (e.target !== input) {
+            autocompleteList.innerHTML = ''; // 외부 클릭 시 목록 닫기
+        }
+    });
+
+
+    
+    $('#siteOptions li').on('click', function() {
+        $('#siteOptions li').removeClass('selected');
+        $(this).addClass('selected');
+        console.log(this)
+    });
+
+    $('#cat1Options li').on('click', function() {
+        $('#cat1Options li').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    $('#cat2Options li').on('click', function() {
+        $('#cat2Options li').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    $('#cat3Options li').on('click', function() {
+        $('#cat3Options li').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    $('#cat4Options li').on('click', function() {
+        $('#cat4Options li').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    $('#cat5Options li').on('click', function() {
+        $('#cat5Options li').removeClass('selected');
+        console.log($(this))
+        $(this).addClass('selected');
+    });
+
+    $('#workers').on('click', function() {
+        const task_result = document.getElementById("task-result")
+        console.log();
+        const task_results = task_result.textContent.split("\n");
+        const selectContainer = document.getElementById('work-select'); // div 요소 가져오기
+
+        // Select 요소 생성
+        selectContainer.innerHTML = "";
+        const select = document.createElement('select');
+        select.id = 'task-select'; // ID 추가 (필요에 따라 변경 가능)
+
+        // 옵션 추가
+        task_results.forEach(optionValue => {
+            const option = document.createElement('option');
+            option.value = optionValue; // 값 설정
+            option.textContent = optionValue; // 표시 텍스트 설정
+            select.appendChild(option); // select에 옵션 추가
+        });
+
+        // div에 select 추가
+        selectContainer.appendChild(select);
+
+    });
+
+
+    
+    $('#add-task').on('click', function() {
+    event.preventDefault();
+        var cat5 = document.getElementById('cat5').textContent;
+        var cat4 = document.getElementById('cat4').textContent;
+        var cat3 = document.getElementById('cat3').textContent;
+        var cat2 = document.getElementById('cat2').textContent;
+        var cat1 = document.getElementById('cat1').textContent;
+        var site = document.getElementById('site').textContent;
+        const cat6 = document.getElementById('effort').value; 
+        const cat7= document.getElementById('process').value; 
+        console.log(site,cat1,cat2,cat3,cat4,cat5,cat6,cat7)
+
+        
+        var task_result = document.getElementById('task-result');
+
+        task_result.textContent += site+"_"+cat1+"_"+cat2+"_"+cat3+"_"+cat4+"_"+cat5+"_"+cat6+'_'+cat7+"%"+"\n"; 
+
+        document.getElementById('cat5').textContent = "";
+        document.getElementById('cat4').textContent = "";
+        document.getElementById('cat3').textContent = "";
+        document.getElementById('cat2').textContent = "";
+        document.getElementById('cat1').textContent = "";
+        document.getElementById('site').textContent = ""
+        document.getElementById('effort').value = ""; 
+        document.getElementById('process').value = ""; 
+
+
+    });
+
+    document.getElementById('add1').addEventListener('click', function(event) {
+    event.preventDefault();
+        var newbie = document.getElementById('workers_add1').value; 
+        var work_list = document.getElementById('workers-normal');
+        console.log(work_list)
+        if( work_list.textContent!=="" ){
+                work_list.textContent += ","+newbie; 
+            }else{
+                work_list.textContent += newbie; 
+            }
+        document.getElementById('workers_add1').value = "";
+    
+    });
+
+    document.getElementById('add4').addEventListener('click', function(event) {
+        event.preventDefault();
+        var specialnotes = document.getElementById('specialnotes').value; 
+        var overtime = document.getElementById('overtime').value;
+        var work_list = document.getElementById('additional');
+        
+        work_list.textContent += "특이사항: "+specialnotes+"\n"+"연장근무: "+overtime; 
+        document.getElementById('specialnotes').value = "";
+        document.getElementById('overtime').value = "";
+
+
+        });
+
+    
+    // 1. 페이지 로드 시 인증을 위한 함수 호출
+    function getCurrentDateTime(datestr) {
+        const now = new Date(datestr);
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+
+    document.getElementById('submit').addEventListener('click', function(event) {
+        createEvent()
+        // var task_result = document.getElementById('task-result');
+        // const formData = {
+        //     numworkers: document.getElementById('numworkers').value,
+        //     workersnormal: document.getElementById('workers-normal').value,
+        //     taskresult : document.getElementById("task-result").value,
+        //     additional: document.getElementById('additional').value,
+            
+        // };
+    var eventId = 1 + Math.floor(Math.random() * 1000);
+    
+    var task_results = document.getElementById('task-result').textContent.split("\n");
+
+    var formtext = ''
+    var tabletext = ''
+    task_results.forEach(item=>{
+        const item_split = item.split("_")
+        formtext += `작업장 : ${item.split("_")[0]} \n 작업인원 : ${item_split[item_split.length-2]} \n작업내용 : ${item}\n특이사항 : ${document.getElementById('additional').value}\n`
+        var table = document.getElementById("dynamicTable"); // 테이블 ID 가져오기
+        if (table) {
+            const rows = table.querySelectorAll("tbody tr"); // 테이블의 모든 행 가져오기
+            formtext += "테이블 데이터:\n"; // 테이블 헤더 추가
+
+            rows.forEach((row, index) => {
+                const cells = row.querySelectorAll("td"); // 각 행의 셀 가져오기
+                let rowText = `행 ${index + 1}: `;
+                console.log(cells)
+                console.log(cells[3])
+                console.log(item)
+                if(cells[3].textContent===item){
+                    cells.forEach(cell => {
+                        rowText += `${cell.textContent.trim()} | `; // 셀 값을 추가
+                    });
+                    formtext += rowText.trim() + "\n"; // 행 데이터를 추가
+                    tabletext += rowText.trim() + "\n";
+                }
+                
+            });
+        }
+    })  
+
+    // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
+    console.log(document.getElementById('date-input').value)
+    var eventData = {
+        _id: Number(eventId),
+        title: document.getElementById('site').textContent,
+        start: getCurrentDateTime(datestr = document.getElementById('date-input').value),
+        end: getCurrentDateTime(datestr = document.getElementById('date-input').value),
+        description: formtext,
+        type: document.getElementById('site').textContent,
+        username: document.getElementById("username").textContent,
+        backgroundColor: '#D25565',
+        textColor: '#ffffff',
+        allDay: false
+    };
+
+    //createExcel(formData);
+    $("#calendar").fullCalendar('renderEvent', eventData, true);
+    eventModal.find('input, textarea').val('');
+    editAllDay.prop('checked', false);
+    eventModal.modal('hide');
+    console.log(eventData)
+    //새로운 일정 저장
+    $.ajax({
+        type: "get",
+        url: "/static/data/calendar.json",
+        data: {
+            //.....
+        },
+        success: function (response) {
+            console.log(response)
+            var data = response; 
+
+            data.push(eventData);
+            console.log(data)
+            //DB연동시 중복이벤트 방지를 위한
+            //$('#calendar').fullCalendar('removeEvents');
+            //$('#calendar').fullCalendar('refetchEvents');
+            json_data = JSON.stringify(data)
+            console.log(json_data)
+            $.ajax({
+                url: '/calendar_save', // 데이터를 저장할 서버의 URL
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({data:json_data}),
+                success: function(response) {
+                    alert('Data saved successfully:', response);
+
+                    const formData_db = {
+                            numworkers: document.getElementById('numworkers').value,
+                            workersnormal: document.getElementById('workers-normal').value,
+                            workersinfo : tabletext,
+                            taskresult : document.getElementById("task-result").value,
+                            additional: document.getElementById('additional').value,
+                            date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
+                            username: document.getElementById("username").textContent
+                        };
+
+                    $.ajax({
+                        url: '/survey',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(formData_db),
+                        success: function (response) {
+                            console.log(response)
+                            alert("데이터가 저장되었습니다.")
+                        
+                        },
+                        error: function(error) {
+                            alert('데이터 저장에 실패했습니다.', error);
+                        }
+                    });
+                },
+                error: function(error) {
+                    alert('Error saving data:', error);
+                }
+            });
+        }
+    });
+    
+
+
+    });
+
+    // 오늘 날짜 구하기
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
+    const dd = String(today.getDate()).padStart(2, '0');
+
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+
+    // 6개월 전 날짜 구하기
+    const pastDate = new Date(today);
+    pastDate.setMonth(today.getMonth() - 6);
+    const pastYyyy = pastDate.getFullYear();
+    const pastMm = String(pastDate.getMonth() + 1).padStart(2, '0');
+    const pastDd = String(pastDate.getDate()).padStart(2, '0');
+
+    const pastStr = `${pastYyyy}-${pastMm}-${pastDd}`;
+
+    // 6개월 후 날짜 구하기
+    const futureDate = new Date(today);
+    futureDate.setMonth(today.getMonth() + 6);
+    const futureYyyy = futureDate.getFullYear();
+    const futureMm = String(futureDate.getMonth() + 1).padStart(2, '0');
+    const futureDd = String(futureDate.getDate()).padStart(2, '0');
+
+    const futureStr = `${futureYyyy}-${futureMm}-${futureDd}`;
+
+    // input 요소에 값 설정
+    const dateInput = document.getElementById('date-input');
+    dateInput.value = todayStr;
+    dateInput.min = pastStr;
+    dateInput.max = futureStr;
+
+
+    async function getAccessToken() {
+    // URL에서 code와 state 파라미터를 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+
+        const response = await fetch('/callback', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            code: code,
+            grant_type: 'authorization_code',
+            client_id: '8zESjIVD54_8K5PA_dIu',
+            client_secret: 'wyWAH1uLEY'
+        })
+        });
+        
+        // // 토큰 정보 사용 예제
+        // const accessToken = tokenInfo.access_token;
+        alert('Access Token: ' + accessToken);
+        const tokenInfo = await response.json();
+        const accessToken = tokenInfo.access_token;
+        console.log("fetch전")
+        fetchFiles(accessToken);
+    }
+
+    function formatDateTime(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    }
+
+
+    async function createEvent() {
+        const formData = {
+            numworkers: document.getElementById('numworkers').value,
+            workersnormal: document.getElementById('workers-normal').value,
+            taskresult : document.getElementById("task-result").value,
+            specialnotes: document.getElementById('specialnotes').value,
+            overtime: document.getElementById('overtime').value
+        };
+
+        const start = new Date();
+        start2 = formatDateTime(start)
+        console.log(start)
+
+        // const token = await getAccessToken();
+    
+
+        const event = {
+            summary: "Testmessage",
+            description: JSON.stringify(formData),
+            
+            recurrence:[],
+            recurringEventId:"TZID=Asia/Seoul:2025-04-05"
+        };
+        console.log("?????")
+        const response = await fetch('/create_event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(event)
+        });
+
+        const result = await response.json();
+        document.getElementById('result').innerText = result.message;
+    };
+
+    // 3. 파일 조회 함수
+    async function fetchFiles(accessToken) {
+        const response = await fetch('https://www.worksapis.com/v1.0/sharedrives', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        const files = await response.json();
+        console.log(files);
+        // 파일 목록을 화면에 표시하는 함수 호출 (추가 작업 필요)
+        displayFiles(files);
+    }
+
+    // 4. 파일 목록을 화면에 표시하는 함수 (예제)
+    function displayFiles(files) {
+        const fileList = document.createElement('ul');
+        files.forEach(file => {
+            const listItem = document.createElement('li');
+            listItem.textContent = file.name; // 예시로 파일 이름을 표시
+            fileList.appendChild(listItem);
+        });
+        document.body.appendChild(fileList);
+    }
+};
+
+    
+
+</script>
+
 {% endblock %}
 
 {% block script %}
+
 <!-- <script src="static/js/jquery.min.js"></script>
-<script src="static/js/moment.min.js"></script>
+
 <script src="static/js/ko.js"></script>
 <script src="static/js/select2.min.js"></script>
 
@@ -309,676 +844,6 @@
 <script src="static/js/editEvent.js"></script>
 <script src="static/js/etcSetting.js"></script> -->
 
-<script type="text/javascript">
-    document.getElementById('nav_survey').classList.add('active');
-
-    var data =null ; 
-    $.getJSON('/static/data/test.json', function(item) {
-            data =  JSON.parse(item)
-            console.log(data)
-        }).fail(function() {
-            console.error('Error fetching JSON');
-        });
-
-    function populateDropdown(id, options) {
-                const select = document.getElementById(id);
-                select.innerHTML = '<option value="">Select</option>';
-                options.forEach(option => {
-                    const opt = document.createElement('option');
-                    opt.value = option;
-                    opt.text = option;
-                    select.appendChild(opt);
-                });
-	    	}
-
-    function filterData(level) {
-            if (!data) {
-                console.error('Data is not loaded yet.');
-                return;
-            }
-
-            const category = document.getElementById('category').value;
-            const floor = document.getElementById('floor').value;
-            const section = document.getElementById('section').value;
-
-            let filteredData = [];
-            if (level === 'category') {
-                filteredData = data.filter(item => item['cat1'] === category);
-                populateDropdown('floor', [...new Set(filteredData.map(item => item['cat2']))]);
-                document.getElementById('section').innerHTML = '<option value="">Select</option>';
-                document.getElementById('subsection').innerHTML = '<option value="">Select</option>';
-                document.getElementById('task').innerHTML = '<option value="">Select</option>';
-            } else if (level === 'floor') {
-                filteredData = data.filter(item => item['cat1'] === category && item['cat2'] === floor);
-                populateDropdown('section', [...new Set(filteredData.map(item => item['cat3']))]);
-                document.getElementById('subsection').innerHTML = '<option value="">Select</option>';
-                document.getElementById('task').innerHTML = '<option value="">Select</option>';
-            } else if (level === 'section') {
-                filteredData = data.filter(item => item['cat1'] === category && item['cat2'] === floor && item['cat3'] === section);
-                populateDropdown('subsection', [...new Set(filteredData.map(item => item['cat4']))]);
-                populateDropdown('task', [...new Set(filteredData.map(item => item['작업내용']))]);
-            }
-        };
-
-    var site = null;
-    var cat1 = null;
-    var cat2 = null;
-    var cat3 = null;
-    var cat4 = null;
-    var cat5 = null;
-    var cat6 = null;
-
-    function selectOption(category, value) {
-        if (category === 'site') {
-            var site = value;
-
-            document.getElementById('cat1Item').classList.remove('item-disable');
-            const modelOptions = document.getElementById('cat1Options');
-            console.log(data)
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === value).map(item => item['중분류']))];
-           
-            modelOptions.innerHTML = uniqueValues.map(model => 
-                `<li type="button" data-bs-target="#cat2Modal" data-bs-toggle="modal" onclick="selectOption('cat1','${model}')"> ${model}</li>`
-            ).join('');
-            document.getElementById('site').innerHTML = value;
-        } else if (category === 'cat1') {
-            var cat1 = value;
-            var site = document.getElementById('site').textContent;
-            console.log(site)
-            console.log(cat1)
-
-            document.getElementById('cat2Item').classList.remove('item-disable');
-            const modelOptions = document.getElementById('cat2Options');
-            console.log(data)
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === value).map(item => item['층']))];
-            console.log(uniqueValues)
-
-            modelOptions.innerHTML = uniqueValues.map(model => 
-                `<li type="button" data-bs-target="#cat3Modal" data-bs-toggle="modal" onclick="selectOption('cat2','${model}')"> ${model}</li>`
-            ).join('');
-            console.log(document.getElementById(category + 'Options'))
-            document.getElementById(category + 'Options').classList.remove('active');
-            document.getElementById('cat1').innerHTML = value;
-        } else if(category==="cat2"){
-            var cat2 = value;
-            var cat1 = document.getElementById('cat1').textContent;
-            var site = document.getElementById('site').textContent;
-
-            document.getElementById('cat3Item').classList.remove('item-disable');
-            const modelOptions = document.getElementById('cat3Options');
-            console.log(data)
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === value).map(item => item['구간']))];
-            
-            modelOptions.innerHTML = uniqueValues.map(model => 
-                `<li type="button" data-bs-target="#cat4Modal" data-bs-toggle="modal" onclick="selectOption('cat3', '${model}')"> ${model}</li>`
-            ).join('');
-            document.getElementById('cat2').innerHTML = value;
-        }else if(category==="cat3"){
-            var cat3 = value;
-            var cat2 = document.getElementById('cat2').textContent;
-            var cat1 = document.getElementById('cat1').textContent;
-            var site = document.getElementById('site').textContent;
-
-            document.getElementById('cat4Item').classList.remove('item-disable');
-            const modelOptions = document.getElementById('cat4Options');
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === value).map(item => item['세부구간']))];
-            console.log(uniqueValues.length)            
-            
-            modelOptions.innerHTML = uniqueValues.map(model => 
-                `<li type="button" data-bs-target="#cat5Modal" data-bs-toggle="modal" onclick="selectOption('cat4', '${model}')"> ${model}</li>`
-            ).join('');
-            document.getElementById('cat3').innerHTML = value;
-        }else if(category==="cat4"){
-            var cat4 = value;
-            var cat3 = document.getElementById('cat3').textContent;
-            var cat2 = document.getElementById('cat2').textContent;
-            var cat1 = document.getElementById('cat1').textContent;
-            var site = document.getElementById('site').textContent;
-
-            document.getElementById('cat5Item').classList.remove('item-disable');
-            const modelOptions = document.getElementById('cat5Options');
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === cat3&&item['세부구간'] === value).map(item => item['작업내용']))];
-            console.log('cat5',uniqueValues)
-            modelOptions.innerHTML = uniqueValues.map(model => 
-                `<li type="button" data-bs-dismiss="modal" onclick="selectOption('cat5', '${model}')"> ${model}</li>`
-            ).join('');
-
-            const additionalInputHTML = `
-                <li id='add_li'>
-                    <input type="text" id="additionalInput" placeholder="보기에 없는경우 직접 입력하세요" />
-                    <button type="button" onclick="addCustomOption()">작업 추가</button>
-                </li>
-            `;
-
-            // 추가 입력 필드를 modelOptions 요소에 추가
-            modelOptions.innerHTML += additionalInputHTML;
-
-            document.getElementById('cat4').innerHTML = value;
-        }else if(category==="cat5"){
-            var cat5= value;
-            document.getElementById('effort').focus();
-            document.getElementById('cat6Item').classList.remove('item-disable');
-            document.getElementById('cat5').innerHTML = value;
-        }
-        // Hide the current options after selection   
-    }
-
-    function onEffortClicked(num) {
-        const effortElement = document.getElementById('effort');
-        effortElement.value = (Number(effortElement.value) + num).toFixed(1);
-    }
-
-    function onEffortClicked_workers(num) {
-        const effortElement = document.getElementById('workers_effort');
-        effortElement.value = (Number(effortElement.value) + num).toFixed(1);
-    }
-
-    // 추가된 옵션을 처리하는 함수
-    function addCustomOption() {
-        const inputElement = document.getElementById('additionalInput');
-        const newValue = inputElement.value.trim();
-
-        if (newValue) {
-            const modelOptions = document.getElementById('cat5Options');
-            // 새로운 li 요소를 생성
-            const newLi = document.createElement('li');
-            newLi.setAttribute('type', 'button');
-            newLi.setAttribute('data-bs-dismiss', 'modal');
-            newLi.setAttribute('onclick', `selectOption('cat5', '${newValue}')`);
-            newLi.textContent = newValue;
-
-            // 새로운 li 요소를 add_li 요소 위에 삽입
-            const addLi = document.getElementById('add_li');
-            modelOptions.insertBefore(newLi, addLi);
-
-            // 입력 필드 초기화
-            inputElement.value = '';
-        } else {
-            alert('유효한 값을 입력하세요.');
-        }
-    }
-
-    // Function to delete a row
-    function deleteRow(button) {
-        const row = button.parentElement.parentElement;
-        row.remove();
-
-        // Update contributions after deletion
-        updateContributions();
-
-        // Remove the table if no rows are left
-        const table = document.querySelector("#dynamicTable");
-        const tbody = table.querySelector("tbody");
-        if (!tbody.hasChildNodes()) {
-            table.remove();
-        }
-    };
-
-    // Function to update contribution percentages
-    function updateContributions() {
-            const table = document.querySelector("#dynamicTable");
-            const tbody = table.querySelector("tbody");
-            const rows = tbody.querySelectorAll("tr");
-
-            // Calculate total work
-            let totalWork = 0;
-            rows.forEach(row => {
-                const work = parseFloat(row.cells[1].textContent);
-                totalWork += work;
-            });
-
-            // Update each row's contribution
-            rows.forEach(row => {
-                const work = parseFloat(row.cells[1].textContent);
-                const contribution = totalWork > 0 ? ((work / totalWork) * 100).toFixed(2) : 0;
-                row.cells[2].textContent = `${contribution}%`;
-            });
-        }
-
-
-    window.onload = function(){
-
-        // 사람, 공수 추가 테이블
-        const tableContainer = document.getElementById('workers-table');
-
-        // Add Button Event Listener
-        document.getElementById('add1').addEventListener('click', function () {
-            const name = document.getElementById('workers_add1').value.trim();
-            const work =Number(document.getElementById('workers_effort').value);
-            console.log(name,work)
-            if (!name || isNaN(work) || work <= 0) {
-                alert("이름과 공수를 올바르게 입력해주세요.");
-                return;
-            }
-
-            // Check if the table exists, if not, create one
-            let table = document.querySelector("#dynamicTable");
-            if (!table) {
-                table = createTable();
-                tableContainer.appendChild(table);
-            }
-
-            // Add row to table
-            addRow(name, work);
-        });
-
-        // Function to create a table
-        function createTable() {
-            const table = document.createElement('table');
-            table.id = "dynamicTable";
-            table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>이름</th>
-                        <th>공수</th>
-                        <th>기여도 (%)</th>
-                        <th>삭제</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            `;
-            return table;
-        }
-
-        // Function to add a row to the table
-        function addRow(name, work) {
-            const table = document.querySelector("#dynamicTable");
-            const tbody = table.querySelector("tbody");
-
-            // Create a new row
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${name}</td>
-                <td>${work}</td>
-                <td contenteditable='true'></td>
-                <td><button onclick="deleteRow(this)" class='btn btn-secondary'>삭제</button></td>
-            `;
-            tbody.appendChild(row);
-
-            // Update contributions
-            updateContributions();
-        }
-
-        
-
-        
-
-
-
-        const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
-        console.log('insadb',insadb)
-        // DOM 요소 가져오기
-        const input = document.getElementById('workers_add1');
-        const autocompleteList = document.getElementById('autocomplete-list');
-
-        // 입력 필드 이벤트 리스너 추가
-        input.addEventListener('input', function() {
-            const query = input.value;
-            console.log(query)
-            autocompleteList.innerHTML = ''; // 기존 항목 제거
-
-            if (!query) return;
-            console.log("여기까지")
-            // 이름 필터링
-            const filtered = insadb.filter(worker =>
-                worker.성명 && worker.성명.includes(query)
-            );
-            console.log('filtered',filtered)
-            // 자동완성 항목 표시
-            filtered.forEach(worker => {
-                const div = document.createElement('div');
-                div.textContent = worker.성명;
-                div.addEventListener('click', () => {
-                    input.value = worker.성명; // 선택된 이름으로 채우기
-                    autocompleteList.innerHTML = ''; // 목록 초기화
-                });
-                autocompleteList.appendChild(div);
-            });
-        });
-
-        // 자동완성 목록 숨기기
-        document.addEventListener('click', function(e) {
-            if (e.target !== input) {
-                autocompleteList.innerHTML = ''; // 외부 클릭 시 목록 닫기
-            }
-        });
-
-
-        
-        $('#siteOptions li').on('click', function() {
-            $('#siteOptions li').removeClass('selected');
-            $(this).addClass('selected');
-            console.log(this)
-        });
-
-        $('#cat1Options li').on('click', function() {
-            $('#cat1Options li').removeClass('selected');
-            $(this).addClass('selected');
-        });
-
-        $('#cat2Options li').on('click', function() {
-            $('#cat2Options li').removeClass('selected');
-            $(this).addClass('selected');
-        });
-
-        $('#cat3Options li').on('click', function() {
-            $('#cat3Options li').removeClass('selected');
-            $(this).addClass('selected');
-        });
-
-        $('#cat4Options li').on('click', function() {
-            $('#cat4Options li').removeClass('selected');
-            $(this).addClass('selected');
-        });
-
-        $('#cat5Options li').on('click', function() {
-            $('#cat5Options li').removeClass('selected');
-            $(this).addClass('selected');
-        });
-
-    
-       
-        $('#add-task').on('click', function() {
-			event.preventDefault();
-            var cat5 = document.getElementById('cat5').textContent;
-            var cat4 = document.getElementById('cat4').textContent;
-            var cat3 = document.getElementById('cat3').textContent;
-            var cat2 = document.getElementById('cat2').textContent;
-            var cat1 = document.getElementById('cat1').textContent;
-            var site = document.getElementById('site').textContent;
-             const cat6 = document.getElementById('effort').value; 
-             console.log(site,cat1,cat2,cat3,cat4,cat5,cat6)
-
-		   	
-		     var task_result = document.getElementById('task-result');
-
-            task_result.textContent += site+"_"+cat1+"_"+cat2+"_"+cat3+"_"+cat4+"_"+cat5+"_"+cat6+"\n"; 
-
-            document.getElementById('cat5').textContent = "";
-            document.getElementById('cat4').textContent = "";
-            document.getElementById('cat3').textContent = "";
-            document.getElementById('cat2').textContent = "";
-            document.getElementById('cat1').textContent = "";
-            document.getElementById('site').textContent = ""
-            document.getElementById('effort').value = ""; 
-
-  
-		 });
-    
-  		 document.getElementById('add1').addEventListener('click', function(event) {
-			event.preventDefault();
-		     var newbie = document.getElementById('workers_add1').value; 
-		   	 var work_list = document.getElementById('workers-normal');
-		   	console.log(work_list)
-            if( work_list.textContent!=="" ){
-                    work_list.textContent += ","+newbie; 
-                }else{
-                    work_list.textContent += newbie; 
-                }
-		   	document.getElementById('workers_add1').value = "";
-		   
-		 });
-
-        document.getElementById('add4').addEventListener('click', function(event) {
-				  event.preventDefault();
-				   var specialnotes = document.getElementById('specialnotes').value; 
-				   var overtime = document.getElementById('overtime').value;
-                   var work_list = document.getElementById('additional');
-				   work_list.textContent += "특이사항: "+specialnotes+"\n"+"연장근무: "+overtime; 
-				   document.getElementById('specialnotes').value = "";
-                   document.getElementById('overtime').value = "";
-
-
-			   });
-
-        
-        // 1. 페이지 로드 시 인증을 위한 함수 호출
-   
-        document.getElementById('submit').addEventListener('click', function(event) {
-            createEvent()
-            var task_result = document.getElementById('task-result');
-            const formData = {
-                numworkers: document.getElementById('numworkers').value,
-                workersnormal: document.getElementById('workers-normal').value,
-                workershard: document.getElementById('workers-hard').value,
-                workersmorning: document.getElementById('workers-morning').value,
-                taskresult : document.getElementById("task-result").value,
-                additional: document.getElementById('additional').value,
-                
-            };
-        var eventId = 1 + Math.floor(Math.random() * 1000);
-        function getCurrentDateTime(datestr) {
-            const now = new Date(datestr);
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-
-            return `${year}-${month}-${day} ${hours}:${minutes}`;
-        }
-        var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업자 명 :${document.getElementById('workers-normal').value}\n연장 근무자명 : ${document.getElementById('workers-hard').value}\n오전 근무자명 : ${document.getElementById('workers-morning').value}\n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
-        console.log(document.getElementById('date-input').value)
-        var eventData = {
-            _id: Number(eventId),
-            title: document.getElementById('site').textContent,
-            start: getCurrentDateTime(datestr = document.getElementById('date-input').value),
-            end: getCurrentDateTime(datestr = document.getElementById('date-input').value),
-            description: formtext,
-            type: document.getElementById('site').textContent,
-            username: document.getElementById("username").textContent,
-            backgroundColor: '#D25565',
-            textColor: '#ffffff',
-            allDay: false
-        };
-
-        //createExcel(formData);
-        $("#calendar").fullCalendar('renderEvent', eventData, true);
-        eventModal.find('input, textarea').val('');
-        editAllDay.prop('checked', false);
-        eventModal.modal('hide');
-        console.log(eventData)
-        //새로운 일정 저장
-        $.ajax({
-            type: "get",
-            url: "/static/data/calendar.json",
-            data: {
-                //.....
-            },
-            success: function (response) {
-                console.log(response)
-                var data = response; 
-
-                data.push(eventData);
-                console.log(data)
-                //DB연동시 중복이벤트 방지를 위한
-                //$('#calendar').fullCalendar('removeEvents');
-                //$('#calendar').fullCalendar('refetchEvents');
-                json_data = JSON.stringify(data)
-                console.log(json_data)
-                $.ajax({
-                    url: '/calendar_save', // 데이터를 저장할 서버의 URL
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({data:json_data}),
-                    success: function(response) {
-                        alert('Data saved successfully:', response);
-
-                        const formData_db = {
-                                numworkers: document.getElementById('numworkers').value,
-                                workersnormal: document.getElementById('workers-normal').value,
-                                workershard: document.getElementById('workers-hard').value,
-                                workersmorning: document.getElementById('workers-morning').value,
-                                taskresult : document.getElementById("task-result").value,
-                                additional: document.getElementById('additional').value,
-                                date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
-                                username: document.getElementById("username").textContent
-                            };
-
-                        $.ajax({
-                            url: '/survey',
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify(formData_db),
-                            success: function (response) {
-                                console.log(response)
-                                alert("데이터가 저장되었습니다.")
-                            
-                            },
-                            error: function(error) {
-                                alert('데이터 저장에 실패했습니다.', error);
-                            }
-                        });
-                    },
-                    error: function(error) {
-                        alert('Error saving data:', error);
-                    }
-                });
-            }
-        });
-        
-
-
-        })
-
-        // 오늘 날짜 구하기
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
-        const dd = String(today.getDate()).padStart(2, '0');
-
-        const todayStr = `${yyyy}-${mm}-${dd}`;
-
-        // 6개월 전 날짜 구하기
-        const pastDate = new Date(today);
-        pastDate.setMonth(today.getMonth() - 6);
-        const pastYyyy = pastDate.getFullYear();
-        const pastMm = String(pastDate.getMonth() + 1).padStart(2, '0');
-        const pastDd = String(pastDate.getDate()).padStart(2, '0');
-
-        const pastStr = `${pastYyyy}-${pastMm}-${pastDd}`;
-
-        // 6개월 후 날짜 구하기
-        const futureDate = new Date(today);
-        futureDate.setMonth(today.getMonth() + 6);
-        const futureYyyy = futureDate.getFullYear();
-        const futureMm = String(futureDate.getMonth() + 1).padStart(2, '0');
-        const futureDd = String(futureDate.getDate()).padStart(2, '0');
-
-        const futureStr = `${futureYyyy}-${futureMm}-${futureDd}`;
-
-        // input 요소에 값 설정
-        const dateInput = document.getElementById('date-input');
-        dateInput.value = todayStr;
-        dateInput.min = pastStr;
-        dateInput.max = futureStr;
-
-
-        async function getAccessToken() {
-        // URL에서 code와 state 파라미터를 추출
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            const state = urlParams.get('state');
-
-            const response = await fetch('/callback', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                code: code,
-                grant_type: 'authorization_code',
-                client_id: '8zESjIVD54_8K5PA_dIu',
-                client_secret: 'wyWAH1uLEY'
-            })
-            });
-            
-            // // 토큰 정보 사용 예제
-            // const accessToken = tokenInfo.access_token;
-            alert('Access Token: ' + accessToken);
-            const tokenInfo = await response.json();
-            const accessToken = tokenInfo.access_token;
-            console.log("fetch전")
-            fetchFiles(accessToken);
-        }
-
-        function formatDateTime(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-
-            return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-        }
-
-
-        async function createEvent() {
-            const formData = {
-                numworkers: document.getElementById('numworkers').value,
-                workersnormal: document.getElementById('workers-normal').value,
-                workershard: document.getElementById('workers-hard').value,
-                workersmorning: document.getElementById('workers-morning').value,
-                taskresult : document.getElementById("task-result").value,
-                specialnotes: document.getElementById('specialnotes').value,
-                overtime: document.getElementById('overtime').value
-            };
-
-            const start = new Date();
-            start2 = formatDateTime(start)
-            console.log(start)
-
-            // const token = await getAccessToken();
-     
-
-            const event = {
-                summary: "Testmessage",
-                description: JSON.stringify(formData),
-               
-                recurrence:[],
-                recurringEventId:"TZID=Asia/Seoul:2025-04-05"
-            };
-            console.log("?????")
-            const response = await fetch('/create_event', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(event)
-            });
-
-            const result = await response.json();
-            document.getElementById('result').innerText = result.message;
-        };
-
-        // 3. 파일 조회 함수
-        async function fetchFiles(accessToken) {
-            const response = await fetch('https://www.worksapis.com/v1.0/sharedrives', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-            const files = await response.json();
-            console.log(files);
-            // 파일 목록을 화면에 표시하는 함수 호출 (추가 작업 필요)
-            displayFiles(files);
-        }
-
-        // 4. 파일 목록을 화면에 표시하는 함수 (예제)
-        function displayFiles(files) {
-            const fileList = document.createElement('ul');
-            files.forEach(file => {
-                const listItem = document.createElement('li');
-                listItem.textContent = file.name; // 예시로 파일 이름을 표시
-                fileList.appendChild(listItem);
-            });
-            document.body.appendChild(fileList);
-        }
-    };
-
-</script>
 
 
 {% endblock %}

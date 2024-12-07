@@ -10,6 +10,7 @@ import numpy as np
 from datetime import datetime
 from functools import wraps
 from datetime import timedelta
+import os 
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 세션 관리를 위해 필요한 키 설정
@@ -44,6 +45,13 @@ auth_url = 'https://auth.worksmobile.com/oauth2/v2.0/authorize'
 token_url = 'https://auth.worksmobile.com/oauth2/v2.0/token'
 userinfo_url = 'https://apis.worksmobile.com/r/api/user/v1/userinfo'
 
+def check_session_id(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if 'ID' not in session:  # 세션에 'id'가 없으면
+            return render_template('backoffice-login.html')  # backoffice.html로 렌더링
+        return func(*args, **kwargs)  # 세션에 'id'가 있으면 원래 함수 실행
+    return decorated_function
 
 
 @app.route('/', methods=['GET'])
@@ -150,6 +158,7 @@ def signin():
         
 @app.route('/gocalendar', methods=['GET'])
 @nocache
+@check_session_id
 def gocalendar():
     insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
     insadb['PASSWORD'] = insadb['PASSWORD'].astype(str)
@@ -195,6 +204,7 @@ def gocalendar():
 
 @app.route('/survey', methods=['GET','POST'])
 @nocache
+@check_session_id
 def survey():
     if(request.method=='GET'):
         
@@ -230,8 +240,7 @@ def survey():
         print("survey_data",survey_data)
         numworkers = survey_data['numworkers']
         workersnormal = survey_data['workersnormal'].split(",")
-        workershard = survey_data['workershard'].split(",")
-        workersmorning = survey_data['workersmorning'].split(",")
+        workersinfo = survey_data['workersinfo']
         taskresult = survey_data['taskresult'].split("\n")
         additional = survey_data['additional'].split("\n")
         date = survey_data['date'].split(" ")[0]
@@ -275,14 +284,6 @@ def survey():
                 worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] = 0
             worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += 1
             print(worker_info.loc[worker_info[('','성명')]==worker_name] )
-
-        for worker_name in workershard:
-           
-            worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += 0.5
-
-        for worker_name in workersmorning:
-            
-            worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += 0.5
 
         file_path = "./static/data/test.json"
         with open(file_path, 'r',encoding='utf-8') as outfile:
@@ -691,17 +692,20 @@ def leaveheck():
 @nocache
 def personal_agree():
     return render_template("personal_agree.html")
+
 @app.route('/signup', methods=['GET'])
+@check_session_id
 @nocache
 def signup():
+    
     file_path = './static/data/countries.json'
     with open(file_path, 'r') as f:
-      countries = json.load(f)
-      f.close()
+        countries = json.load(f)
+        f.close()
 
     # ID랑 비번으로 계정 매핑  
     insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
-    
+    insadb['PASSWORD'] = insadb['PASSWORD'].astype(str)
     if 'id' in session and 'pw' in session:
         id = str(session['id']) 
         pw = str(session['pw'])
@@ -817,6 +821,38 @@ def register():
     print(insadb_new)
     
     return jsonify("success")
+
+
+@app.route('/upload-image', methods=['POST'])
+@check_session_id
+def upload_image():
+    if 'image' not in request.files:
+        return jsonify({'success': False, 'message': '이미지가 없습니다.'})
+    id = session['ID']
+    print( request.files)
+    text_data = request.form.get('textData') 
+    print(text_data)
+    file = request.files['image']
+    
+    print('request.files',request.files)
+    print('img file',file)
+    # print(file.content)
+    print(id)
+    type = file.filename.split(".")[1]
+    file.filename = id + "_"+text_data +"." + type
+    
+    if file.filename == '':
+        return jsonify({'success': False, 'message': '파일 이름이 비어 있습니다.'})
+    
+    path = './static/data/개인화폴더/'+str(id)
+    # 파일 저장
+    file_path = os.path.join(path, file.filename)
+    file.save(file_path)
+    try:
+        
+        return jsonify({'success': True, 'message': '이미지가 성공적으로 저장되었습니다.'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
 
 
 if __name__ == '__main__':

@@ -9,76 +9,248 @@
 {% endblock %}
 
 {% block content %}
-<div id="bodyContent" style="margin-bottom:100px;">
-  <div id="bgtables">
-    <h1 class="content-title">작업 생산성</h1>
+<div class="content">
+  <div class="panel-header bg-primary-gradient">
+    <div class="page-inner py-5">
+      <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+        <div>
+          <h2 class=" pb-2 fw-bold">작업 진행률 & 생산성 대시보드</h2>
+        </div>
+        <div class="ml-md-auto py-2 py-md-0">
+          <button href="#" class="btn btn-secondary btn-round active" onclick="showContent('content1',this)">작업 진행률 조회</button>
+          <button href="#" class="btn btn-secondary btn-round" onclick="showContent('content2',this)">생산성 조회</button>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="page-inner mt--5">
+    <div class="row mt--2" id="content1">
+      <div class="col-md-6">
+        <div class="card full-height">
+          <div class="card-body">
+            <div class="card-title">조회할 작업을 선택해 주세요. </div>
+            <div class="d-flex"> 
+            <labe for ='place'>현장</labe>
+            <select id ='place'>
+              
+            </select>
+            <labe for ='sector'>구간</labe>
+            <select id ='sector'>
 
-  <!-- <img src="./static/img/premier/footlogo.png" alt="" style="width:100px;margin-left: 100px;margin-top:10px;margin-bottom:10px"> -->
-  <div class="table-wrapper">
-    <table id="scores">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Rank</th>  
-          <th>현장</th>
-          <th>총괄이름</th>
-          <th>Total</th>
-          <th>G</th>
-          <th>C</th>
-          <th>A</th>
-          <th>L</th>
-          
-        </tr>
-      </thead>
-      <tbody>
+            </select>
+            <labe for ='floor'>층</labe>
+            <select id ='floor'>
 
-      </tbody>
-    </table>
+            </select>
+            </div>
+            <labe for ='work'>작업</labe>
+            <select id ='work'>
+              
+            </select>
+            <canvas id="gaugeChart" width="400" height="400"></canvas>
+            <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
+              <div class="px-2 pb-2 pb-md-0 text-center">
+                <div id="circles-1"></div>
+                <h6 class="fw-bold mt-3 mb-0">New Users</h6>
+              </div>
+              <div class="px-2 pb-2 pb-md-0 text-center">
+                <div id="circles-2"></div>
+                <h6 class="fw-bold mt-3 mb-0">Sales</h6>
+              </div>
+              <div class="px-2 pb-2 pb-md-0 text-center">
+                <div id="circles-3"></div>
+                <h6 class="fw-bold mt-3 mb-0">Subscribers</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row"  id="content2" style="display:none;">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-head-row">
+              <div class="card-title">User Statistics</div>
+              <div class="card-tools">
+                <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
+                  <span class="btn-label">
+                    <i class="fa fa-pencil"></i>
+                  </span>
+                  Export
+                </a>
+                <a href="#" class="btn btn-info btn-border btn-round btn-sm">
+                  <span class="btn-label">
+                    <i class="fa fa-print"></i>
+                  </span>
+                  Print
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="min-height: 375px">
+              <canvas id="statisticsChart"></canvas>
+            </div>
+            <div id="myChartLegend"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-primary">
+          <div class="card-header">
+            <div class="card-title">Daily Sales</div>
+            <div class="card-category">March 25 - April 02</div>
+          </div>
+          <div class="card-body pb-0">
+            <div class="mb-4 mt-2">
+              <h1>$4,578.58</h1>
+            </div>
+            <div class="pull-in">
+              <canvas id="dailySalesChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body pb-0">
+            <div class="h1 fw-bold float-right text-warning">+7%</div>
+            <h2 class="mb-2">213</h2>
+            <p class="text-muted">Transactions</p>
+            <div class="pull-in sparkline-fix">
+              <div id="lineChart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </div>
 </div>
-{% endblock %}
 
-{% block script %}
+<!-- Atlantis DEMO methods, don't include it in your project! -->
+<script src="/static/js/setting-demo.js"></script>
+<script src="/static/js/demo.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@1.0.1/dist/chartjs-plugin-doughnutlabel.min.js"></script>
 <script>
-  document.getElementById('nav_productivity').classList.add('active');
 
-  async function teams() {
-    var res = await fetch("./static/data/ranktable.json");
-    var data = await res.json();
 
-    console.log(data);
+  function showContent(contentId,clickedButton) {
+    // 모든 콘텐츠 숨기기
+    document.getElementById('content1').style.display = 'none';
+    document.getElementById('content2').style.display = 'none';
 
-    let records  = data;
-    console.log('records',records);
+    // 선택한 콘텐츠 표시
+    document.getElementById(contentId).style.display = 'block';
+    const buttons = document.querySelectorAll('.btn'); // 모든 버튼 선택
+    buttons.forEach(button => button.classList.remove('active'));
 
-    var displayScore = document.getElementById("scores").getElementsByTagName("tbody")[0];
-    for (let i = 0; i < records.length; i++) {
-      console.log(records[i]);
-      console.log(i);
+    // 클릭한 버튼에 active 클래스 추가
+    clickedButton.classList.add('active');
+  };
+  
+  
+  function createCustomGaugeChart(value) {
 
-      const tr = document.createElement("tr");
-      tr.setAttribute("id", "scoreDetails");
-      tr.innerHTML = `
-        <td style='font-size:14px;'>&#8744;</td>
-        <td id="lbl1"> 
-          ${[i + 1]}&nbsp;&nbsp;•
-        </td> 
-        <td id="lbl2">  
-          <span>${records[i].현장}</span>
-        </td>
-        <td id="lbl3">${records[i]['총괄 이름']}</td>
-        <td id="lbl4">${records[i].Total}</td>
-        <td id="lbl5">${records[i].A}</td>
-        <td id="lbl6">${records[i].C}</td>
-        <td id="lbl7">${records[i].G}</td>
-        <td id="lbl8">${records[i].L}</td>
+    const ctx = document.getElementById('gaugeChart').getContext('2d');
 
-      `;
+    // 입력값 제한 범위: 0 ~ 100
+    value = Math.max(0, Math.min(value, 100));
 
-      displayScore.appendChild(tr);
+    // 색상 구간 설정
+    const colorStops = [
+        [0.1, '#ed0022'],
+        [0.2, '#f43021'],
+        [0.3, '#fc6114'],
+        [0.4, '#ff8c00'],
+        [0.5, '#ffad00'],
+        [0.6, '#edbd02'],
+        [0.7, '#c6bf22'],
+        [0.8, '#92b73a'],
+        [0.9, '#4aa84e'],
+        [1.0, '#009a60'],
+    ];
+
+    // 값을 0~1로 정규화
+    const normalizedValue = value / 100;
+
+    // 색상 데이터와 비율 구간 생성
+    const dataValues = colorStops.map((stop, index) => {
+        
+        const stopValue = (stop[0] * 100); // 정규화 값에서 퍼센트 값으로 변환
+        return index === 0 ? stopValue : stopValue - colorStops[index - 1][0] * 100; // 이전 값과 차이를 저장
+    });
+    console.log('dataValues',dataValues)
+    const colors = colorStops.map(stop => stop[1]);
+
+    // 현재 값이 어느 색상 구간에 속하는지 계산
+    let gaugeColor = '#000';
+    for (let i = 0; i < colorStops.length - 1; i++) {
+        const [start] = colorStops[i];
+        const [end] = colorStops[i + 1];
+        if (normalizedValue >= start && normalizedValue <= end) {
+            gaugeColor = colorStops[i][1]; // 현재 구간의 색상 선택
+            break;
+        }
     }
-  }
-  teams();    
+
+    // Chart.js 데이터 설정
+    const data = {
+        datasets: [
+            {
+                data: [...dataValues, 100 - value], // 구간 데이터와 남은 부분
+                backgroundColor: [...colors, '#e0e0e0'], // 색상
+                borderWidth: 2, // 섹션 간 간격
+                borderColor: '#ffffff', // 간격 색상
+            },
+        ],
+    };
+
+    // Chart.js 옵션 설정
+    const options = {
+        cutout: '80%', // 도넛 중앙 비율
+        rotation: 270, // 시작 각도 (12시 방향)
+        circumference: 180, // 반원 형태
+        plugins: {
+            legend: { display: false }, // 범례 숨기기
+            tooltip: { enabled: false }, // 툴팁 숨기기
+            label:{display:true},
+            doughnutlabel: {
+                labels: [
+                    {
+                        text: `${value}%`, // 중앙에 표시할 값
+                        font: { size: '50', weight: 'bold' },
+                        color: 'black', // 동적 색상 적용
+                    }
+                ],
+            },
+          
+        },
+    };
+
+    // 기존 차트가 있다면 삭제
+    if (window.gaugeChartInstance) {
+        window.gaugeChartInstance.destroy();
+    }
+    console.log('options',options)
+    // 게이지 차트 생성
+    Chart.register(ChartDoughnutLabel);
+    window.gaugeChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: data,
+        options: options,
+       
+    });
+}
+
+// 게이지 차트 호출
+createCustomGaugeChart(99); // 예: 50% 값 
+
+
 </script>
-{% endblock %}
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
