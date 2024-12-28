@@ -654,11 +654,8 @@
                 contentType: 'application/json',
                 data: JSON.stringify({data:json_data}),
                 success: function(response) {
-                    alert('Data saved successfully:', response);
 
                     const formData_db = {
-                            numworkers: document.getElementById('numworkers').value,
-                            workersnormal: document.getElementById('workers-normal').value,
                             workersinfo : tabletext,
                             taskresult : document.getElementById("task-result").value,
                             additional: document.getElementById('additional').value,

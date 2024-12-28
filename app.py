@@ -237,21 +237,33 @@ def survey():
                 df.to_excel(writer, startrow = startrow + 1, header = False, **kwargs)
         ## 작업
         survey_data  = request.get_json()
-        print("survey_data",survey_data)
-        numworkers = survey_data['numworkers']
-        workersnormal = survey_data['workersnormal'].split(",")
+        numworkers = 3
+        workersnormal = ["aa","bb","cc"]
         workersinfo = survey_data['workersinfo']
         taskresult = survey_data['taskresult'].split("\n")
         additional = survey_data['additional'].split("\n")
         date = survey_data['date'].split(" ")[0]
         username = survey_data['username']
+        print('workersinfo',workersinfo)
 
-        
+        workersinfo_lines = workersinfo.strip().split("\n")
+
+        # 각 줄을 파싱하여 딕셔너리로 변환
+        parsed_data = []
+        for line in workersinfo_lines:
+            parts = line.split('|')  # '|'를 기준으로 데이터 분리
+            parsed_data.append({
+                '이름': parts[0].split(': ')[1].strip(),  # '행 1: ' 제거 후 이름 추출
+                '공수': parts[1].strip(),                  # ID 추출
+                '작업진행률': parts[2].strip(),     # 완료율 추출
+                '작업': parts[3].strip(),    # 작업 설명 추출
+                'Action': parts[4].strip()               # 작업 동작 추출
+            })
+        df_workersinfo = pd.DataFrame(parsed_data)
 
         work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
         worker_info  = pd.read_excel("./static/data/작업공수/작업자입력.xlsx",header=[0,1])
-        print('worker_info',worker_info)
-        print('work_info',work_info)
+ 
 
         if("Unnamed" in worker_info.columns[0][1]):
             worker_info = worker_info.iloc[:,1:]
@@ -276,13 +288,12 @@ def survey():
             worker_info = pd.concat([worker_info,data2],axis=0)
 
         ## 사람만큼 공수 추가 (일반은 1, 오전,특수는 0.5)
-        for worker_name in workersnormal:
-            print(worker_name)
-            print(worker_info.loc[worker_info[('','성명')]==worker_name])
-            print(worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')])
+        for worker_name in df_workersinfo['이름']:
+
             if worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')].isna().any():
                 worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] = 0
-            worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += 1
+            worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += float(df_workersinfo.loc[df_workersinfo['이름']==worker_name,'공수'])
+            print("이거 왜 안돼? ",df_workersinfo.loc[df_workersinfo['이름']==worker_name,'공수'])
             print(worker_info.loc[worker_info[('','성명')]==worker_name] )
 
         file_path = "./static/data/test.json"
@@ -292,9 +303,8 @@ def survey():
         for task in taskresult:
             task_info = task.split("_")
             if len(task)>1:
-                print(task)
-                print(task_info)
                 temp_task = pd.DataFrame({"작업날짜":[date],
+                                          '작업장':[task_info[0]],
                                         "위치_분류1":[task_info[2]],
                                         "위치_분류2":[task_info[3]],
                                         "작업_분류1":["??"],
@@ -302,10 +312,11 @@ def survey():
                                         "공수":[float(task_info[6])],
                                         "인원":[int(numworkers)],
                                         "도급/직영":[task_info[1]],
-                                        "특이사항":[additional[0]]
+                                        "특이사항":[additional[0]],
+                                        "작업진행률":[task_info[7]]
                                         })
                 work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
-                new_val = pd.DataFrame({"구간":[task_info[3]],"층":[task_info[2]],"세부구간":[task_info[4]],"중분류":[task_info[1]],"작업내용":[task_info[5]],"공수":[float(task_info[6])],"작업날짜":[date],"직종":["??"],"작업장명":[task_info[0]]})
+                new_val = pd.DataFrame({"구간":[task_info[3]],"층":[task_info[2]],"세부구간":[task_info[4]],"중분류":[task_info[1]],"작업내용":[task_info[5]],"공수":[float(task_info[6])],"작업진행률":[task_info[7]],"작업날짜":[date],"직종":["??"],"작업장명":[task_info[0]]})
                 new_df = pd.concat([old_df,new_val]).reset_index(drop=True)
         #worker_info.columns = pd.MultiIndex.from_tuples(worker_info.columns)
         
@@ -433,12 +444,17 @@ def calendar_edit():
     return 'success'
 
 
-@app.route('/productivity', methods=['GET'])
+@app.route('/productivity', methods=['GET','POST'])
 @nocache
 def productivity():
-    
-    print("main gogo")
-    return render_template("productivity.html")
+    if(request.method=='GET'):
+        print("main gogo")
+        work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+
+        print(work_info[['작업날짜','작업장','위치_분류1','위치_분류2','작업_분류3','작업진행률']] )
+       
+        work_info_json = work_info[['작업날짜','작업장','위치_분류1','위치_분류2','작업_분류3','작업진행률']].to_json(orient='records', force_ascii=False)
+        return render_template("productivity.html",work_info_json=work_info_json)
 
 ##record-employee 
 @app.route('/record-employee', methods=['GET',"POST"])

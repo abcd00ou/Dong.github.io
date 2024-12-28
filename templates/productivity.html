@@ -12,116 +12,227 @@
 <div class="content">
   <div class="panel-header bg-primary-gradient">
     <div class="page-inner py-5">
-      <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+      <div class=" align-items-md-center flex-column flex-md-row">
         <div>
-          <h2 class=" pb-2 fw-bold">작업 진행률 & 생산성 대시보드</h2>
+          <h2 class=" pb-2 fw-bold" style="text-align: center;">작업 진행률 & 생산성 대시보드</h2>
         </div>
-        <div class="ml-md-auto py-2 py-md-0">
+        <div class="ml-md-auto py-2 py-md-0 " style="text-align: center;">
           <button href="#" class="btn btn-secondary btn-round active" onclick="showContent('content1',this)">작업 진행률 조회</button>
           <button href="#" class="btn btn-secondary btn-round" onclick="showContent('content2',this)">생산성 조회</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="page-inner mt--5">
-    <div class="row mt--2" id="content1">
+  <div class="page-inner mt--5x" >
+    <div class="row mt--2 justify-content-center" id="content1">
       <div class="col-md-6">
         <div class="card full-height">
           <div class="card-body">
             <div class="card-title">조회할 작업을 선택해 주세요. </div>
-            <div class="d-flex"> 
-            <labe for ='place'>현장</labe>
-            <select id ='place'>
-              
-            </select>
-            <labe for ='sector'>구간</labe>
-            <select id ='sector'>
-
-            </select>
-            <labe for ='floor'>층</labe>
-            <select id ='floor'>
-
-            </select>
+            <div  class="d-flex">
+            <label for ='place' style="margin-right: 40px;">현장</label>
+            <label for ='sector' style="margin-right: 40px;">구간</label>
+            <label for ='floor' style="margin-left: 10px;">층</label>
             </div>
-            <labe for ='work'>작업</labe>
-            <select id ='work'>
+            <div class="d-flex"> 
+              <select id ='place' >
+              </select>
+              <select id ='sector'>
+              </select>
+              <select id ='floor' >
+              </select>
+            </div>
+            <label for ='work' >작업</label>
+            <select id ='work' >
               
             </select>
             <canvas id="gaugeChart" width="400" height="400"></canvas>
             <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
-              <div class="px-2 pb-2 pb-md-0 text-center">
-                <div id="circles-1"></div>
-                <h6 class="fw-bold mt-3 mb-0">New Users</h6>
-              </div>
-              <div class="px-2 pb-2 pb-md-0 text-center">
-                <div id="circles-2"></div>
-                <h6 class="fw-bold mt-3 mb-0">Sales</h6>
-              </div>
-              <div class="px-2 pb-2 pb-md-0 text-center">
-                <div id="circles-3"></div>
-                <h6 class="fw-bold mt-3 mb-0">Subscribers</h6>
-              </div>
+              
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row"  id="content2" style="display:none;">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-head-row">
-              <div class="card-title">User Statistics</div>
-              <div class="card-tools">
-                <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
-                  <span class="btn-label">
-                    <i class="fa fa-pencil"></i>
-                  </span>
-                  Export
-                </a>
-                <a href="#" class="btn btn-info btn-border btn-round btn-sm">
-                  <span class="btn-label">
-                    <i class="fa fa-print"></i>
-                  </span>
-                  Print
-                </a>
+    <div class="row mt-2"  id="content2" style="display:none;">
+      <div class="col-md-6">
+        <div class="card full-height">
+          <div style="display: flex; justify-content: center; align-items: center;">
+            <input type="radio" name="payment" id="place-select" checked="checked"  style="display:none;">
+            <label for="place-select" class="label1">현장별 조회</label>
+            <input type="radio" name="payment" id="personal-select" style="display:none;">
+            <label for="personal-select" class="label1">개인별 조회</label>
+           
+          </div>
+          <!--여기에 현장별 조회   -->
+          <div class="card-body" id="place-dash" >
+
+      
+             
+              <div class="col-xs-12 col-md-6 text-center">
+                  <h1 class="rating-num">
+                      4.0</h1>
+                  <div class="rating">
+                      <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                      </span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                      </span><span class="glyphicon glyphicon-star-empty"></span>
+                  </div>
+                  <div>
+                      <span class="glyphicon glyphicon-user"></span>1,050,008 total
+                  </div>
               </div>
-            </div>
+              <div class="col-xs-12 col-md-6">
+                  <div class="row rating-desc">
+                      <div class="col-xs-3 col-md-3 text-right">
+                          <span class="glyphicon glyphicon-star"></span>5
+                      </div>
+                      <div class="col-xs-8 col-md-9">
+                          <div class="progress progress-striped">
+                              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                  aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                  <span class="sr-only">80%</span>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- end 5 -->
+                      <div class="col-xs-3 col-md-3 text-right">
+                          <span class="glyphicon glyphicon-star"></span>4
+                      </div>
+                      <div class="col-xs-8 col-md-9">
+                          <div class="progress">
+                              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                  aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                  <span class="sr-only">60%</span>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- end 4 -->
+                      <div class="col-xs-3 col-md-3 text-right">
+                          <span class="glyphicon glyphicon-star"></span>3
+                      </div>
+                      <div class="col-xs-8 col-md-9">
+                          <div class="progress">
+                              <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                                  aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                  <span class="sr-only">40%</span>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- end 3 -->
+                      <div class="col-xs-3 col-md-3 text-right">
+                          <span class="glyphicon glyphicon-star"></span>2
+                      </div>
+                      <div class="col-xs-8 col-md-9">
+                          <div class="progress">
+                              <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                                  aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                  <span class="sr-only">20%</span>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- end 2 -->
+                      <div class="col-xs-3 col-md-3 text-right">
+                          <span class="glyphicon glyphicon-star"></span>1
+                      </div>
+                      <div class="col-xs-8 col-md-9">
+                          <div class="progress">
+                              <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
+                                  aria-valuemin="0" aria-valuemax="100" style="width: 15%">
+                                  <span class="sr-only">15%</span>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- end 1 -->
+                  </div>
+                  <!-- end row -->
+              </div>
+             
+          
           </div>
-          <div class="card-body">
-            <div class="chart-container" style="min-height: 375px">
-              <canvas id="statisticsChart"></canvas>
-            </div>
-            <div id="myChartLegend"></div>
+
+          <!--여기에 개인별 조회 조회   -->
+          <div class="card-body"id="personal-dash" style="display:none;">
+            <div class="col-xs-12 col-md-6 text-center">
+              <h1 class="rating-num">
+                  4.0</h1>
+              <div class="rating">
+                  <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                  </span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                  </span><span class="glyphicon glyphicon-star-empty"></span>
+              </div>
+              <div>
+                  <span class="glyphicon glyphicon-user"></span>1,050,008 total
+              </div>
           </div>
-        </div>
+          <div class="col-xs-12 col-md-6">
+              <div class="row rating-desc">
+                  <div class="col-xs-3 col-md-3 text-right">
+                      <span class="glyphicon glyphicon-star"></span>5
+                  </div>
+                  <div class="col-xs-8 col-md-9">
+                      <div class="progress progress-striped">
+                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                              aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                              <span class="sr-only">80%</span>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- end 5 -->
+                  <div class="col-xs-3 col-md-3 text-right">
+                      <span class="glyphicon glyphicon-star"></span>4
+                  </div>
+                  <div class="col-xs-8 col-md-9">
+                      <div class="progress">
+                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                              aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                              <span class="sr-only">60%</span>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- end 4 -->
+                  <!-- <div class="col-xs-3 col-md-3 text-right">
+                      <span class="glyphicon glyphicon-star"></span>3
+                  </div>
+                  <div class="col-xs-8 col-md-9">
+                      <div class="progress">
+                          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                              aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                              <span class="sr-only">40%</span>
+                          </div>
+                      </div>
+                  </div> -->
+                  <!-- end 3 -->
+                  <!-- <div class="col-xs-3 col-md-3 text-right">
+                      <span class="glyphicon glyphicon-star"></span>2
+                  </div>
+                  <div class="col-xs-8 col-md-9">
+                      <div class="progress">
+                          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                              aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                              <span class="sr-only">20%</span>
+                          </div>
+                      </div>
+                  </div> -->
+                  <!-- end 2 -->
+                  <!-- <div class="col-xs-3 col-md-3 text-right">
+                      <span class="glyphicon glyphicon-star"></span>1
+                  </div>
+                  <div class="col-xs-8 col-md-9">
+                      <div class="progress">
+                          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
+                              aria-valuemin="0" aria-valuemax="100" style="width: 15%">
+                              <span class="sr-only">15%</span>
+                          </div>
+                      </div>
+                  </div> -->
+                  <!-- end 1 -->
+              </div>
+              <!-- end row -->
+          </div>
+          </div>
       </div>
-      <div class="col-md-4">
-        <div class="card card-primary">
-          <div class="card-header">
-            <div class="card-title">Daily Sales</div>
-            <div class="card-category">March 25 - April 02</div>
-          </div>
-          <div class="card-body pb-0">
-            <div class="mb-4 mt-2">
-              <h1>$4,578.58</h1>
-            </div>
-            <div class="pull-in">
-              <canvas id="dailySalesChart"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body pb-0">
-            <div class="h1 fw-bold float-right text-warning">+7%</div>
-            <h2 class="mb-2">213</h2>
-            <p class="text-muted">Transactions</p>
-            <div class="pull-in sparkline-fix">
-              <div id="lineChart"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      
     </div>
     
   </div>
@@ -129,11 +240,125 @@
 
 <!-- Atlantis DEMO methods, don't include it in your project! -->
 <script src="/static/js/setting-demo.js"></script>
-<script src="/static/js/demo.js"></script>
+<!-- <script src="/static/js/demo.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@2.0.3/dist/chartjs-plugin-doughnutlabel.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@1.0.1/dist/chartjs-plugin-doughnutlabel.min.js"></script>
 <script>
+  
+  window.onload = function(){
+    
+
+    console.log(work_info_json)
+
+    // HTML 요소 선택
+    const placeSelect = document.getElementById("place");
+    const sectorSelect = document.getElementById("sector");
+    const floorSelect = document.getElementById("floor");
+    const workSelect = document.getElementById("work");
+    // 작업날짜, 작업_분류3, 위치_분류1의 고유 값 추출
+
+
+
+    // 옵션 추가 실행
+    populateSelect('place');
+    // populateSelect(workSelect, uniqueWork);
+    // populateSelect(floorSelect, uniqueFloors);
+
+
+  };
+  var work_info_json = JSON.parse({{work_info_json|tojson|safe}})
+
+  document.getElementById('place').addEventListener('change', function() {
+    const selected_place = document.getElementById("place").value
+    console.log(selected_place)
+    const values1= ['---']
+    var values = values1.concat([...new Set(work_info_json.filter(item=>item['작업장']===selected_place).map(item => item["위치_분류1"]))]);
+    selectElement = document.getElementById('sector')
+
+    selectElement.innerHTML = ""; // 초기화
+    values.forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        
+        selectElement.appendChild(option);
+    });
+
+  });
+
+  document.getElementById('sector').addEventListener('change', function() {
+    const selected_place = document.getElementById("place").value
+     const selected_sector = document.getElementById("sector").value
+     console.log(selected_place,selected_sector)
+     const values1 =['---']
+     var values = values1.concat([...new Set(work_info_json.filter(item=>item['작업장']===selected_place&&item['위치_분류1']===selected_sector).map(item => item["위치_분류2"]))]);
+     selectElement = document.getElementById('floor')
+
+    selectElement.innerHTML = ""; // 초기화
+    values.forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        
+        selectElement.appendChild(option);
+    });
+
+  });
+  document.getElementById('floor').addEventListener('change', function() {
+    const selected_place = document.getElementById("place").value
+     const selected_sector = document.getElementById("sector").value
+     const selected_floor = document.getElementById("floor").value
+     console.log(selected_place,selected_sector,selected_floor)
+     const values1 = ['---']
+     var values = values1.concat([...new Set(work_info_json.filter(item=>item['작업장']===selected_place&&item['위치_분류1']===selected_sector&&item['위치_분류2']===selected_floor).map(item => item["작업_분류3"]))]);
+
+     selectElement = document.getElementById('work')
+     selectElement.innerHTML = ""; // 초기화
+    values.forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        
+        selectElement.appendChild(option);
+    });
+
+
+  });
+  document.getElementById('work').addEventListener('change', function() {
+    const selected_place = document.getElementById("place").value
+     const selected_sector = document.getElementById("sector").value
+     const selected_floor = document.getElementById("floor").value
+     const selected_work = document.getElementById("work").value
+     var values = [...new Set(work_info_json.filter(item=>item['작업장']===selected_place&&item['위치_분류1']===selected_sector&&item['위치_분류2']===selected_floor&&item['작업_분류3']===selected_work).map(item => item["작업진행률"]))];
+     
+     createCustomGaugeChart(Number(values[values.length - 1].split("%")[0]));
+
+
+  });
+  
+  
+  function populateSelect(id) {
+   const values1= ['---']
+   
+   var values = values1.concat([...new Set(work_info_json.map(item => item["작업장"]))]);
+   
+ 
+    selectElement = document.getElementById(id)
+
+     selectElement.innerHTML = ""; // 초기화
+     values.forEach(value => {
+         const option = document.createElement("option");
+         option.value = value;
+         option.textContent = value;
+         selectElement.appendChild(option);
+     });
+
+   
+ }
+
+
 
 
   function showContent(contentId,clickedButton) {
@@ -148,11 +373,27 @@
 
     // 클릭한 버튼에 active 클래스 추가
     clickedButton.classList.add('active');
+    console.log('contentId',contentId)
+    document.getElementById(contentId).classList.add('justify-content-center');
   };
   
-  
-  function createCustomGaugeChart(value) {
+  $('#place-select').on('change', function () {
+    // 'place-dash' 요소의 스타일 속성을 제거 (즉, 표시)
+    $('#place-dash').removeAttr('style');
 
+    // 'personal-dash' 요소에 스타일 속성을 추가 (숨기기)
+      $('#personal-dash').attr('style', 'display:none;');
+  });
+
+  $('#personal-select').on('change', function () {
+      // 'place-dash' 요소의 스타일 속성을 제거 (즉, 표시)
+      $('#personal-dash').removeAttr('style');
+
+      // 'personal-dash' 요소에 스타일 속성을 추가 (숨기기)
+      $('#place-dash').attr('style', 'display:none;');
+  });
+
+function createCustomGaugeChart(value) {
     const ctx = document.getElementById('gaugeChart').getContext('2d');
 
     // 입력값 제한 범위: 0 ~ 100
@@ -177,55 +418,91 @@
 
     // 색상 데이터와 비율 구간 생성
     const dataValues = colorStops.map((stop, index) => {
-        
-        const stopValue = (stop[0] * 100); // 정규화 값에서 퍼센트 값으로 변환
+        const stopValue = stop[0] * 100; // 정규화 값에서 퍼센트 값으로 변환
         return index === 0 ? stopValue : stopValue - colorStops[index - 1][0] * 100; // 이전 값과 차이를 저장
     });
-    console.log('dataValues',dataValues)
     const colors = colorStops.map(stop => stop[1]);
-
+    console.log("colors?",colors)
     // 현재 값이 어느 색상 구간에 속하는지 계산
     let gaugeColor = '#000';
+    let color_index = 0;
     for (let i = 0; i < colorStops.length - 1; i++) {
         const [start] = colorStops[i];
         const [end] = colorStops[i + 1];
         if (normalizedValue >= start && normalizedValue <= end) {
             gaugeColor = colorStops[i][1]; // 현재 구간의 색상 선택
+            color_index = i
             break;
         }
     }
-
+    console.log('colorscolors',colors,gaugeColor)
     // Chart.js 데이터 설정
-    const data = {
+    if(value%10===0){
+      var data = {
         datasets: [
             {
-                data: [...dataValues, 100 - value], // 구간 데이터와 남은 부분
-                backgroundColor: [...colors, '#e0e0e0'], // 색상
+                data: [...dataValues.slice(0,color_index+1),10, 100 - value], // 구간 데이터와 남은 부분
+                backgroundColor: [...colors.slice(0,color_index+1),colors[color_index+1], '#e0e0e0'], // 색상
+                borderWidth: 2, // 섹션 간 간격
+                borderColor: '#ffffff', // 간격 색상
+            },
+        ],
+    };
+    }else{
+      var data = {
+        datasets: [
+            {
+                data: [...dataValues.slice(0,color_index+1),value%10, 100 - value], // 구간 데이터와 남은 부분
+                backgroundColor: [...colors.slice(0,color_index+1),colors[color_index+1], '#e0e0e0'], // 색상
                 borderWidth: 2, // 섹션 간 간격
                 borderColor: '#ffffff', // 간격 색상
             },
         ],
     };
 
+    }
+    
+
+    console.log('datasets',data)
+    const centerTextPlugin = {
+        id: 'centerText',
+        beforeDraw(chart) {
+            const { width } = chart;
+            const { height } = chart;
+            const ctx = chart.ctx;
+            ctx.save();
+
+            // 중앙 텍스트 스타일 설정
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#000';
+
+            // 중앙 텍스트 그리기
+            const centerX = width / 2;
+            const centerY = height / 2;
+            ctx.fillText(`${value}%`, centerX, centerY);
+            ctx.restore();
+        },
+    };
+
     // Chart.js 옵션 설정
     const options = {
-        cutout: '80%', // 도넛 중앙 비율
+        cutout: '90%', // 도넛 중앙 비율
         rotation: 270, // 시작 각도 (12시 방향)
         circumference: 180, // 반원 형태
         plugins: {
-            legend: { display: false }, // 범례 숨기기
-            tooltip: { enabled: false }, // 툴팁 숨기기
-            label:{display:true},
-            doughnutlabel: {
-                labels: [
-                    {
-                        text: `${value}%`, // 중앙에 표시할 값
-                        font: { size: '50', weight: 'bold' },
-                        color: 'black', // 동적 색상 적용
-                    }
-                ],
+            legend: {
+                display: false, // 범례 숨기기
             },
-          
+            tooltip: {
+                enabled: true, // 툴팁 숨기기
+            },
+        },
+        elements: {
+            arc: {
+                borderWidth: 2, // 섹션 간 경계선 두께
+            },
         },
     };
 
@@ -233,19 +510,18 @@
     if (window.gaugeChartInstance) {
         window.gaugeChartInstance.destroy();
     }
-    console.log('options',options)
+
     // 게이지 차트 생성
-    Chart.register(ChartDoughnutLabel);
     window.gaugeChartInstance = new Chart(ctx, {
-        type: 'doughnut',
+        type: 'doughnut', // 도넛형 차트
         data: data,
         options: options,
-       
+        plugins: [centerTextPlugin], // 사용자 정의 플러그인 등록
     });
 }
 
 // 게이지 차트 호출
-createCustomGaugeChart(99); // 예: 50% 값 
+// createCustomGaugeChart(99); // 예: 50% 값 
 
 
 </script>
