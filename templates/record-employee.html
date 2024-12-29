@@ -13,76 +13,21 @@
     <input type="text" id="filter2" placeholder="성별"style="width: 25%;">
 
     <!-- 테이블 구조 -->
-    <table id="filterTable" class="table">
+    <table id='filterTable' class="table" style="font-size:13px;">
         <thead>
             <tr>
-                <th>이름</th>
-                <th>국적</th>
-                <th>성별</th>
-                <th>기능인 등급</th>
-                <th>상세보기</th>
+            <th>이름</th>
+            <th>국적</th>
+            <th>성별</th>
+            <th>기능인 등급</th>
+            <th>상세보기</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>김철수</td>
-                <td>한국</td>
-                <td>남자</td>
-                <td>고급</td>
-                <td><button onclick="showDetails(this, '김철수', 'A0001')" class = 'w-btn w-btn-green'>상세보기</button></td>
-            </tr>
-            <tr>
-                <td>박영희</td>
-                <td>한국</td>
-                <td>여자</td>
-                <td>중급</td>
-                <td><button onclick="showDetails(this, '박영희', 'A0002')" class = 'w-btn w-btn-green'>상세보기</button></td>
-            </tr>
-            <tr>
-                <td>이민준</td>
-                <td>베트남</td>
-                <td>남자</td>
-                <td>초급</td>
-                <td><button onclick="showDetails(this, '이민준', 'A0003')" class = 'w-btn w-btn-green'>상세보기</button></td>
-            </tr>
-            <tr>
-                <td>최은지</td>
-                <td>중국</td>
-                <td>여자</td>
-                <td>고급</td>
-                <td><button onclick="showDetails(this, '최은지', 'A0004')" class = 'w-btn w-btn-green'>상세보기</button></td>
-            </tr>
-            <tr>
-                <td>정하늘</td>
-                <td>베트남</td>
-                <td>여자</td>
-                <td>중급</td>
-                <td><button onclick="showDetails(this, '정하늘', 'A0005')" class = 'w-btn w-btn-green'>상세보기</button></td>
-            </tr>
-            <tr>
-                <td>김지훈</td>
-                <td>한국</td>
-                <td>남자</td>
-                <td>초급</td>
-                <td><button onclick="showDetails(this, '김지훈', 'A0006')" class = 'w-btn w-btn-green'>상세보기</button></td>
-            </tr>
-            <tr>
-                <td>박서준</td>
-                <td>중국</td>
-                <td>남자</td>
-                <td>중급</td>
-                <td><button onclick="showDetails(this, '박서준', 'A0007')" class = 'w-btn w-btn-green'>상세보기</button></td>
-            </tr>
-            <tr>
-                <td>이지은</td>
-                <td>한국</td>
-                <td>여자</td>
-                <td>고급</td>
-                <td><button onclick="showDetails(this, '이지은', 'A0008')" class = 'w-btn w-btn-green'>상세보기</button></td>
-            </tr>
-          
         </tbody>
+
     </table>
+    
 
     <!-- 모달 구조 -->
     <div id="myModal" class="modal">
@@ -96,6 +41,7 @@
             <button class="w-btn w-btn-indigo" onclick="toggleSection('certificate')">자격증</button>
             <button class="w-btn w-btn-indigo" onclick="toggleSection('evaluation')">한줄 평가</button>
             <button class="w-btn w-btn-indigo" onclick="toggleSection('notes')">특이 사항</button>
+            <button class="w-btn w-btn-indigo" id="downloadBtn" >다운로드</button>
             <div id="career" class="toggle-content">
                 
                 <table class="Scroll table" style=" overflow-x: scroll;font-size: 11px;">
@@ -296,6 +242,8 @@ document.querySelectorAll('input[type="text"]').forEach((input, index) => {
         modalName.textContent = name+"("+imageSrc+")";
  
         real_img = "./static/data/개인화폴더/"+imageSrc+"/image.jpg"
+        const tableHTML = createDetailsTable(imageSrc);
+        document.getElementById('certificate').innerHTML = tableHTML;
         modalImage.src = real_img;
         console.log(imageSrc)
         modal.style.display = "inline-block";
@@ -380,6 +328,20 @@ document.querySelectorAll('input[type="text"]').forEach((input, index) => {
         }
     }
 
+    //다운로드 기능 
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+
+      const id = document.getElementById('modalName').textContent.split("(")[1].split(")")[0]
+      console.log(id)
+      // 동적으로 <a> 태그를 만들어 클릭 이벤트를 트리거 (브라우저에 다운로드)
+      const a = document.createElement('a');
+      // 실제 파일이 위치한 URL (서버에서 /static/data/개인화폴더/A0001 경로로 서빙된다고 가정)
+      a.href = "/static/data/개인화폴더/"+id+"/employee_record.xlsx"; 
+      // 다운로드될 때 파일명
+      a.download = "employee_record.xlsx"; 
+      a.click();
+    });
+
 
     //리뷰 달기 
     document.getElementById('myform').addEventListener('submit', function(event) {
@@ -436,6 +398,180 @@ document.querySelectorAll('input[type="text"]').forEach((input, index) => {
             const radios = document.querySelectorAll('input[name="rating"]');
             radios.forEach((radio) => (radio.checked = false));
         });
+
+
+        var info1 = JSON.parse({{info1|tojson|safe}})
+        var info2 = JSON.parse({{info2|tojson|safe}})
+
+        function createTable() {
+        $("#filterTable tbody").empty();
+        let html = `
+      
+        `;
+
+        // workerData의 각 key(A0001, A0002, ...)별로 순회
+        for (let code in info1) {
+            const row = info1[code];
+            var name = row.성명;
+            if(name!==null){
+                if(name.includes(" ")){
+                name = row.성명.split(" ")[1];
+                }
+            }
+           
+
+            const nation = row.국적;
+            const grade = row.등급;
+            
+            // 성별 정보가 없으므로 임의로 "남자"로 표기 (필요 시 다른 로직 적용)
+            const gender = "남자";
+
+            // 각 행을 HTML로 생성
+            html += `
+            <tr>
+                <td>${name}</td>
+                <td>${nation}</td>
+                <td>${gender}</td>
+                <td>${grade}</td>
+                <td>
+                <button onclick="showDetails(this, '${name}', '${code}')" 
+                        class='w-btn w-btn-green'>
+                    상세보기
+                </button>
+                </td>
+            </tr>
+            `;
+        }
+
+        html += `
+      
+        `;
+
+        // #tableContainer 영역에 삽입
+        $("#filterTable tbody").append(html);
+        //document.getElementById('filterTable').innerHTML = html;
+    }
+
+    /**
+     * 상세보기 버튼 눌렀을 때 실행되는 함수 (예시)
+     * @param {HTMLElement} btn - 클릭된 버튼 요소
+     * @param {string} name - 성명
+     * @param {string} code - 코드 (A0001 등)
+     */
+
+     const categoryKeyMap = {
+    "기초안전": {
+      dateKey: "기초안전보건교육 이수증 발급날짜",
+      orgKey:  "기초안전보건교육 이수증 발급기관",
+      typeKey: "기초안전보건교육 이수증"
+    },
+    "건설업": {
+      dateKey: "건설업 취업인정증 발급날짜",
+      orgKey:  "건설업 취업인정증 발급기관",
+      typeKey: "건설업 취업인정증"  // 혹은 "건설업 취업인정증 종류"가 있다면 수정
+    },
+    "국가기술": {
+      dateKey: "국가기술자격증 발급날짜",
+      orgKey:  "국가기술자격증 발급기관",
+      typeKey: "국가기술자격증 종류"
+    },
+    "기능습득": {
+      dateKey: "기능습득 교육 이수증 발급날짜",  // 현재 JSON에 없음
+      orgKey:  "기능습득 교육 이수증 발급기관",
+      typeKey: "기능습득 교육 이수증" // 또는 "기능습득 교육 종류"
+    },
+    "지게차": {
+      dateKey: "3톤미만지게차 건설기계조종사면허증 발급날짜",
+      orgKey:  "3톤미만지게차 건설기계조종사면허증 발급기관",
+      typeKey: "3톤미만지게차 건설기계조종사면허증"
+    }
+  };
+
+  /**
+   * 날짜(EpochTime, ms 단위)를 사람이 읽기 좋은 날짜로 변환하는 헬퍼 함수
+   */
+  function formatDate(ms) {
+    if (!ms) return null; // null, undefined 등 처리
+    const date = new Date(ms);
+    // 예: 'YYYY-MM-DD' 형식
+    return date.toLocaleDateString('ko-KR');
+  }
+
+  /**
+   * 4) 특정 코드(A0001 등)에 대한 상세 테이블을 동적으로 생성하는 함수
+   *    (showDetails 함수에서 호출)
+   */
+  function createDetailsTable(code) {
+    // (A) 해당 코드의 데이터 얻기
+    const personData = info2[code];
+    if (!personData) {
+      return `<p>해당 코드를 찾을 수 없습니다: ${code}</p>`;
+    }
+
+    // (B) 테이블 시작 태그
+    let html = `
+      <table class="Scroll table" style=" overflow-x: scroll;font-size: 11px;">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>발급날짜</th>
+            <th>발급기관</th>
+            <th>종류</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    // (C) 5개 카테고리(기초안전, 건설업, 국가기술, 기능습득, 지게차)를 순회
+    for (let categoryName in categoryKeyMap) {
+      // 예) categoryName = "기초안전"
+      //     categoryKeyMap[categoryName] = { dateKey, orgKey, typeKey }
+      const { dateKey, orgKey, typeKey } = categoryKeyMap[categoryName];
+      
+      // 해당 카테고리에 대한 실제 데이터
+      const categoryData = personData[categoryName];
+      if (!categoryData) {
+        // JSON에 해당 카테고리 정보가 없으면 스킵
+        continue;
+      }
+
+      // (i) 날짜, 기관, 종류 추출
+      const dateValue = categoryData[dateKey];
+      const orgValue  = categoryData[orgKey];
+      const typeValue = categoryData[typeKey];
+
+      // (ii) 발급날짜가 null이거나 없으면 테이블에서 제외
+      if (!dateValue) {
+        continue;
+      }
+
+      // (iii) 날짜 포맷
+      const formattedDate = formatDate(dateValue);
+
+      // (iv) null / undefined 대비 (기관, 종류) → 없으면 빈칸 처리
+      const orgString  = orgValue  ? orgValue  : "";
+      const typeString = typeValue ? typeValue : "";
+
+      // (v) 테이블 한 행 생성
+      html += `
+        <tr>
+          <td>${categoryName}</td>
+          <td>${formattedDate}</td>
+          <td>${orgString}</td>
+          <td>${typeString}</td>
+        </tr>
+      `;
+    }
+
+    // (D) 테이블 닫기
+    html += `
+        </tbody>
+      </table>
+    `;
+
+    return html;
+  }
+     window.onload = createTable;
 </script>
 
 {% endblock %}

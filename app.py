@@ -454,7 +454,55 @@ def productivity():
         print(work_info[['작업날짜','작업장','위치_분류1','위치_분류2','작업_분류3','작업진행률']] )
        
         work_info_json = work_info[['작업날짜','작업장','위치_분류1','위치_분류2','작업_분류3','작업진행률']].to_json(orient='records', force_ascii=False)
-        return render_template("productivity.html",work_info_json=work_info_json)
+        
+        ## 작업 생산성 데이터 
+        anyang = pd.read_excel("D:/네이버웍스/NAVER WORKS Drive/. Public_Root/외주@2001000000403897/2024년 11월 안양 태일 제출서류(1129까지).xlsm",sheet_name='수익 분석')
+        songdo = pd.read_excel("D:/네이버웍스/NAVER WORKS Drive/. Public_Root/외주@2001000000403897/2024년 11월 송도 디아이이엔씨 제출서류(1129까지).xlsm",sheet_name='수익 분석')
+        magock = pd.read_excel("D:/네이버웍스/NAVER WORKS Drive/. Public_Root/외주@2001000000403897/2024년 11월 마곡 신세계 제출서류(1129까지).xlsm",sheet_name='수익 분석')
+
+        anyang.columns = np.append(['TYPE'],anyang.columns[1:])
+        songdo.columns=np.append(['TYPE'],songdo.columns[1:])
+        magock.columns=np.append(['TYPE'],magock.columns[1:])
+        anyang['TYPE'] = anyang['TYPE'].str.replace(" ","")
+        songdo['TYPE'] = songdo['TYPE'].str.replace(" ","")
+        magock['TYPE'] = magock['TYPE'].str.replace(" ","")
+
+        anyang['수익률'] = round((anyang['수익']/anyang['금액'])*100,2)
+        songdo['수익률'] = round((songdo['수익']/songdo['금액'])*100,2)
+        magock['수익률'] = round((magock['수익']/magock['금액'])*100,2)
+        anyang['생산성'] = anyang['생산성'].round(2)
+        songdo['생산성'] = songdo['생산성'].round(2)
+        magock['생산성'] = magock['생산성'].round(2)
+        
+
+        temp1 = anyang.loc[anyang.TYPE.isin(['총공사','도급','직영']),['TYPE','생산성','수익률']].set_index('TYPE')
+        temp2 = songdo.loc[songdo.TYPE.isin(['총공사','도급','직영']),['TYPE','생산성','수익률']].set_index('TYPE')
+        temp3 = magock.loc[magock.TYPE.isin(['총공사','도급','직영']),['TYPE','생산성','수익률']].set_index('TYPE')
+        
+        anyang_data = temp1.to_dict(orient='records')
+        songdo_data = temp2.to_dict(orient='records')
+        magock_data = temp3.to_dict(orient='records')
+
+        # 2) 하나의 파이썬 dict로 합치기
+        combined_dict =pd.DataFrame({
+            '안양': anyang_data,
+            '송도': songdo_data,
+            '마곡': magock_data
+        },index=temp1.index)
+
+        ## 더미 데이터 만들기 
+        combined_dict2 =pd.DataFrame({
+            '김민수': anyang_data,
+            '장재룡': songdo_data,
+            'Aslera': magock_data
+        },index=temp1.index)
+        
+
+
+        product_json = combined_dict.to_json( force_ascii=False)
+        personal_json = combined_dict2.to_json( force_ascii=False)
+        
+        return render_template("productivity.html",work_info_json=work_info_json,product_json=product_json,personal_json=personal_json)
 
 ##record-employee 
 @app.route('/record-employee', methods=['GET',"POST"])
@@ -472,9 +520,37 @@ def record_employee():
         review = data[id]
         return jsonify(review =review)    
     elif(request.method=='GET'):
+        insa = pd.read_excel("D:/네이버웍스/NAVER WORKS Drive/. Public_Root/외주@2001000000403897/20241130 인사기록카드.xlsx",sheet_name='개인DB(수정금지)')
+        insa.loc[(~insa['기초안전보건교육 이수증'].isna())&(~insa['건설업 취업인정증'].isna())&(~insa['국가기술자격증 종류'].isna()),'등급'] = '고급'
+        insa.loc[(~insa['기초안전보건교육 이수증'].isna())&(~insa['건설업 취업인정증'].isna())&(insa['등급'].isna()),'등급'] = '중급'
+        insa.loc[insa['등급'].isna(),'등급'] = '초급'
+
+
+        ## 첫 정보 
+        info1 = insa[['고유번호','성명','국적','등급']].set_index('고유번호').transpose().to_json(force_ascii=False)
+
+        ## 상세보기 경력
+
+        ##상세보기 자격증
+        temp1 = insa[['기초안전보건교육 이수증 발급날짜', '기초안전보건교육 이수증 발급기관', '기초안전보건교육 이수증']].to_dict(orient='records')
+        temp2 = insa[['건설업 취업인정증 발급날짜', '건설업 취업인정증 유효기간', '건설업 취업인정증 발급기관', '건설업 취업인정증']].to_dict(orient='records')
+        temp3 = insa[['국가기술자격증 발급날짜', '국가기술자격증 발급기관','국가기술자격증 종류']].to_dict(orient='records')
+        temp4 = insa[['기능습득 교육 이수증 발급기관', '기능습득 교육 이수증', '기능습득 교육 종류']].to_dict(orient='records')
+        temp5 = insa[['3톤미만지게차 건설기계조종사면허증 발급날짜', '3톤미만지게차 건설기계조종사면허증 발급기관','3톤미만지게차 건설기계조종사면허증']].to_dict(orient='records')
+
+
+        df_cert = pd.DataFrame({
+            "기초안전":temp1,
+            "건설업":temp2,
+            "국가기술":temp3,
+            "기능습득":temp4,
+            "지게차":temp5
+        },index=insa['고유번호'])
+
+        info2 = df_cert.transpose().to_json( force_ascii=False)
     
         print("employee gogo")
-        return render_template("record-employee.html")
+        return render_template("record-employee.html",info1=info1,info2=info2)
 
 @app.route('/record-save', methods=["POST"])
 @nocache

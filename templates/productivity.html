@@ -62,173 +62,40 @@
             <label for="place-select" class="label1">현장별 조회</label>
             <input type="radio" name="payment" id="personal-select" style="display:none;">
             <label for="personal-select" class="label1">개인별 조회</label>
+            
+            
            
+          </div>
+          <div>
+            <label for="monthSelect">월 선택:</label>
+            <select id="monthSelect">
+                <option value="2024-11" selected>2024-11</option>
+                <!-- 실제로 여러 달의 JSON 데이터가 있을 경우 선택지 추가 -->
+            </select>
+            <label>
+                <input type="radio" name="type" value="총공사" checked>
+                총공사
+              </label>
+              <label>
+                <input type="radio" name="type" value="도급">
+                도급
+              </label>
+              <label>
+                <input type="radio" name="type" value="직영">
+                직영
+              </label>
           </div>
           <!--여기에 현장별 조회   -->
           <div class="card-body" id="place-dash" >
 
       
-             
-              <div class="col-xs-12 col-md-6 text-center">
-                  <h1 class="rating-num">
-                      4.0</h1>
-                  <div class="rating">
-                      <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
-                      </span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
-                      </span><span class="glyphicon glyphicon-star-empty"></span>
-                  </div>
-                  <div>
-                      <span class="glyphicon glyphicon-user"></span>1,050,008 total
-                  </div>
-              </div>
-              <div class="col-xs-12 col-md-6">
-                  <div class="row rating-desc">
-                      <div class="col-xs-3 col-md-3 text-right">
-                          <span class="glyphicon glyphicon-star"></span>5
-                      </div>
-                      <div class="col-xs-8 col-md-9">
-                          <div class="progress progress-striped">
-                              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
-                                  aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                  <span class="sr-only">80%</span>
-                              </div>
-                          </div>
-                      </div>
-                      <!-- end 5 -->
-                      <div class="col-xs-3 col-md-3 text-right">
-                          <span class="glyphicon glyphicon-star"></span>4
-                      </div>
-                      <div class="col-xs-8 col-md-9">
-                          <div class="progress">
-                              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
-                                  aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                  <span class="sr-only">60%</span>
-                              </div>
-                          </div>
-                      </div>
-                      <!-- end 4 -->
-                      <div class="col-xs-3 col-md-3 text-right">
-                          <span class="glyphicon glyphicon-star"></span>3
-                      </div>
-                      <div class="col-xs-8 col-md-9">
-                          <div class="progress">
-                              <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
-                                  aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                  <span class="sr-only">40%</span>
-                              </div>
-                          </div>
-                      </div>
-                      <!-- end 3 -->
-                      <div class="col-xs-3 col-md-3 text-right">
-                          <span class="glyphicon glyphicon-star"></span>2
-                      </div>
-                      <div class="col-xs-8 col-md-9">
-                          <div class="progress">
-                              <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
-                                  aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                  <span class="sr-only">20%</span>
-                              </div>
-                          </div>
-                      </div>
-                      <!-- end 2 -->
-                      <div class="col-xs-3 col-md-3 text-right">
-                          <span class="glyphicon glyphicon-star"></span>1
-                      </div>
-                      <div class="col-xs-8 col-md-9">
-                          <div class="progress">
-                              <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
-                                  aria-valuemin="0" aria-valuemax="100" style="width: 15%">
-                                  <span class="sr-only">15%</span>
-                              </div>
-                          </div>
-                      </div>
-                      <!-- end 1 -->
-                  </div>
-                  <!-- end row -->
-              </div>
-             
+              <div id="rank-table1"></div>
           
           </div>
 
           <!--여기에 개인별 조회 조회   -->
           <div class="card-body"id="personal-dash" style="display:none;">
-            <div class="col-xs-12 col-md-6 text-center">
-              <h1 class="rating-num">
-                  4.0</h1>
-              <div class="rating">
-                  <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
-                  </span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
-                  </span><span class="glyphicon glyphicon-star-empty"></span>
-              </div>
-              <div>
-                  <span class="glyphicon glyphicon-user"></span>1,050,008 total
-              </div>
-          </div>
-          <div class="col-xs-12 col-md-6">
-              <div class="row rating-desc">
-                  <div class="col-xs-3 col-md-3 text-right">
-                      <span class="glyphicon glyphicon-star"></span>5
-                  </div>
-                  <div class="col-xs-8 col-md-9">
-                      <div class="progress progress-striped">
-                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
-                              aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                              <span class="sr-only">80%</span>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- end 5 -->
-                  <div class="col-xs-3 col-md-3 text-right">
-                      <span class="glyphicon glyphicon-star"></span>4
-                  </div>
-                  <div class="col-xs-8 col-md-9">
-                      <div class="progress">
-                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
-                              aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                              <span class="sr-only">60%</span>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- end 4 -->
-                  <!-- <div class="col-xs-3 col-md-3 text-right">
-                      <span class="glyphicon glyphicon-star"></span>3
-                  </div>
-                  <div class="col-xs-8 col-md-9">
-                      <div class="progress">
-                          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
-                              aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                              <span class="sr-only">40%</span>
-                          </div>
-                      </div>
-                  </div> -->
-                  <!-- end 3 -->
-                  <!-- <div class="col-xs-3 col-md-3 text-right">
-                      <span class="glyphicon glyphicon-star"></span>2
-                  </div>
-                  <div class="col-xs-8 col-md-9">
-                      <div class="progress">
-                          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
-                              aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                              <span class="sr-only">20%</span>
-                          </div>
-                      </div>
-                  </div> -->
-                  <!-- end 2 -->
-                  <!-- <div class="col-xs-3 col-md-3 text-right">
-                      <span class="glyphicon glyphicon-star"></span>1
-                  </div>
-                  <div class="col-xs-8 col-md-9">
-                      <div class="progress">
-                          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
-                              aria-valuemin="0" aria-valuemax="100" style="width: 15%">
-                              <span class="sr-only">15%</span>
-                          </div>
-                      </div>
-                  </div> -->
-                  <!-- end 1 -->
-              </div>
-              <!-- end row -->
-          </div>
+            <div id="rank-table2"></div>
           </div>
       </div>
 
@@ -250,7 +117,6 @@
   window.onload = function(){
     
 
-    console.log(work_info_json)
 
     // HTML 요소 선택
     const placeSelect = document.getElementById("place");
@@ -259,15 +125,23 @@
     const workSelect = document.getElementById("work");
     // 작업날짜, 작업_분류3, 위치_분류1의 고유 값 추출
 
-
-
-    // 옵션 추가 실행
     populateSelect('place');
-    // populateSelect(workSelect, uniqueWork);
-    // populateSelect(floorSelect, uniqueFloors);
 
+    generateTable(); // 기본(초기) 호출
+    generateTable2()
+
+    // (A) 월 셀렉트 박스 변경 시
+    document.getElementById('monthSelect').addEventListener('change', generateTable);
+    document.getElementById('monthSelect').addEventListener('change', generateTable2);
+    // (B) 라디오 버튼 변경 시
+    document.querySelectorAll('input[name="type"]').forEach(radio => {
+    radio.addEventListener('change', generateTable);
+    radio.addEventListener('change', generateTable2);
+    });
 
   };
+
+  //작업 진행률 계산 
   var work_info_json = JSON.parse({{work_info_json|tojson|safe}})
 
   document.getElementById('place').addEventListener('change', function() {
@@ -356,7 +230,163 @@
      });
 
    
- }
+    }
+
+    //생산성 계산 
+
+
+    var product_json = JSON.parse({{product_json|tojson|safe}})
+    var personal_json = JSON.parse({{personal_json|tojson|safe}})
+    console.log('product_json',product_json)
+
+    function generateTable() {
+      const selectedMonth = document.getElementById('monthSelect').value;
+      const selectedType = document.querySelector('input[name="type"]:checked').value;
+      const dataForMonth = product_json; 
+      // 예: { "안양": {...}, "송도": {...}, "마곡": {...} }
+
+      // (1) 지역별로 [작업장명, 생산성, 수익률] 배열 만들기
+      let tempArray = [];
+      for (let region in dataForMonth) {
+        const 생산성 = dataForMonth[region][selectedType].생산성;
+        const 수익률 = dataForMonth[region][selectedType].수익률;
+        // null, undefined, NaN 대비 (0 처리 or 제외 등) - 상황에 맞게 처리
+        const 생산성Value = 생산성 === null || 생산성 === undefined ? 0 : 생산성;
+        const 수익률Value = 수익률 === null || 수익률 === undefined ? 0 : 수익률;
+
+        tempArray.push({
+          작업장명: region,
+          생산성: 생산성Value,
+          수익률: 수익률Value
+        });
+      }
+
+      // (2) 생산성 기준으로 내림차순 정렬
+      tempArray.sort((a, b) => b.생산성 - a.생산성);
+
+      // (3) rank(순위) 부여 - (Dense Ranking)
+      //    만약 동점(동일 생산성)이면 같은 순위
+      tempArray.forEach((item, idx) => {
+        if (idx === 0) {
+          item.rank = 1;
+        } else {
+          // 이전 아이템과 생산성이 같으면 rank 같게
+          if (item.생산성 === tempArray[idx - 1].생산성) {
+            item.rank = tempArray[idx - 1].rank;
+          } else {
+            item.rank = idx + 1;
+          }
+        }
+      });
+
+      // (4) HTML 테이블 생성
+      let tableHTML = `
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>작업장명</th>
+              <th>순위</th>
+              <th>생산성</th>
+              <th>수익률(%)</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      tempArray.forEach(row => {
+        tableHTML += `
+          <tr>
+            <td>${row.작업장명}</td>
+            <td>${row.rank}</td>
+            <td>${row.생산성}</td>
+            <td>${row.수익률}</td>
+          </tr>
+        `;
+      });
+
+      tableHTML += `
+          </tbody>
+        </table>
+      `;
+
+      // (5) 화면에 삽입
+      document.getElementById('rank-table1').innerHTML = tableHTML;
+    }
+
+
+    function generateTable2() {
+      const selectedMonth = document.getElementById('monthSelect').value;
+      const selectedType = document.querySelector('input[name="type"]:checked').value;
+      const dataForMonth = personal_json; 
+      // 예: { "안양": {...}, "송도": {...}, "마곡": {...} }
+
+      // (1) 지역별로 [작업장명, 생산성, 수익률] 배열 만들기
+      let tempArray = [];
+      for (let region in dataForMonth) {
+        const 생산성 = dataForMonth[region][selectedType].생산성;
+        const 수익률 = dataForMonth[region][selectedType].수익률;
+        // null, undefined, NaN 대비 (0 처리 or 제외 등) - 상황에 맞게 처리
+        const 생산성Value = 생산성 === null || 생산성 === undefined ? 0 : 생산성;
+        const 수익률Value = 수익률 === null || 수익률 === undefined ? 0 : 수익률;
+
+        tempArray.push({
+          이름: region,
+          생산성: 생산성Value,
+          수익률: 수익률Value
+        });
+      }
+
+      // (2) 생산성 기준으로 내림차순 정렬
+      tempArray.sort((a, b) => b.생산성 - a.생산성);
+
+      // (3) rank(순위) 부여 - (Dense Ranking)
+      //    만약 동점(동일 생산성)이면 같은 순위
+      tempArray.forEach((item, idx) => {
+        if (idx === 0) {
+          item.rank = 1;
+        } else {
+          // 이전 아이템과 생산성이 같으면 rank 같게
+          if (item.생산성 === tempArray[idx - 1].생산성) {
+            item.rank = tempArray[idx - 1].rank;
+          } else {
+            item.rank = idx + 1;
+          }
+        }
+      });
+
+      // (4) HTML 테이블 생성
+      let tableHTML = `
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>이름</th>
+              <th>순위</th>
+              <th>생산성</th>
+              <th>수익률(%)</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      tempArray.forEach(row => {
+        tableHTML += `
+          <tr>
+            <td>${row.이름}</td>
+            <td>${row.rank}</td>
+            <td>${row.생산성}</td>
+            <td>${row.수익률}</td>
+          </tr>
+        `;
+      });
+
+      tableHTML += `
+          </tbody>
+        </table>
+      `;
+
+      // (5) 화면에 삽입
+      document.getElementById('rank-table2').innerHTML = tableHTML;
+    }
 
 
 
