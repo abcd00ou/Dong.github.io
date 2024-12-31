@@ -583,7 +583,10 @@
 
     var formtext = ''
     var tabletext = ''
-    task_results.forEach(item=>{
+    task_results.forEach((item,index)=>{
+        if (index === task_results.length - 1) {
+            return;
+        }
         const item_split = item.split("_")
         formtext += `작업장 : ${item.split("_")[0]} \n 작업인원 : ${item_split[item_split.length-2]} \n작업내용 : ${item}\n특이사항 : ${document.getElementById('additional').value}\n`
         var table = document.getElementById("dynamicTable"); // 테이블 ID 가져오기
@@ -623,7 +626,7 @@
         textColor: '#ffffff',
         allDay: false
     };
-
+    console.log('eventData',eventData)
     //createExcel(formData);
     $("#calendar").fullCalendar('renderEvent', eventData, true);
     eventModal.find('input, textarea').val('');

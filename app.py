@@ -11,6 +11,8 @@ from datetime import datetime
 from functools import wraps
 from datetime import timedelta
 import os 
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, PatternFill, Border, Side,Font
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 세션 관리를 위해 필요한 키 설정
@@ -942,6 +944,169 @@ def upload_image():
     file.save(file_path)
     try:
         
+        return jsonify({'success': True, 'message': '이미지가 성공적으로 저장되었습니다.'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+
+@app.route('/work_sheet', methods=['POST'])
+@check_session_id
+def work_sheet():
+    id = session['ID']
+    date = request.get_json()['date']
+    print(date)
+   # JSON 파일을 열고 데이터 읽기
+    with open('./static/data/calendar.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    temp2=[]
+    for i in range(len(data)):
+        temp = data[i]
+
+        if temp['start']>=date:
+            temp2 = np.append(temp2,[temp])
+    for i in range(len(temp2)):
+        temp2[i]['description2']= ""
+        for tmp in temp2[i]['description'].split("\n작업장"):
+
+            if "undefined" not in tmp:
+                if temp2[i]['description2']!="":
+                    temp2[i]['description2'] = temp2[i]['description2']+"\n"+tmp
+                else: 
+                    temp2[i]['description2'] = tmp
+    temp2[2]['description2'] = temp2[2]['description2'].replace("\n연장근무","")
+    temp2[2]['description2'] = temp2[2]['description2'][:-3]
+    temp2[3]['description2'] = temp2[3]['description2'].replace("\n연장근무","")
+    temp2[3]['description2'] = temp2[3]['description2'][:-3]
+    iter_sheet = [50 * i for i in range(0,30)]
+    wb = Workbook()
+    ws = wb.active
+    thin_border = Border(
+        left=Side(style='thin'),
+        right=Side(style='thin'),
+        top=Side(style='thin'),
+        bottom=Side(style='thin')
+    )
+
+
+    ws.title = "작업일지"
+
+
+    for iter in range(len(temp2)):
+        print(iter)
+        today_worker = []
+        cell_row = iter_sheet[iter]
+        ws.merge_cells("A"+str(cell_row+1)+":S"+str(cell_row+1))  # A1 ~ F1까지 병합
+        ws["A"+str(cell_row+1)] = "작 업 일 지"
+        ws["A"+str(cell_row+1)].alignment = Alignment(horizontal='center')
+        ws["A"+str(cell_row+1)].font = Font(size=14, bold=True)
+
+        temp_parse = temp2[iter]['description2'].split("작업장")[1:]
+        print(temp_parse)
+        parse_i = temp_parse[0].split("\n")
+        site= parse_i[0].split(":")[1].replace(" ","") ##작업장
+        start = temp2[iter]['start']
+
+        ws.merge_cells("A"+str(cell_row+2)+":S"+str(cell_row+2))  # A1 ~ F1까지 병합
+        ws["A"+str(cell_row+2)] = "현장명 : " + site
+        ws["A"+str(cell_row+2)].alignment = Alignment(horizontal='center')
+        ws.merge_cells("A"+str(cell_row+3)+":D"+str(cell_row+3))  # A1 ~ F1까지 병합
+        ws.merge_cells("E"+str(cell_row+3)+":S"+str(cell_row+3))  # A1 ~ F1까지 병합
+        ws["A"+str(cell_row+3)] = "날짜 : " + start.split(" ")[0]
+
+        ws.append(['NO', '공종', '성명', '공수', '# 주간작업', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+        ws.merge_cells("E"+str(cell_row+4)+":S"+str(cell_row+4))  # 국적 병합
+        ws["E"+str(cell_row+4)].alignment = Alignment(horizontal='center')
+
+        ws.append(['', '', '', '', '구간', '층', '형태', '작업 단가별 분류', '작업내용', '공종', '공수', '작업명단', '', '', '', '', '', '', ''])
+        ws["L"+str(cell_row+4)].alignment = Alignment(horizontal='center')
+        ws.merge_cells("S"+str(cell_row+5)+":S"+str(cell_row+5)) 
+        full_number =0 
+
+        for jj in range(cell_row+6,+cell_row+24):
+            ws.merge_cells("L"+str(jj)+":S"+str(jj))
+
+        for i in range(len(temp_parse)):
+            parse_i = temp_parse[i].split("\n")
+            print(parse_i)
+            ##E~K 6부터 
+            number = int(parse_i[1].split(":")[1].replace(" ","")) ## 공수 
+            full_number = full_number+number ## 합계 
+
+            work_parse = parse_i[2].split(":")[1].replace(" ","") ## 
+            work1 = work_parse.split("_")[1] ##형태 
+            floor = work_parse.split("_")[2] ## 층 
+            floor2 = work_parse.split("_")[3] ## 구간
+            work2 = work_parse.split("_")[4] ## 단가별 분류
+            work3 = work_parse.split("_")[5] ## 작업내용 
+            # for aa in ['E','F','G','H','I','J','K']:
+            ws['E'+str(6+i+cell_row)] = floor2
+            ws['F'+str(6+i+cell_row)] = floor
+            ws['G'+str(6+i+cell_row)] = work1
+            ws['H'+str(6+i+cell_row)] = work2
+            ws['I'+str(6+i+cell_row)] = work3
+            ws['J'+str(6+i+cell_row)] = '형틀'
+            ws['K'+str(6+i+cell_row)] = number
+
+            ## A~D 5부터 
+            for j in range(5,len(parse_i)):
+                print(j)
+                today_worker = today_worker+[{parse_i[j].split(":")[1].split("|")[0].replace(" ",""):parse_i[j].split(":")[1].split("|")[1].replace(" ","")}]
+                print(today_worker)
+
+        ws.merge_cells("E"+str(cell_row+28)+":J"+str(cell_row+28))
+        ws["E"+str(cell_row+28)]='합계'
+        ws["K"+str(cell_row+28)] = full_number
+        ws.merge_cells("L"+str(cell_row+28)+":S"+str(cell_row+28))
+        ws.merge_cells("E"+str(cell_row+28)+":S"+str(cell_row+28))
+        ws["E"+str(cell_row+29)] = "# 연장작업"
+        ws["E"+str(cell_row+30)] = '구간'
+        ws["F"+str(cell_row+30)] = '층'
+        ws["G"+str(cell_row+30)] = '형태'
+        ws["H"+str(cell_row+30)] = '작업 단가별 분류'
+        ws["I"+str(cell_row+30)] = '작업내용'
+        ws["J"+str(cell_row+30)] = '공종'
+        ws["K"+str(cell_row+30)] = '공수'
+        ws.merge_cells("L"+str(cell_row+30)+":S"+str(cell_row+30))
+        ws["L"+str(cell_row+30)] = '작업 명단'
+
+
+        for idx,k in enumerate(today_worker):
+            ws['A'+str(5+idx+cell_row)] = idx+1
+            ws['B'+str(5+idx+cell_row)] = '형틀'
+            ws['C'+str(5+idx+cell_row)] = list(k.keys())[0]
+            ws['D'+str(5+idx+cell_row)] = list(k.values())[0]
+            last_k = idx
+            last_idx = (5+idx+cell_row)
+
+        for i,idx in enumerate(range(last_idx,44+cell_row)):
+            ws['A'+str(idx)] = last_k+i
+            ws['B'+str(idx)] = '형틀'
+
+        ws["A"+str(cell_row+44)] = '합계'
+        ws.merge_cells("A"+str(cell_row+44)+":C"+str(cell_row+44))
+        ws["D"+str(cell_row+44)] = full_number
+        ws.merge_cells("E"+str(cell_row+44)+":J"+str(cell_row+44))
+        ws["E"+str(cell_row+44)] = '합계'
+        ws.merge_cells("L"+str(cell_row+44)+":S"+str(cell_row+44))
+        ws["K"+str(cell_row+44)] = full_number
+        ws["A"+str(cell_row+45)] = "# 특이사항"
+        ws.merge_cells("A"+str(cell_row+45)+":S"+str(cell_row+45))
+        for kk in range(46+cell_row,50+cell_row):
+            ws.merge_cells('A'+str(kk)+':S'+str(kk))
+            
+        alignment_center = Alignment(horizontal='center', vertical='center', wrap_text=False)
+        # (2) 모든 사용된 셀 범위를 조회 (1~ws.max_row행, 1~8열) 후 테두리/정렬 적용
+        for row in ws.iter_rows(min_row=1, max_row=ws.max_row, min_col=1, max_col=19):
+            for cell in row:
+                # 테두리
+                cell.border = thin_border
+                cell.alignment = alignment_center
+
+    wb.save("./static/data/작업일지_"+date+".xlsx")
+
+    try:
         return jsonify({'success': True, 'message': '이미지가 성공적으로 저장되었습니다.'})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})

@@ -309,6 +309,37 @@
       });
   });
 
+
+  $('#work-sheet').on('click', function(event) {
+    event.preventDefault();
+    const ddd = document.querySelector('#calendar h2').textContent;
+    const date = ddd.split(" ")[0].slice(0,4)+"-"+ddd.split(" ")[1].split("월")[0]+"-01"
+    const date2 = ddd.split(" ")[0].slice(0,4)+"_"+ddd.split(" ")[1].split("월")[0]
+    $.ajax({
+      url: '/work_sheet',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({date:date}),
+      success: function(response) {
+        console.log(response)
+  
+          // 동적으로 <a> 태그를 만들어 클릭 이벤트를 트리거 (브라우저에 다운로드)
+          const a = document.createElement('a');
+          // 실제 파일이 위치한 URL (서버에서 /static/data/개인화폴더/A0001 경로로 서빙된다고 가정)
+          a.href = "/static/data/작업일지_"+date+".xlsx"; 
+          // 다운로드될 때 파일명
+          a.download = "작업일지_"+date2+".xlsx"; 
+          a.click();
+
+      },
+      error: function(response) {
+          alert("오류입니다.");
+      }
+  });
+    
+});
+
+
   // 출석체크 활성, 비활성화
   $('#Attend-abled').on('click', function(event) {
       event.preventDefault();
