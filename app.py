@@ -11,6 +11,7 @@ from datetime import datetime
 from functools import wraps
 from datetime import timedelta
 import os 
+from dateutil.relativedelta import relativedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, PatternFill, Border, Side,Font
 
@@ -959,26 +960,30 @@ def work_sheet():
    # JSON 파일을 열고 데이터 읽기
     with open('./static/data/calendar.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
-
+    
     temp2=[]
     for i in range(len(data)):
         temp = data[i]
-
-        if temp['start']>=date:
+        
+        if (pd.to_datetime(temp['start'])>=pd.to_datetime(date))&(pd.to_datetime(temp['start'])<pd.to_datetime(date) + relativedelta(months=1)):
+            print(temp)
             temp2 = np.append(temp2,[temp])
+    print(temp2)
     for i in range(len(temp2)):
         temp2[i]['description2']= ""
         for tmp in temp2[i]['description'].split("\n작업장"):
-
+            print("tmp??",tmp)
             if "undefined" not in tmp:
                 if temp2[i]['description2']!="":
                     temp2[i]['description2'] = temp2[i]['description2']+"\n"+tmp
                 else: 
                     temp2[i]['description2'] = tmp
-    temp2[2]['description2'] = temp2[2]['description2'].replace("\n연장근무","")
-    temp2[2]['description2'] = temp2[2]['description2'][:-3]
-    temp2[3]['description2'] = temp2[3]['description2'].replace("\n연장근무","")
-    temp2[3]['description2'] = temp2[3]['description2'][:-3]
+
+    print("temp2",temp2)
+    # temp2[2]['description2'] = temp2[2]['description2'].replace("\n연장근무","")
+    # temp2[2]['description2'] = temp2[2]['description2'][:-3]
+    # temp2[3]['description2'] = temp2[3]['description2'].replace("\n연장근무","")
+    # temp2[3]['description2'] = temp2[3]['description2'][:-3]
     iter_sheet = [50 * i for i in range(0,30)]
     wb = Workbook()
     ws = wb.active
@@ -988,13 +993,16 @@ def work_sheet():
         top=Side(style='thin'),
         bottom=Side(style='thin')
     )
+    gray_fill = PatternFill(start_color="D9D9D9",
+                        end_color="D9D9D9",
+                        fill_type="solid")
 
 
     ws.title = "작업일지"
 
 
     for iter in range(len(temp2)):
-        print(iter)
+        print('iter',iter)
         today_worker = []
         cell_row = iter_sheet[iter]
         ws.merge_cells("A"+str(cell_row+1)+":S"+str(cell_row+1))  # A1 ~ F1까지 병합
@@ -1003,8 +1011,8 @@ def work_sheet():
         ws["A"+str(cell_row+1)].font = Font(size=14, bold=True)
 
         temp_parse = temp2[iter]['description2'].split("작업장")[1:]
-        print(temp_parse)
         parse_i = temp_parse[0].split("\n")
+        print('parse_i',parse_i)
         site= parse_i[0].split(":")[1].replace(" ","") ##작업장
         start = temp2[iter]['start']
 
@@ -1016,15 +1024,21 @@ def work_sheet():
         ws["A"+str(cell_row+3)] = "날짜 : " + start.split(" ")[0]
 
         ws.append(['NO', '공종', '성명', '공수', '# 주간작업', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+        for col in range(1,20):
+            ws.cell(row=(cell_row+4), column=col).fill = gray_fill
+
         ws.merge_cells("E"+str(cell_row+4)+":S"+str(cell_row+4))  # 국적 병합
         ws["E"+str(cell_row+4)].alignment = Alignment(horizontal='center')
 
         ws.append(['', '', '', '', '구간', '층', '형태', '작업 단가별 분류', '작업내용', '공종', '공수', '작업명단', '', '', '', '', '', '', ''])
         ws["L"+str(cell_row+4)].alignment = Alignment(horizontal='center')
-        ws.merge_cells("S"+str(cell_row+5)+":S"+str(cell_row+5)) 
+        ws.merge_cells("L"+str(cell_row+5)+":S"+str(cell_row+5)) 
+        for col in range(5,20):
+            ws.cell(row=(cell_row+5), column=col).fill = gray_fill
+            
         full_number =0 
 
-        for jj in range(cell_row+6,+cell_row+24):
+        for jj in range(cell_row+6,+cell_row+29):
             ws.merge_cells("L"+str(jj)+":S"+str(jj))
 
         for i in range(len(temp_parse)):
@@ -1050,27 +1064,42 @@ def work_sheet():
             ws['K'+str(6+i+cell_row)] = number
 
             ## A~D 5부터 
-            for j in range(5,len(parse_i)):
-                print(j)
-                today_worker = today_worker+[{parse_i[j].split(":")[1].split("|")[0].replace(" ",""):parse_i[j].split(":")[1].split("|")[1].replace(" ","")}]
-                print(today_worker)
+            # for j in range(5,len(parse_i)):
+                # print(j)
+            index_of_table = None
+            for i, item in enumerate(parse_i):
+                # "테 이블 데이터:" 라는 문자열이 포함되어 있는지 확인
+                if "테이블 데이터:" in item:
+                    index_of_table = i+1
+                    break
+            for j in range(index_of_table,len(parse_i)):
+                if parse_i[j]=="":
+                    pass
+                else:
+                    today_worker = today_worker+[{parse_i[j].split(":")[1].split("|")[0].replace(" ",""):parse_i[j].split(":")[1].split("|")[1].replace(" ","")}]
+                    print(today_worker)
 
-        ws.merge_cells("E"+str(cell_row+28)+":J"+str(cell_row+28))
-        ws["E"+str(cell_row+28)]='합계'
-        ws["K"+str(cell_row+28)] = full_number
-        ws.merge_cells("L"+str(cell_row+28)+":S"+str(cell_row+28))
-        ws.merge_cells("E"+str(cell_row+28)+":S"+str(cell_row+28))
-        ws["E"+str(cell_row+29)] = "# 연장작업"
-        ws["E"+str(cell_row+30)] = '구간'
-        ws["F"+str(cell_row+30)] = '층'
-        ws["G"+str(cell_row+30)] = '형태'
-        ws["H"+str(cell_row+30)] = '작업 단가별 분류'
-        ws["I"+str(cell_row+30)] = '작업내용'
-        ws["J"+str(cell_row+30)] = '공종'
-        ws["K"+str(cell_row+30)] = '공수'
-        ws.merge_cells("L"+str(cell_row+30)+":S"+str(cell_row+30))
-        ws["L"+str(cell_row+30)] = '작업 명단'
-
+        ws.merge_cells("E"+str(cell_row+29)+":J"+str(cell_row+29))
+        ws["E"+str(cell_row+29)]='합계'
+        ws["K"+str(cell_row+29)] = full_number
+        
+        ws.merge_cells("L"+str(cell_row+29)+":S"+str(cell_row+29))
+        ws.merge_cells("E"+str(cell_row+30)+":S"+str(cell_row+30))
+        ws["E"+str(cell_row+30)] = "# 연장작업"
+        ws.cell(row=(cell_row+30), column=5).fill = gray_fill
+        for col in range(5,20):
+            ws.cell(row=(cell_row+31), column=col).fill = gray_fill
+        ws["E"+str(cell_row+31)] = '구간'
+        ws["F"+str(cell_row+31)] = '층'
+        ws["G"+str(cell_row+31)] = '형태'
+        ws["H"+str(cell_row+31)] = '작업 단가별 분류'
+        ws["I"+str(cell_row+31)] = '작업내용'
+        ws["J"+str(cell_row+31)] = '공종'
+        ws["K"+str(cell_row+31)] = '공수'
+        ws.merge_cells("L"+str(cell_row+31)+":S"+str(cell_row+31))
+        ws["L"+str(cell_row+31)] = '작업 명단'
+        for jj in range(cell_row+32,+cell_row+44):
+            ws.merge_cells("L"+str(jj)+":S"+str(jj))
 
         for idx,k in enumerate(today_worker):
             ws['A'+str(5+idx+cell_row)] = idx+1
@@ -1083,6 +1112,10 @@ def work_sheet():
         for i,idx in enumerate(range(last_idx,44+cell_row)):
             ws['A'+str(idx)] = last_k+i
             ws['B'+str(idx)] = '형틀'
+
+        for col in range(1,20):
+            ws.cell(row=(cell_row+44), column=col).fill = gray_fill
+            ws.cell(row=(cell_row+45), column=col).fill = gray_fill
 
         ws["A"+str(cell_row+44)] = '합계'
         ws.merge_cells("A"+str(cell_row+44)+":C"+str(cell_row+44))
