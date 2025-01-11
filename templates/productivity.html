@@ -5,11 +5,11 @@
 {% block head %}
 <link rel="stylesheet" href="./static/css/tables.css">  
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/> -->
 {% endblock %}
 
 {% block content %}
-<div class="content">
+<div class="content ">
   <div class="panel-header bg-primary-gradient">
     <div class="page-inner py-5">
       <div class=" align-items-md-center flex-column flex-md-row">
@@ -23,11 +23,12 @@
       </div>
     </div>
   </div>
-  <div class="page-inner mt--5x" >
-    <div class="row mt--2 justify-content-center" id="content1">
+  <div class="page-inner mt--5x " style="justify-content:center;display:center;">
+    <div class="row mt--2 " id="content1">
       <div class="col-md-6">
         <div class="card full-height">
-          <div class="card-body">
+          <div class="card-body justify-content-center " style="justify-content:center;display:flexbox;">
+ 
             <div class="card-title">조회할 작업을 선택해 주세요. </div>
             <div  class="d-flex">
             <label for ='place' style="margin-right: 40px;">현장</label>
@@ -50,6 +51,7 @@
             <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
               
             </div>
+      
           </div>
         </div>
       </div>
