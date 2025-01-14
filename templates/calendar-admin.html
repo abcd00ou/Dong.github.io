@@ -26,7 +26,9 @@
             
         <div style="margin-top: 20px;justify-content:center;display: auto;">
         <button id="Attend-QR" class='btn btn-primary btn-sm' >근태 QR 활성화</button>
+        
         <button id="work-sheet" class='btn btn-danger  btn-sm' style="float:right;" >작업일지 Downloads</button>
+        
         <!-- <button id="Attend-abled"  {% if attend == 'abled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>출근 활성화</button> -->
         <!-- <button id="Attend-disabled"  {% if attend == 'disabled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>출근 비활성화</button> -->
         <!-- <p>출근 체크 {% if attend == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p> -->
@@ -37,30 +39,10 @@
        
        
 
-        <div class="panel-body" style="display:auto;margin-top: 30px;">
-            <div class="col-lg-4">
-                <label for="text_filter">검색</label>
-                <div class="d-flex">  
-                    <input  type="text" id="text_filter" placeholder="검색할 단어 입력">
-                    <button class="search-button btn-primary" id= 'filter_btn'>
-                        <i class="fas fa-search"></i> <!-- Font Awesome 돋보기 아이콘 -->
-                    </button>
-                </div>
+        <div class="panel-body" style="display:auto;margin-top: 15px;">
+            <div class="col-xs-4">
+                <button id="group-add" class='btn btn-dark  btn-sm' >그룹 추가</button>
             </div>
-            <!-- <div class="col-lg-4">
-                <label for="type_filter">작업장별 필터</label>
-                <div class="input-group">
-                    <select class="filter" id="type_filter" multiple="multiple">
-                        <option value="당진">당진</option>
-                        <option value="송도">송도</option>
-                        <option value="마곡">마곡</option>
-                        <option value="시흥">시흥</option>
-                    </select>
-                </div>
-            </div> -->
-            
-
-            
 
         </div>
     </div>
@@ -138,8 +120,8 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <label class="col-xs-4" for="edit-desc">설명</label>
-                            <textarea rows="4" cols="50" class="inputModal" name="edit-desc"
-                                id="edit-desc"></textarea>
+                            <textarea rows="12" cols="50" class="inputModal" name="edit-desc"
+                                id="edit-desc" disabled></textarea>
                         </div>
                     </div>
                 </div>
@@ -177,6 +159,70 @@
 
 <script>
     document.getElementById('nav_calendar').classList.add('active');
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // fc-center 클래스를 가진 요소를 찾음
+    const fcCenter = document.querySelector(".fc-center");
+
+    if (fcCenter) {
+        // 버튼 생성
+        const button = document.createElement("button");
+        button.textContent = "추가 버튼"; // 버튼 텍스트
+        button.className = "search-button btn-primary"; // 버튼에 클래스 추가
+        button.id = 'show-search'
+        button.style.justifyContent = "flex-end"
+
+        button.innerHTML = '<i class="fas fa-search"></i>';
+        // 클릭 이벤트 추가
+        button.addEventListener("click", function () {
+            const searchbox = document.getElementById("searchbox");
+            if (searchbox) {
+                // display 스타일 토글
+                if (searchbox.style.display === "none" || searchbox.style.display === "") {
+                    searchbox.style.display = "flex";
+                } else {
+                    searchbox.style.display = "none";
+                }
+            }
+        });
+
+
+        // fc-center 요소에 버튼 추가
+        fcCenter.appendChild(button);
+
+        
+        const newDiv = document.createElement("div");
+        newDiv.id = 'searchbox'
+        
+        // newDiv.className = "d-flex"; // 클래스 추가
+        
+        newDiv.innerHTML = '<input type="text" id="text_filter" placeholder="검색할 단어 입력" style="width:50%"><button class="search-button btn-primary" id= "filter_btn"><i class="fa-search"><b>검색</b></i></button>'; // 내용 추가
+        newDiv.style.display = "none";
+        newDiv.style.justifyContent = "flex-end";
+        // fc-center 뒤에 새로운 div 추가
+        fcCenter.insertAdjacentElement("afterend", newDiv);
+
+        //필터
+        $('#filter_btn').on('click', function () {
+            $('#calendar').fullCalendar('rerenderEvents');
+        });
+
+        // $("#text_filter").select2({
+        //     placeholder: "선택..",
+        //     allowClear: true
+        // });
+        //datetimepicker
+        $("#edit-start, #edit-end").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm'
+        });
+
+
+
+    } else {
+        console.error(".fc-center 요소를 찾을 수 없습니다.");
+    }
+});
+
 
 </script>
 {% endblock %}

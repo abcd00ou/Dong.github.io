@@ -764,10 +764,15 @@ a.fc-more:hover {
     box-sizing: content-box;
 }
 
-.fc-view,
+.fc-view{
+    height:40px;
+    max-height: 40px;
+}
 .fc-view > table {
     position: relative;
     z-index: 1;
+    
+    
 }
 
 .fc-basicDay-view .fc-content-skeleton,
@@ -776,7 +781,8 @@ a.fc-more:hover {
 }
 
 .fc-basic-view .fc-body .fc-row {
-    min-height: 4em;
+    min-height: 5em;
+    max-height: 7em;
 }
 
 .fc-row.fc-rigid .fc-content-skeleton {
@@ -836,7 +842,7 @@ a.fc-more:hover {
 }
 
 .fc-agenda-view .fc-day-grid .fc-row {
-    min-height: 3em;
+    min-height: 5em;
 }
 
 .fc-agenda-view .fc-day-grid .fc-row .fc-content-skeleton {

@@ -80,6 +80,8 @@ var calendar = $('#calendar').fullCalendar({
 
   eventRender: function (event, element, view) {
     console.log('element',element)
+    console.log('event',event)
+    console.log('event.title',event.title)
     //일정에 hover시 요약
     element.popover({
       title: $('<div />', {
@@ -107,6 +109,7 @@ var calendar = $('#calendar').fullCalendar({
       container: 'body'
     });
     console.log('렌더링됨?')
+    console.log(element)
     return filtering(event);
 
   },
@@ -294,34 +297,14 @@ function filtering(event) {
   var username = $('input:checkbox.filter:checked').map(function () {
     return $(this).val();
   }).get();
-
-  // var types = $('#type_filter').val();
-
-  // if(admin_name.includes(username[0])){
-
-  //   show_username = true;
-  // }else{
-  //   show_username = username.indexOf(event.username) >= 0;
-  // }
-  
-  
-  // if (types && types.length > 0) {
-  //   if (types[0] == "all") {
-  //     show_type = true;
-  //   } else {
-
-  //     show_type = types.indexOf(event.type) >= 0;
-
-  //   }
-  // }
-  // console.log(show_username,show_type)
-  // return show_username && show_type;
-
-  if($('#text_filter').val()!==""){
+  console.log('여기?',event)
+  console.log($('#text_filter').val())
+  if($('#text_filter').val()!==""&&$('#text_filter').val()!==undefined){
     var texts = [$('#text_filter').val()];
   }else{
     var texts=[];
   }
+  
   
   console.log('texts',texts); // 입력된 값을 콘솔에 출력
   console.log('texts',texts.length)
@@ -332,9 +315,10 @@ function filtering(event) {
     console.log(event.title)
     console.log(event.username)
     
-    if(event.type.includes(texts[0])){
-      show_type = true
-    }else if(event.description.includes(texts[0])){
+    // if(event.type.includes(texts[0])){
+    //   show_type = true
+    // }else 
+    if(event.description.includes(texts[0])){
       show_type = true
     }else if(event.title.includes(texts[0])){
       show_type = true

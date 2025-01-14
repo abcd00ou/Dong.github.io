@@ -1736,6 +1736,10 @@ section,
   border-radius: 5px 5px 0 0;
 }
 
+.fc-time {
+  display: none !important;
+}
+
 .popoverInfoCalendar i {
   font-size: 14px;
   margin-right: 10px;

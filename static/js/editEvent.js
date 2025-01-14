@@ -91,12 +91,12 @@ var editEvent = function (event, element, view) {
 
                 delete event['source'];
                 delete event['className']
-
+                console.log(event)
                 var data = response
                 for(let i = 0; i < data.length; i++) {
                     console.log(data[i]._id,event._id)
                 
-                    if (data[i]._id === Number(event._id)) {
+                    if (Number(data[i]._id) === Number(event._id)) {
                         console.log(data[i])
                         data[i] = event;
                     }

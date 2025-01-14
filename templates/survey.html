@@ -520,7 +520,7 @@
         document.getElementById('cat3').textContent = "";
         document.getElementById('cat2').textContent = "";
         document.getElementById('cat1').textContent = "";
-        document.getElementById('site').textContent = ""
+        // document.getElementById('site').textContent = ""
         document.getElementById('effort').value = ""; 
         document.getElementById('process').value = ""; 
 
@@ -613,7 +613,17 @@
     })  
 
     // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
-    console.log(document.getElementById('date-input').value)
+
+
+    var backcolor = {'김포':"#D25565",
+                    '송도':'#9775fa',
+                    '마곡':'#ffa94d',
+                    '당진':'#74c0fc',
+                    '안양':'#f06595',
+                    '기타1':'#63e6be',
+                    '기타2':'#a9e34b',
+                    '기타3':'#4d638c',
+                    '기타4':'#495057'}
     var eventData = {
         _id: Number(eventId),
         title: document.getElementById('site').textContent,
@@ -622,7 +632,7 @@
         description: formtext,
         type: document.getElementById('site').textContent,
         username: document.getElementById("username").textContent,
-        backgroundColor: '#D25565',
+        backgroundColor: backcolor[document.getElementById('site').textContent],
         textColor: '#ffffff',
         allDay: false
     };
