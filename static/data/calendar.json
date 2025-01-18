@@ -1114,18 +1114,6 @@
         "allDay": false
     },
     {
-        "_id": 202,
-        "title": "\u3131\u3131\u3131",
-        "start": "2024-11-01 04:22",
-        "end": "2024-11-01 05:22",
-        "description": "\u3131\u3131\u3131",
-        "type": "\ub9c8\uace1",
-        "username": "\uc774\ub3d9\uc131",
-        "backgroundColor": "#D25565",
-        "textColor": "#ffffff",
-        "allDay": false
-    },
-    {
         "description": "\uc791\uc5c5\uc7a5 : \uae40\ud3ec \n \uc791\uc5c5\uc778\uc6d0 : 3 \n\uc791\uc5c5\uc790 \uba85 :\uae40\uc528,\uc774\uc528,\ucd5c\uc528,\n\uc5f0\uc7a5 \uadfc\ubb34\uc790\uba85 : \n\uc624\uc804 \uadfc\ubb34\uc790\uba85 : \n\uc791\uc5c5\ub0b4\uc6a9 : \uae40\ud3ec_\ub3c4\uae09_B4_D_\ub7a8\ud504_\uc790\uc7ac \uc900\ube44 \uc791\uc5c5_3\n\n\ud2b9\uc774\uc0ac\ud56d : \n",
         "type": "\ub2f9\uc9c4",
         "username": "\uc774\ub3d9\uc131",

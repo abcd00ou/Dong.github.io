@@ -416,7 +416,7 @@ def calendar_save():
     with open(file_path, 'w') as outfile:
       json.dump(data, outfile, indent=4)
     
-    return 'success'
+    return jsonify({"success": True}), 200
 
 
 @app.route('/calendar_remove', methods=['POST'])
@@ -431,7 +431,7 @@ def calendar_remove():
     with open(file_path, 'w') as outfile:
       json.dump(data, outfile, indent=4)
     
-    return 'success'
+    return jsonify({"success": True}), 200
 
 @app.route('/calendar_edit', methods=['POST'])
 @nocache
@@ -444,7 +444,22 @@ def calendar_edit():
     with open(file_path, 'w') as outfile:
       json.dump(data, outfile, indent=4)
     
-    return 'success'
+    return jsonify({"success": True}), 200
+
+
+@app.route('/save_calendar_group', methods=['POST'])
+@nocache
+def save_calendar_group():
+    print(request.get_json())
+    print('request',request.form)
+    data = request.get_json()
+    file_path = './static/data/calendar_group.json'
+    # data = json.loads(data)
+    print(data)
+    with open(file_path, 'w') as outfile:
+      json.dump(data, outfile, indent=4)
+    
+    return jsonify({"success": True}), 200
 
 
 @app.route('/productivity', methods=['GET','POST'])

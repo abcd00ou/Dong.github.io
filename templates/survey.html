@@ -634,13 +634,13 @@
         username: document.getElementById("username").textContent,
         backgroundColor: backcolor[document.getElementById('site').textContent],
         textColor: '#ffffff',
-        allDay: false
+        allDay: true
     };
     console.log('eventData',eventData)
     //createExcel(formData);
     $("#calendar").fullCalendar('renderEvent', eventData, true);
     eventModal.find('input, textarea').val('');
-    editAllDay.prop('checked', false);
+    editAllDay.prop('checked', true);
     eventModal.modal('hide');
     console.log(eventData)
     //새로운 일정 저장

@@ -340,6 +340,292 @@
 });
 
 
+
+$('#group-add').on('click', function(event) {
+  event.preventDefault();
+
+  var admin_name = ['김서준','이동성','정병현','김민수'];
+  var username = $('input:checkbox.filter:checked').map(function () {
+    return $(this).val();
+  }).get();
+
+
+
+  if(admin_name.includes(username[0])){
+  
+    $.ajax({
+      type: "get",
+      url: "/static/data/INSA_DB.json",
+      data: {
+        // 화면이 바뀌면 Date 객체인 start, end 가 들어옴
+        //startDate : moment(start).format('YYYY-MM-DD'),
+        //endDate   : moment(end).format('YYYY-MM-DD')
+      },
+      success: function (response) {
+        var modal = $('#groupModal');    // 모달 DOM
+       var closeBtn = $('#groupModal .close'); // 닫기 버튼
+      
+        var USER_LIST = JSON.parse(response)
+        console.log(USER_LIST)
+        // 사용자 목록을 모달에 채워넣기
+        var userList = $('#userList');
+        userList.empty(); // 혹시 이전 내용이 있을 수 있으니 초기화
+
+        // 예: response가 [{"name": "김서준"}, {"name": "이동성"}] 같은 구조라고 가정
+        USER_LIST.forEach(function (user) {
+     
+          // 각각 체크박스와 이름을 표시
+          var userItem = `
+            <div>
+              <input type="checkbox" class="memberCheckbox" value="${user.ID}">
+              <span>${user.ID}, ${user.성명}</span>
+            </div>
+          `;
+          userList.append(userItem);
+        });
+
+        // 데이터 세팅 후 모달 표시
+        modal.show();
+        closeBtn.on('click', function () {
+          modal.hide();
+        });
+
+      },
+      error: function (err) {
+        console.log("에러:", err);
+        alert("사용자 목록을 가져오는 중 오류가 발생했습니다.");
+      }
+        
+    
+    });
+
+
+  }
+    
+  });
+
+
+  
+$('#group-delete').on('click', function(event) {
+  event.preventDefault();
+
+  var admin_name = ['김서준','이동성','정병현','김민수'];
+  var username = $('input:checkbox.filter:checked').map(function () {
+    return $(this).val();
+  }).get();
+
+
+
+  if(admin_name.includes(username[0])){
+  
+    $.ajax({
+      type: "get",
+      url: "/static/data/calendar_group.json",
+      data: {
+        // 화면이 바뀌면 Date 객체인 start, end 가 들어옴
+        //startDate : moment(start).format('YYYY-MM-DD'),
+        //endDate   : moment(end).format('YYYY-MM-DD')
+      },
+      success: function (response) {
+      var modal = $('#groupModal2');    // 모달 DOM
+       var closeBtn = $('#groupModal2 .close'); // 닫기 버튼
+      
+        var keys = response
+        console.log(keys)
+        // 사용자 목록을 모달에 채워넣기
+        var groupList = $('#groupList');   
+        // 예: response가 [{"name": "김서준"}, {"name": "이동성"}] 같은 구조라고 가정
+        keys.forEach(function (user) {
+          console.log(user)
+          // 각각 체크박스와 이름을 표시
+          var userItem = `
+            <div>
+            
+              <input type="checkbox" class="groupCheckbox" value="${user.groupName}">
+              <span>${user.groupName}</span>
+            </div>
+          `;
+          groupList.append(userItem);
+        });
+
+        // 데이터 세팅 후 모달 표시
+        modal.show();
+        closeBtn.on('click', function () {
+          modal.hide();
+        });
+
+      },
+      error: function (err) {
+        console.log("에러:", err);
+        alert("사용자 목록을 가져오는 중 오류가 발생했습니다.");
+      }
+        
+    
+    });
+
+
+  }
+    
+  });
+
+  // 4) [그룹 생성] 버튼 클릭 시
+  $('#deleteGroup').on('click', function () {
+    // 입력한 그룹 이름
+    var selectedGroups = [];
+    $('.groupCheckbox:checked').each(function () {
+      selectedGroups.push($(this).val());
+    });
+    console.log('selectedGroups',selectedGroups)
+    if(selectedGroups.length!==0){
+
+    // 1) 기존 calendar_group.json 불러오기
+    $.ajax({
+      url: "/static/data/calendar_group.json",  // 실제 경로를 맞춰주세요
+      type: "GET",
+      dataType: "json",
+      success: function (calendarData) {
+        // calendar_group.json의 데이터가 배열이라고 가정
+        // (예: [{ "groupName": "...", "members": [ ... ] }, ... ])
+        // 만약 객체 구조라면 거기에 맞춰 처리해야 함.
+  
+        if (!Array.isArray(calendarData)) {
+          console.error("calendar_group.json 데이터가 배열 구조가 아닙니다. 구조 확인 필요!");
+          return;
+        }
+  
+        // 2) 새 그룹 데이터 추가
+
+        calendarData = calendarData.filter(function(item) {
+          return !selectedGroups.includes(item.groupName);
+        });
+        console.log(calendarData)
+        // 3) 서버에 새로운 배열을 저장 요청
+        $.ajax({
+          url: "/save_calendar_group",  // 서버에서 이 라우트를 처리해 calendar_group.json을 저장하도록 구성
+          type: "POST",
+          dataType: "json",
+          contentType: "application/json",
+          data: JSON.stringify(calendarData), // 문자열로 변환하여 전송
+          success: function (response) {
+            console.log("calendar_group.json 업데이트 성공:", response);
+            alert("그룹이 성공적으로 제거되었습니다!");
+
+            // 모달 닫기
+            $('#groupModal2').hide();
+            // 폼 초기화
+            $('#groupName').val('');
+            $('#userList').empty();
+            location.reload();
+          },
+          // },
+          error: function (xhr, status, error) {
+            console.error("calendar_group.json 업데이트 실패:", error);
+            alert("그룹을 저장하는 데 실패했습니다. 다시 시도하세요.");
+          }
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("calendar_group.json 불러오기 실패:", error);
+        alert("기존 그룹 정보를 불러오는 데 실패했습니다.");
+      }
+    });
+  }
+});
+
+
+
+  // 4) [그룹 생성] 버튼 클릭 시
+  $('#createGroup').on('click', function () {
+    // 입력한 그룹 이름
+    var groupName = $('#groupName').val().trim();
+    // 선택된 멤버
+    var selectedMembers = [];
+    $('.memberCheckbox:checked').each(function () {
+      selectedMembers.push($(this).val());
+    });
+
+    if (!groupName) {
+      alert("그룹 이름을 입력하세요.");
+      return;
+    }
+
+    if (selectedMembers.length === 0) {
+      alert("최소 한 명 이상의 그룹 멤버를 선택하세요.");
+      return;
+    }
+
+    // 이 시점에서 필요한 로직 구현
+    // 예: 콘솔에 출력 (추후 서버에 전송하거나 로컬 스토리지에 저장하는 등 응용)
+    console.log("그룹명:", groupName);
+    console.log("선택된 멤버:", selectedMembers);
+    // var modal = $('#groupModal');    // 모달 DOM
+    // // 모달 닫기
+    // modal.hide();
+
+    // alert('그룹이 생성되엇습니다.('+groupName+")" )
+    
+    // // 폼 초기화 (원하는 경우)
+    // $('#groupName').val('');
+    // $('#userList').empty();
+    var newGroupData = {
+      groupName: groupName,
+      members: selectedMembers
+    };
+  
+    // 1) 기존 calendar_group.json 불러오기
+    $.ajax({
+      url: "/static/data/calendar_group.json",  // 실제 경로를 맞춰주세요
+      type: "GET",
+      dataType: "json",
+      success: function (calendarData) {
+        // calendar_group.json의 데이터가 배열이라고 가정
+        // (예: [{ "groupName": "...", "members": [ ... ] }, ... ])
+        // 만약 객체 구조라면 거기에 맞춰 처리해야 함.
+  
+        if (!Array.isArray(calendarData)) {
+          console.error("calendar_group.json 데이터가 배열 구조가 아닙니다. 구조 확인 필요!");
+          return;
+        }
+  
+        // 2) 새 그룹 데이터 추가
+        calendarData.push(newGroupData);
+        console.log(calendarData)
+        // 3) 서버에 새로운 배열을 저장 요청
+        $.ajax({
+          url: "/save_calendar_group",  // 서버에서 이 라우트를 처리해 calendar_group.json을 저장하도록 구성
+          type: "POST",
+          dataType: "json",
+          contentType: "application/json",
+          data: JSON.stringify(calendarData), // 문자열로 변환하여 전송
+          success: function (response) {
+            console.log("calendar_group.json 업데이트 성공:", response);
+            alert("그룹이 성공적으로 추가되었습니다!");
+
+            // 모달 닫기
+            $('#groupModal').hide();
+            // 폼 초기화
+            $('#groupName').val('');
+            $('#userList').empty();
+            location.reload();
+          },
+          // },
+          error: function (xhr, status, error) {
+            console.error("calendar_group.json 업데이트 실패:", error);
+            alert("그룹을 저장하는 데 실패했습니다. 다시 시도하세요.");
+          }
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("calendar_group.json 불러오기 실패:", error);
+        alert("기존 그룹 정보를 불러오는 데 실패했습니다.");
+      }
+  });
+});
+
+
+
+
+
   // 출석체크 활성, 비활성화
   $('#Attend-abled').on('click', function(event) {
       event.preventDefault();

@@ -4,6 +4,44 @@
 
 {% block content %}
 <div class="container">
+      
+    <div id="groupModal" class="modal" style="margin-top: 100px; background-color: #63e6be; height:620px;width:100%;" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <!-- 닫기 버튼 -->
+            <span class="close">&times;</span>
+            
+            <h2>그룹 만들기</h2>
+            
+            <!-- 그룹 이름 입력 -->
+            <label for="groupName">그룹 이름:</label>
+            <input type="text" id="groupName" placeholder="예: 개발팀">
+            
+            <h3>그룹 멤버 선택</h3>
+            <!-- 사용자 목록이 들어갈 영역 -->
+            <div id="userList"style="height:400px; overflow-y: auto;"></div>
+            
+            <!-- 그룹 생성 버튼 -->
+            <button id="createGroup">그룹 생성</button>
+
+            </div>
+        </div>
+      </div>
+
+      <div id="groupModal2" class="modal" style="margin-top: 100px; " tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <!-- 닫기 버튼 -->
+            <span class="close">&times;</span>
+            
+            <h2>그룹 삭제</h2>
+            <div id="groupList" ></div>
+            <!-- 그룹 생성 버튼 -->
+            <button id="deleteGroup" style="color:red;">그룹 삭제</button>
+
+            </div>
+        </div>
+      </div>
 
     <!-- 일자 클릭시 메뉴오픈 -->
     <div id="contextMenu" class="dropdown clearfix">
@@ -42,7 +80,11 @@
         <div class="panel-body" style="display:auto;margin-top: 15px;">
             <div class="col-xs-4">
                 <button id="group-add" class='btn btn-dark  btn-sm' >그룹 추가</button>
+                <button id="group-delete" class='btn btn-danger  btn-sm' >그룹 삭제</button>
+                <div class="col-xs-6"  style="float: right;" id ='group_list'>
+                </div>
             </div>
+            
 
         </div>
     </div>
@@ -160,6 +202,7 @@
 <script>
     document.getElementById('nav_calendar').classList.add('active');
 
+
     document.addEventListener("DOMContentLoaded", function () {
     // fc-center 클래스를 가진 요소를 찾음
     const fcCenter = document.querySelector(".fc-center");
@@ -221,6 +264,33 @@
     } else {
         console.error(".fc-center 요소를 찾을 수 없습니다.");
     }
+
+    // 페이지 로드 시 AJAX로 calendar_group.json 가져오기
+    $.ajax({
+        url: '/static/data/calendar_group.json',  // 실제 경로나 파일 위치에 맞춰 수정
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          // data가 { "개발팀": [...], "기획팀": [...], ... } 형태라고 가정
+          // 객체의 key들을 순회하며 버튼 생성
+          console.log(data)
+          Object.keys(data).forEach(function(groupName, index) {
+            // 버튼 id를 동적으로 생성하거나, groupName 그대로 써도 됨
+            let buttonId = 'group-' +data[groupName]['groupName'];
+            console.log(groupName)
+            // jQuery로 버튼 동적 생성
+            $('<button>')
+              .attr('id', buttonId)
+              .addClass('btn btn-dark btn-sm')
+              .text(data[groupName]['groupName'])                // 버튼 텍스트 = 그룹명
+              .appendTo('#group_list');       // #group_list 안에 붙이기
+          });
+        },
+        error: function(xhr, status, error) {
+          console.error("calendar_group.json 불러오기 실패:", error);
+        }
+      });
+
 });
 
 
