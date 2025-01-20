@@ -297,7 +297,7 @@
           method: 'GET',
           success: function(response) {
             console.log(response)
-            if(response.ADMIN=='Y'){
+            if(response.ADMIN==='MASTER'||response.ADMIN==='ADMIN'){
               alert("출근 체크 활성화 되었습니다.");
               window.location.href = '/attend_qr'
             }
@@ -735,6 +735,23 @@ $('#Leavecheck').on('click', function(event) {
       }
   });
 });
+
+
+function checkPlace() {
+  const selectEl = document.getElementById("edit-type");
+  const otherEl = document.getElementById("edit-type-other");
+  
+  // 만약 "직접 입력(other)"을 선택했으면 텍스트 입력 보이기
+  if (selectEl.value === "other") {
+    otherEl.style.display = "inline-block";
+    otherEl.focus();
+  } else {
+    // 그 외에는 숨기기
+    otherEl.style.display = "none";
+    // 필요 시, 다른 값을 비우거나 할 수도 있음
+    otherEl.value = "";
+  }
+}
 
 
 

@@ -120,7 +120,9 @@ def signin():
             session['ID'] = filterd_db['ID'][0]
             session['ADMIN'] = filterd_db['ADMIN'][0]
             session['PLACE'] = filterd_db['작업장'][0]
-            if session['ADMIN']=='Y':
+            if session['ADMIN']=='MASTER':
+                return render_template("calendar-master.html")
+            elif session['ADMIN']=='ADMIN':
                 return render_template("calendar-admin.html")
             else:
                 ## 나머지 데이터가 있는지 확인 
@@ -342,9 +344,11 @@ def survey():
 def calendar():
     print(session)
     if 'ADMIN' in session:
-        if session['ADMIN']=='Y':
+        print("session['ADMIN']",session['ADMIN'])
+        if session['ADMIN']=='MASTER':
             name = session['NAME']
-            admin = 'Y'
+            id = session['ID']
+            admin = 'MASTER'
             place = session['PLACE']
             file_path = './static/data/Attend.json'
             with open(file_path, 'r') as f:
@@ -354,7 +358,22 @@ def calendar():
             with open(file_path, 'r') as f:
                 leave = json.load(f)[place]['Leave']
             
-            return render_template('calendar-admin.html',name = name,admin=admin,attend=attend,leave=leave,place = place)
+            return render_template('calendar-master.html',id=id,name = name,admin=admin,attend=attend,leave=leave,place = place)
+        elif session['ADMIN']=='ADMIN':
+            name = session['NAME']
+            admin = 'ADMIN'
+            id = session['ID']
+            place = session['PLACE']
+            file_path = './static/data/Attend.json'
+            with open(file_path, 'r') as f:
+                attend = json.load(f)[place]['Attend']
+
+            file_path = './static/data/Leave.json'
+            with open(file_path, 'r') as f:
+                leave = json.load(f)[place]['Leave']
+            
+            return render_template('calendar-admin.html',id=id,name = name,admin=admin,attend=attend,leave=leave,place = place)
+
         else:
             name = session['NAME']
             place = session['PLACE']
@@ -896,7 +915,7 @@ def register():
             "고혈압유무":[user_highBlood],
             "ID":[user_id],
             "PASSWORD":[user_pw],
-            "ADMIN":["Y"]
+            "ADMIN":["ADMIN"]
             
         })
     else:
