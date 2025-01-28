@@ -9,6 +9,7 @@
 (function() {
   "use strict";
 
+
   /**
    * Apply .scrolled class to the body as the page is scrolled down
    */
@@ -340,10 +341,38 @@
 });
 
 
+$('#plan-btn').on('click', function(event) {
+  event.preventDefault();
+  
+  // window.location.href = '/survey-plan'//
+  const groupButtons = document.querySelectorAll('#group_list button[id^="group-"]');
+
+    // 각각의 버튼에 대해 "group-" 뒷부분만 추출
+  
+    const fullId = groupButtons[0].id;          // 예: "group-마곡"
+    const siteValue = fullId.replace("group-", ""); 
+    const startDate = moment().format('YYYY-MM-DD');;
+    console.log('startDate',startDate)
+    console.log('siteValue',siteValue);            // "마곡", "부산", "서울", ...
+    //const siteValue = document.getElementById('site').value;
+    //const dateValue = document.getElementById('date').value;
+
+    // URL 파라미터로 site, date 값을 survey.html에 전달
+    // encodeURIComponent로 특수문자 등을 인코딩해주면 안전합니다.
+    window.location.href = `survey-plan?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
+});
+
+$('#work-btn').on('click', function(event) {
+  event.preventDefault();
+  window.location.href = '/survey'
+  
+});
+
+
 
 $('#group-add').on('click', function(event) {
   event.preventDefault();
-
+  console.log("에러남?")
   var admin_name = ['김서준','이동성','정병현','김민수'];
   var username = $('input:checkbox.filter:checked').map(function () {
     return $(this).val();
@@ -363,7 +392,7 @@ $('#group-add').on('click', function(event) {
       },
       success: function (response) {
         var modal = $('#groupModal');    // 모달 DOM
-       var closeBtn = $('#groupModal .close'); // 닫기 버튼
+        var closeBtn = $('#groupModal .close'); // 닫기 버튼
       
         var USER_LIST = JSON.parse(response)
         console.log(USER_LIST)
@@ -735,24 +764,6 @@ $('#Leavecheck').on('click', function(event) {
       }
   });
 });
-
-
-function checkPlace() {
-  const selectEl = document.getElementById("edit-type");
-  const otherEl = document.getElementById("edit-type-other");
-  
-  // 만약 "직접 입력(other)"을 선택했으면 텍스트 입력 보이기
-  if (selectEl.value === "other") {
-    otherEl.style.display = "inline-block";
-    otherEl.focus();
-  } else {
-    // 그 외에는 숨기기
-    otherEl.style.display = "none";
-    // 필요 시, 다른 값을 비우거나 할 수도 있음
-    otherEl.value = "";
-  }
-}
-
 
 
 

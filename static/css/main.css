@@ -3059,3 +3059,26 @@ input[type="radio"]:checked + .label1 {
 .rating-desc .col-md-3 {padding-right: 0px;}
 .sr-only { margin-left: 5px;overflow: visible;clip: auto; }.about
 
+.info_table {
+  /* 테두리 선 겹침 방지 */
+  border-collapse: collapse;
+  /* 전체 테이블 외곽선(점선) */
+  border: 1px dotted #000; 
+  width: 100%; /* 필요 시 조정 */
+}
+
+/* 각 셀(th, td) 스타일 */
+.info_table th, .info_table td {
+  /* 내부 셀 테두리(점선) */
+  border: 1px dotted #000; 
+  /* 내용 여백 */
+  padding: 8px; 
+  /* 텍스트 정렬 등은 필요 시 조정 */
+  text-align: center; 
+}
+
+/* 첫 번째 열(각 행의 첫 번째 셀)에 배경색 적용 */
+.info_table th:first-child, 
+.info_table td:first-child {
+  background-color: rgb(109, 200, 0);
+}

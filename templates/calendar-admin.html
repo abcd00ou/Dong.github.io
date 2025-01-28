@@ -12,28 +12,55 @@
                 <i type="button" class="bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></i>
                 <div>일정 생성</div>
             </div>
-            <li><a tabindex="-1" href="#">작업 계획 작성</a></li>
-            <li><a tabindex="-1" href="#">작업 일지 작성</a></li>
+            <li><a  href="#">작업 일지 작성</a></li>
+            <li><a tabindex="-1" href="#">작업 NULL</a></li>
         </ul>
     </div>
     <div class="panel panel-default">
+        <table class="info_table">
 
+            <!-- 표의 본문 영역 -->
+            <tbody>
+                <tr>
+                    <td><b>정보</b></td>
+                    <td>{{ name }}</td>
+                    <td>ID</td>
+                    <td>{{place}} </td>
+                  </tr>
+              <tr>
+                <!-- 근태 버튼 -->
+                <td><b>근태</b></td>
+                <!-- 필요 없다면 비워두거나 다른 내용/버튼 배치 -->
+          
+                <!-- QR활성화 버튼 -->
+                <td colspan="3"><button id="Attend-QR" class='btn  btn-outline-primary btn-sm' >근태 QR 활성화</button></td>
+                <!-- 필요 없다면 비워두거나 다른 내용/버튼 배치 -->
+        
+              </tr>
+          
+              <tr>
+                <!-- 작업 버튼 -->
+                <td><b>작업</b></td>
+                <!-- 계획 작성 버튼 -->
+                <td><button id="plan-btn" class='btn  btn-outline-primary btn-sm'  >계획 작성</button></td>
+                <!-- 일지 작성 버튼 -->
+                <td><button id="work-btn" class='btn btn-outline-primary btn-sm'  >일지 작성</button></td>
+                <!-- Download 버튼 -->
+                <td><button id="work-sheet" class='btn  btn-outline-primary btn-sm' >Downloads</button></td>
+              </tr>
+            </tbody>
+          </table>
   
-        <label class="checkbox-inline">
-        <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">{{place}} 담당 : {{ name }}님 로그인 되었습니다.</label>
+        <!-- <label class="checkbox-inline"> -->
+        <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">
+        <!-- {{place}} 담당 : {{ name }}님 로그인 되었습니다.</label> -->
             
-        <div style="margin-top: 20px;justify-content:center;display: auto;">
+        <!-- <div style="margin-top: 20px;justify-content:center;display: auto;">
         <button id="Attend-QR" class='btn btn-primary btn-sm' >근태 QR 활성화</button>
         
         <button id="work-sheet" class='btn btn-danger  btn-sm' style="float:right;" >작업일지 Downloads</button>
         
-        <!-- <button id="Attend-abled"  {% if attend == 'abled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>출근 활성화</button> -->
-        <!-- <button id="Attend-disabled"  {% if attend == 'disabled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>출근 비활성화</button> -->
-        <!-- <p>출근 체크 {% if attend == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p> -->
-        <!-- <button id="Leave-abled"  {% if leave == 'abled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>퇴근 활성화</button>
-        <button id="Leave-disabled"  {% if leave == 'disabled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>퇴근 비활성화</button>
-        <p>퇴근 체크 {% if leave == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p> -->
-        </div>
+        </div> -->
        
        
 
@@ -47,7 +74,7 @@
     </div>
     <!-- /.filter panel -->
     
-    <div id="wrapper">
+    <div id="wrapper" style="margin-top: 100px;">
         <div id="loading"></div>
         <div id="calendar"></div>
     </div>
@@ -92,7 +119,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <label class="col-xs-4" for="edit-type">작업장명</label>
-                            <select class="inputModal" type="text" name="edit-type" id="edit-type" onchange="checkPlace()">
+                            <select class="inputModal" type="text" name="edit-type" id="edit-type" onchange="checkPlace()" disabled>
                                 <option value="당진">당진</option>
                                 <option value="송도">송도</option>
                                 <option value="마곡">마곡</option>
@@ -230,10 +257,6 @@ function checkPlace() {
             $('#calendar').fullCalendar('rerenderEvents');
         });
 
-        // $("#text_filter").select2({
-        //     placeholder: "선택..",
-        //     allowClear: true
-        // });
         //datetimepicker
         $("#edit-start, #edit-end").datetimepicker({
             format: 'YYYY-MM-DD HH:mm'

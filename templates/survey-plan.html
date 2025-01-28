@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="content-title">작업 일지 작성</h1>
+<h1 class="content-title">작업 계획 작성</h1>
 
 <label for='survey1'>작업 날짜 선택</label>
 <ul >
@@ -28,11 +28,8 @@
     </li>
 </ul>
 
-<ul>
-    <button class="btn btn-outline-primary" id="survey2-active">기존작업 추가</button>
-    <button class="btn btn-outline-primary" id="survey1-active">새작업 추가</button>
-</ul>
-<ul id ='survey1' style="display:none;">
+
+<ul id ='survey1'>
     <label for='survey1'>새작업 계획</label>
     <li class="survey_item">
         
@@ -187,17 +184,8 @@
     
 </ul>
 <div class="d-grid btn-add-task-area" >
-    <button id="survey1-btn" class="btn-dark-custom"  style="display:none;">작업추가</button>
+    <button id="survey1-btn" class="btn-dark-custom" >작업추가</button>
 </div>
-
-
-<div id="survey2" style="display:none;">
-    {{work_info_json|tojson|safe}}
-</div>
-<div class="d-grid btn-add-task-area" >
-    <button id="survey2-btn" class="btn-dark-custom"  style="display:none;">작업추가</button>
-</div>
-
 
 <label for="task-result">작업내용</label>
 <textarea id="task-result" disabled="" placeholder="작업을 추가하면 여기서 확인 가능합니다."></textarea>
@@ -296,7 +284,7 @@
         updateContributions();
     }
 
-    const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
+    // const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
 
     // DOM 요소 가져오기
     const input = document.getElementById('workers_add1');
@@ -498,91 +486,30 @@
     })  
 
     // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
+  
+    const formData_db = {
+            // workersinfo : tabletext,
+            taskresult : document.getElementById("task-result").value,
+            // additional: document.getElementById('additional').value,
+            date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
+            username: document.getElementById("username").textContent
+        };
 
-
-    var backcolor = {'김포':"#D25565",
-                    '송도':'#9775fa',
-                    '마곡':'#ffa94d',
-                    '당진':'#74c0fc',
-                    '안양':'#f06595',
-                    '기타1':'#63e6be',
-                    '기타2':'#a9e34b',
-                    '기타3':'#4d638c',
-                    '기타4':'#495057'}
-    var eventData = {
-        _id: Number(eventId),
-        title: document.getElementById('site').textContent,
-        start: getCurrentDateTime(datestr = document.getElementById('date-input').value),
-        end: getCurrentDateTime(datestr = document.getElementById('date-input').value),
-        description: formtext,
-        type: document.getElementById('site').textContent,
-        username: document.getElementById("username").textContent,
-        backgroundColor: backcolor[document.getElementById('site').textContent],
-        textColor: '#ffffff',
-        allDay: true
-    };
-    console.log('eventData',eventData)
-    //createExcel(formData);
-    $("#calendar").fullCalendar('renderEvent', eventData, true);
-    eventModal.find('input, textarea').val('');
-    editAllDay.prop('checked', true);
-    eventModal.modal('hide');
-    console.log(eventData)
-    //새로운 일정 저장
     $.ajax({
-        type: "get",
-        url: "/static/data/calendar.json",
-        data: {
-            //.....
-        },
+        url: '/survey-plan',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData_db),
         success: function (response) {
             console.log(response)
-            var data = response; 
-
-            data.push(eventData);
-            console.log(data)
-            //DB연동시 중복이벤트 방지를 위한
-            //$('#calendar').fullCalendar('removeEvents');
-            //$('#calendar').fullCalendar('refetchEvents');
-            json_data = JSON.stringify(data)
-            console.log(json_data)
-            $.ajax({
-                url: '/calendar_save', // 데이터를 저장할 서버의 URL
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({data:json_data}),
-                success: function(response) {
-
-                    const formData_db = {
-                            // workersinfo : tabletext,
-                            taskresult : document.getElementById("task-result").value,
-                            // additional: document.getElementById('additional').value,
-                            date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
-                            username: document.getElementById("username").textContent
-                        };
-
-                    $.ajax({
-                        url: '/survey',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(formData_db),
-                        success: function (response) {
-                            console.log(response)
-                            alert("데이터가 저장되었습니다.")
-                        
-                        },
-                        error: function(error) {
-                            alert('데이터 저장에 실패했습니다.', error);
-                        }
-                    });
-                },
-                error: function(error) {
-                    alert('Error saving data:', error);
-                }
-            });
+            alert("데이터가 저장되었습니다.")
+        
+        },
+        error: function(error) {
+            alert('데이터 저장에 실패했습니다.', error);
         }
     });
-    
+                
 
 
     });

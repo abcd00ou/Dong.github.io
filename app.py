@@ -14,6 +14,8 @@ import os
 from dateutil.relativedelta import relativedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, PatternFill, Border, Side,Font
+import random
+import string
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # 세션 관리를 위해 필요한 키 설정
@@ -56,6 +58,23 @@ def check_session_id(func):
         return func(*args, **kwargs)  # 세션에 'id'가 있으면 원래 함수 실행
     return decorated_function
 
+def new_generate_random_key(df):
+    """알파벳 3글자 + 숫자 4자리 난수 생성 (예: ABC1234)"""
+    
+    letters = ''.join(random.choices(string.ascii_uppercase, k=3))
+    digits = ''.join(random.choices(string.digits, k=4))
+    newkey = letters + digits
+
+    if newkey in df['KEY'].unique():
+        while newkey in df['KEY'].unique():
+            print("겹치는거 있음?")
+            letters = ''.join(random.choices(string.ascii_uppercase, k=3))
+            digits = ''.join(random.choices(string.digits, k=4))
+            newkey = letters + digits
+        return newkey
+    else:
+        return newkey
+    
 
 @app.route('/', methods=['GET'])
 @nocache
@@ -104,22 +123,32 @@ def signin():
         # ID랑 비번으로 계정 매핑  
         insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
         insadb['PASSWORD'] = insadb['PASSWORD'].astype(str)
+
+        file_path = './static/data/calendar_group.json'
+        with open(file_path, 'r') as f:
+            grouplist = json.load(f)
+            f.close()
+        print(insadb)
         login_data  = request.get_json()
         id = login_data['id']
         pw = login_data['pw']
         session['id'] = id
         session['pw'] = pw
 
-        print(insadb)
-    
         filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
-        print(filterd_db)
+
         if len(filterd_db)>0:
-            print(filterd_db)
+            site_group=[]
+            for group in grouplist:
+                if filterd_db['ID'][0] in group['members']:
+                    site_group = np.append(site_group,group['groupName'])
+
             session['NAME'] = filterd_db['성명'][0]
             session['ID'] = filterd_db['ID'][0]
             session['ADMIN'] = filterd_db['ADMIN'][0]
-            session['PLACE'] = filterd_db['작업장'][0]
+            session['PLACE'] = site_group.tolist()
+           
+            
             if session['ADMIN']=='MASTER':
                 return render_template("calendar-master.html")
             elif session['ADMIN']=='ADMIN':
@@ -194,6 +223,8 @@ def gocalendar():
         Leave_t='none'
     name = session['NAME']
     place = session['PLACE']
+    if len(place)>=1:
+        place= place[0]
     file_path = './static/data/Attend.json'
     with open(file_path, 'r') as f:
         attend = json.load(f)[place]['Attend']
@@ -205,6 +236,92 @@ def gocalendar():
     print('Attend,Leave',Attend_t,Leave_t)
 
     return render_template("calendar-employee.html",Attend_t=Attend_t,Leave_t=Leave_t,name = name,attend=attend,leave=leave)
+
+
+@app.route('/survey-plan', methods=['GET','POST'])
+@nocache
+@check_session_id
+def survey_plan():
+    if(request.method=='GET'):
+        
+        
+        name = session.get('NAME')
+        if not name:
+            return redirect(url_for('backoffice'))
+        else:
+            name = session['NAME']
+            id = session['ID']
+            insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+            insadb_json = insadb[['성명','작업장']].to_json(orient='records', force_ascii=False)
+
+            ## 기존 정보들 다 가져감 
+            work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+           
+            file_path = './static/data/calendar_group.json'
+            with open(file_path, 'r') as f:
+                site_info = json.load(f)
+            print('site_info',site_info)
+            for key in range(len(site_info)):
+                if id in site_info[key]['members']:
+                    site = site_info[key]['groupName']
+                else:
+                    site=''
+            work_info['작업날짜'] = work_info['작업날짜'].astype(str)
+            work_info_filter = work_info.loc[(work_info['작업날짜']>='2025-01-01')&(work_info['작업장']==site)&(work_info['작업진행률']!='100%'),['도급/직영','위치_분류1','위치_분류2','작업_분류1','작업_분류2','작업_분류3','작업날짜','작업진행률','작업장']]
+            print(work_info_filter)
+            work_info_filter['작업상세'] = work_info_filter['도급/직영']+"_"+work_info_filter['위치_분류1']+"층_"+work_info_filter['위치_분류2']+"_"+work_info_filter['작업_분류3']
+            work_info_json = work_info_filter[['작업날짜','작업장','작업상세','작업진행률']].to_json(orient='records', force_ascii=False)
+            
+
+
+            return render_template("survey-plan.html",name =name,insadb= insadb_json,work_info_json=work_info_json)    
+    elif(request.method=='POST'):
+
+        
+        survey_data  = request.get_json()
+        taskresult = survey_data['taskresult'].split("\n")
+        date = survey_data['date'].split(" ")[0]
+        username = survey_data['username']
+
+        work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
+ 
+        file_path = "./static/data/test.json"
+        with open(file_path, 'r',encoding='utf-8') as outfile:
+            old_df = pd.DataFrame(json.loads(json.load(outfile)))
+        
+        for task in taskresult:
+            task_info = task.split("_")
+            if len(task)>1:
+                temp_task = pd.DataFrame({"작업날짜":[date],
+                                          '작업장':[task_info[0]],
+                                        "위치_분류1":[task_info[2]],
+                                        "위치_분류2":[task_info[3]],
+                                        "작업_분류2":[task_info[4]], ## 작업분류1 알폼/코아 필요한데 
+                                        "작업_분류3":[task_info[5]],
+                                        "목표공수":[float(task_info[6])],
+                                        "도급/직영":[task_info[1]]
+                                        })
+                key_column = ['작업장', '위치_분류1', '위치_분류2', '작업_분류2', '도급/직영', '작업_분류3']
+                dup = work_info.loc[(work_info[key_column]==temp_task[key_column].values).sum(axis=1)==6]
+   
+                if len(dup)!=0:
+                    print('error')
+                else:
+                    new_key = new_generate_random_key(work_info)
+                    temp_task['KEY'] = new_key
+                    work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
+
+                    new_val = pd.DataFrame({"구간":[task_info[3]],"층":[task_info[2]],"세부구간":[task_info[4]],"중분류":[task_info[1]],"작업내용":[task_info[5]],"공수":[float(task_info[6])],"작업진행률":[task_info[7]],"작업날짜":[date],"직종":["??"],"작업장명":[task_info[0]]})
+                    new_df = pd.concat([old_df,new_val]).reset_index(drop=True)
+        
+
+        with open(file_path, 'w',encoding='utf-8') as outfile:
+            json.dump(new_df.to_json(orient='records'), outfile, ensure_ascii=False, indent=4)
+
+        if(len(work_info)>1):
+            print('worker_info',work_info)
+            work_info.to_excel("./static/data/작업공수/작업계획.xlsx", index=False)
+        return jsonify("success")
 
 
 @app.route('/survey', methods=['GET','POST'])
@@ -219,13 +336,31 @@ def survey():
             return redirect(url_for('backoffice'))
         else:
             name = session['NAME']
+            id = session['ID']
             insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
-
-            print(insadb)
             insadb_json = insadb[['성명','작업장']].to_json(orient='records', force_ascii=False)
 
-            print(insadb_json)
-            return render_template("survey.html",name =name,insadb= insadb_json)    
+            ## 기존 정보들 다 가져감 
+            work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+           
+            file_path = './static/data/calendar_group.json'
+            with open(file_path, 'r') as f:
+                site_info = json.load(f)
+            print('site_info',site_info)
+            for key in range(len(site_info)):
+                if id in site_info[key]['members']:
+                    site = site_info[key]['groupName']
+                else:
+                    site='김포'
+            work_info['작업날짜'] = work_info['작업날짜'].astype(str)
+            work_info_filter = work_info.loc[(work_info['작업날짜']>='2025-01-01')&(work_info['작업장']==site)&(work_info['작업진행률']!='100%'),['도급/직영','위치_분류1','위치_분류2','작업_분류1','작업_분류2','작업_분류3','작업날짜','작업진행률','작업장']]
+            print(work_info_filter)
+            work_info_filter['작업상세'] = work_info_filter['도급/직영']+"_"+work_info_filter['위치_분류1']+"층_"+work_info_filter['위치_분류2']+"_"+work_info_filter['작업_분류3']
+            work_info_json = work_info_filter[['작업날짜','작업장','작업상세','작업진행률']].to_json(orient='records', force_ascii=False)
+            
+
+
+            return render_template("survey.html",name =name,insadb= insadb_json,work_info_json=work_info_json)    
     elif(request.method=='POST'):
 
         def save_double_column_df(df, file_name, startrow = 0, **kwargs):
@@ -242,64 +377,59 @@ def survey():
                 df.to_excel(writer, startrow = startrow + 1, header = False, **kwargs)
         ## 작업
         survey_data  = request.get_json()
-        numworkers = 3
-        workersnormal = ["aa","bb","cc"]
-        workersinfo = survey_data['workersinfo']
+        # workersinfo = survey_data['workersinfo']
         taskresult = survey_data['taskresult'].split("\n")
-        additional = survey_data['additional'].split("\n")
+        # additional = survey_data['additional'].split("\n")
         date = survey_data['date'].split(" ")[0]
         username = survey_data['username']
-        print('workersinfo',workersinfo)
+        # print('workersinfo',workersinfo)
 
-        workersinfo_lines = workersinfo.strip().split("\n")
+        # workersinfo_lines = workersinfo.strip().split("\n")
 
         # 각 줄을 파싱하여 딕셔너리로 변환
-        parsed_data = []
-        for line in workersinfo_lines:
-            parts = line.split('|')  # '|'를 기준으로 데이터 분리
-            parsed_data.append({
-                '이름': parts[0].split(': ')[1].strip(),  # '행 1: ' 제거 후 이름 추출
-                '공수': parts[1].strip(),                  # ID 추출
-                '작업진행률': parts[2].strip(),     # 완료율 추출
-                '작업': parts[3].strip(),    # 작업 설명 추출
-                'Action': parts[4].strip()               # 작업 동작 추출
-            })
-        df_workersinfo = pd.DataFrame(parsed_data)
+        # parsed_data = []
+        # for line in workersinfo_lines:
+        #     parts = line.split('|')  # '|'를 기준으로 데이터 분리
+        #     parsed_data.append({
+        #         '이름': parts[0].split(': ')[1].strip(),  # '행 1: ' 제거 후 이름 추출
+        #         '공수': parts[1].strip(),                  # ID 추출
+        #         '작업진행률': parts[2].strip(),     # 완료율 추출
+        #         '작업': parts[3].strip(),    # 작업 설명 추출
+        #         'Action': parts[4].strip()               # 작업 동작 추출
+        #     })
+        # df_workersinfo = pd.DataFrame(parsed_data)
 
         work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
-        worker_info  = pd.read_excel("./static/data/작업공수/작업자입력.xlsx",header=[0,1])
+        # worker_info  = pd.read_excel("./static/data/작업공수/작업자입력.xlsx",header=[0,1])
  
 
-        if("Unnamed" in worker_info.columns[0][1]):
-            worker_info = worker_info.iloc[:,1:]
+        # if("Unnamed" in worker_info.columns[0][1]):
+        #     worker_info = worker_info.iloc[:,1:]
 
-        new_columns = [
-            (("" if "Unnamed" in str(outer) else outer.strftime('%Y-%m-%d') if isinstance(outer, datetime) else outer), inner)
-            for outer, inner in worker_info.columns
-        ]
+        # new_columns = [
+        #     (("" if "Unnamed" in str(outer) else outer.strftime('%Y-%m-%d') if isinstance(outer, datetime) else outer), inner)
+        #     for outer, inner in worker_info.columns
+        # ]
 
-        # 새로운 컬럼 이름을 적용
-        worker_info.columns = pd.MultiIndex.from_tuples(new_columns)
+        # # 새로운 컬럼 이름을 적용
+        # worker_info.columns = pd.MultiIndex.from_tuples(new_columns)
 
         
 
-        if (date, '측정') in worker_info.columns:
-            print("있으니깐 패스")
-        else:
-            data2 = pd.DataFrame({
-                (date, '측정'): [],
-                (date, '실'): [],
-            })
-            worker_info = pd.concat([worker_info,data2],axis=0)
+        # if (date, '측정') in worker_info.columns:
+        #     print("있으니깐 패스")
+        # else:
+        #     data2 = pd.DataFrame({
+        #         (date, '측정'): [],
+        #         (date, '실'): [],
+        #     })
+        #     worker_info = pd.concat([worker_info,data2],axis=0)
 
-        ## 사람만큼 공수 추가 (일반은 1, 오전,특수는 0.5)
-        for worker_name in df_workersinfo['이름']:
-
-            if worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')].isna().any():
-                worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] = 0
-            worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += float(df_workersinfo.loc[df_workersinfo['이름']==worker_name,'공수'])
-            print("이거 왜 안돼? ",df_workersinfo.loc[df_workersinfo['이름']==worker_name,'공수'])
-            print(worker_info.loc[worker_info[('','성명')]==worker_name] )
+        # ## 사람만큼 공수 추가 (일반은 1, 오전,특수는 0.5)
+        # for worker_name in df_workersinfo['이름']:
+        #     if worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')].isna().any():
+        #         worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] = 0
+        #     worker_info.loc[worker_info[('','성명')]==worker_name,(date, '측정')] += float(df_workersinfo.loc[df_workersinfo['이름']==worker_name,'공수'])
 
         file_path = "./static/data/test.json"
         with open(file_path, 'r',encoding='utf-8') as outfile:
@@ -312,15 +442,24 @@ def survey():
                                           '작업장':[task_info[0]],
                                         "위치_분류1":[task_info[2]],
                                         "위치_분류2":[task_info[3]],
-                                        "작업_분류1":["??"],
-                                        "작업_분류3":[task_info[4]+" "+task_info[5]],
+                                        "작업_분류2":[task_info[4]],
+                                        "작업_분류3":[task_info[5]],
                                         "공수":[float(task_info[6])],
-                                        "인원":[int(numworkers)],
                                         "도급/직영":[task_info[1]],
-                                        "특이사항":[additional[0]],
                                         "작업진행률":[task_info[7]]
                                         })
-                work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
+                
+                key_column = ['작업장', '위치_분류1', '위치_분류2', '작업_분류2', '도급/직영', '작업_분류3']
+                dup = work_info.loc[(work_info[key_column]==temp_task[key_column].values).sum(axis=1)==6]
+   
+                if len(dup)!=0:
+                    print('error')
+                else:
+                    new_key = new_generate_random_key(work_info)
+                    temp_task['KEY'] = new_key
+                    work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
+
+                # work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
                 new_val = pd.DataFrame({"구간":[task_info[3]],"층":[task_info[2]],"세부구간":[task_info[4]],"중분류":[task_info[1]],"작업내용":[task_info[5]],"공수":[float(task_info[6])],"작업진행률":[task_info[7]],"작업날짜":[date],"직종":["??"],"작업장명":[task_info[0]]})
                 new_df = pd.concat([old_df,new_val]).reset_index(drop=True)
         #worker_info.columns = pd.MultiIndex.from_tuples(worker_info.columns)
@@ -329,15 +468,25 @@ def survey():
         with open(file_path, 'w',encoding='utf-8') as outfile:
             json.dump(new_df.to_json(orient='records'), outfile, ensure_ascii=False, indent=4)
 
-        if(len(worker_info)>1):
-            print('worker_info',worker_info)
-            #worker_info.to_excel()
-            save_double_column_df(worker_info,"./static/data/작업공수/작업자입력.xlsx")
+        # if(len(worker_info)>1):
+        #     print('worker_info',worker_info)
+        #     #worker_info.to_excel()
+        #     save_double_column_df(worker_info,"./static/data/작업공수/작업자입력.xlsx")
         if(len(work_info)>1):
             print('worker_info',work_info)
             work_info.to_excel("./static/data/작업공수/작업입력.xlsx", index=False)
-        print(survey_data)
         return jsonify("success")
+
+
+
+@app.route('/survey_start', methods=['POST'])
+@nocache
+def survey_start():
+    start_date = request.get_json()
+    print(start_date)
+    session['CALENDAR_DATE'] = start_date
+    return jsonify({"success": True}), 200
+
 
 @app.route('/calendar', methods=['GET'])
 @nocache
@@ -350,6 +499,8 @@ def calendar():
             id = session['ID']
             admin = 'MASTER'
             place = session['PLACE']
+            if len(place)>=1:
+               place= place[0]
             file_path = './static/data/Attend.json'
             with open(file_path, 'r') as f:
                 attend = json.load(f)[place]['Attend']
@@ -358,12 +509,16 @@ def calendar():
             with open(file_path, 'r') as f:
                 leave = json.load(f)[place]['Leave']
             
-            return render_template('calendar-master.html',id=id,name = name,admin=admin,attend=attend,leave=leave,place = place)
+            return render_template('calendar-master.html',id=id,name = name,admin=admin,attend=attend,leave=leave,place = session['PLACE'])
         elif session['ADMIN']=='ADMIN':
             name = session['NAME']
             admin = 'ADMIN'
             id = session['ID']
             place = session['PLACE']
+            print(place)
+            if len(place)>=1:
+               place= place[0]
+            print(place)
             file_path = './static/data/Attend.json'
             with open(file_path, 'r') as f:
                 attend = json.load(f)[place]['Attend']
@@ -372,11 +527,13 @@ def calendar():
             with open(file_path, 'r') as f:
                 leave = json.load(f)[place]['Leave']
             
-            return render_template('calendar-admin.html',id=id,name = name,admin=admin,attend=attend,leave=leave,place = place)
+            return render_template('calendar-admin.html',id=id,name = name,admin=admin,attend=attend,leave=leave,place = session['PLACE'])
 
         else:
             name = session['NAME']
             place = session['PLACE']
+            if len(place)>=1:
+               place= place[0]
             admin='N'
             file_path = './static/data/Attend.json'
             with open(file_path, 'r') as f:
@@ -702,6 +859,8 @@ def attendabled():
     data = request.get_json()
     file_path = './static/data/Attend.json'
     place = session['PLACE']
+    if len(place)>=1:
+        place= place[0]
 
     with open(file_path, 'r') as infile:
         df_attend = json.load(infile)
@@ -718,6 +877,9 @@ def attenddisabled():
     data = request.get_json()
     file_path = './static/data/Attend.json'
     place = session['PLACE']
+    if len(place)>=1:
+        place= place[0]
+
 
     with open(file_path, 'r') as infile:
         df_attend = json.load(infile)
@@ -736,6 +898,9 @@ def leaveabled():
     file_path = './static/data/Leave.json'
 
     place = session['PLACE']
+    if len(place)>=1:
+        place= place[0]
+
     with open(file_path, 'r') as infile:
         df_leave = json.load(infile)
     df_leave[place] = data
@@ -752,6 +917,9 @@ def leavedisabled():
     file_path = './static/data/Leave.json'
 
     place = session['PLACE']
+    if len(place)>=1:
+        place= place[0]
+
     with open(file_path, 'r') as infile:
         df_leave = json.load(infile)
     df_leave[place] = data

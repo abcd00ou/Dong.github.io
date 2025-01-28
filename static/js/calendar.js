@@ -79,7 +79,7 @@ var calendar = $('#calendar').fullCalendar({
 
 
   eventRender: function (event, element, view) {
-
+    console.log(event)
     //일정에 hover시 요약
     element.popover({
       title: $('<div />', {
@@ -221,28 +221,44 @@ var calendar = $('#calendar').fullCalendar({
         hours: today.hours(),
         minute: today.minutes()
       });
-      startDate = moment(startDate).format('YYYY-MM-DD HH:mm');
+      startDate = moment(startDate).format('YYYY-MM-DD 00:00');
       endDate = moment(endDate).subtract(1, 'days');
 
       endDate.set({
         hours: today.hours() + 1,
         minute: today.minutes()
       });
-      endDate = moment(endDate).format('YYYY-MM-DD HH:mm');
+      endDate = moment(endDate).format('YYYY-MM-DD 24:00');
     } else {
-      startDate = moment(startDate).format('YYYY-MM-DD HH:mm');
-      endDate = moment(endDate).format('YYYY-MM-DD HH:mm');
+      startDate = moment(startDate).format('YYYY-MM-DD 00:00');
+      endDate = moment(endDate).format('YYYY-MM-DD 24:00');
     }
 
     //날짜 클릭시 카테고리 선택메뉴
     var $contextMenu = $("#contextMenu");
     $contextMenu.on("click", "a", function (e) {
-      e.preventDefault();
+      //e.preventDefault();
+      console.log(startDate)
+      console.log($(this))
+      console.log($(this).data())
+      const groupButtons = document.querySelectorAll('#group_list button[id^="group-"]');
 
+      // 각각의 버튼에 대해 "group-" 뒷부분만 추출
+   
+      const fullId = groupButtons[0].id;          // 예: "group-마곡"
+      const siteValue = fullId.replace("group-", ""); 
+      console.log('siteValue',siteValue);            // "마곡", "부산", "서울", ...
+      //const siteValue = document.getElementById('site').value;
+      //const dateValue = document.getElementById('date').value;
+
+      // URL 파라미터로 site, date 값을 survey.html에 전달
+      // encodeURIComponent로 특수문자 등을 인코딩해주면 안전합니다.
+      window.location.href = `survey-plan?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
+      
       //닫기 버튼이 아닐때
-      if ($(this).data().role !== 'close') {
-        newEvent(startDate, endDate, $(this).html());
-      }
+      // if ($(this).data().role !== 'close') {
+      //   newEvent(startDate, endDate, $(this).html());
+      // }
 
       $contextMenu.removeClass("contextOpened");
       $contextMenu.hide();
@@ -300,8 +316,7 @@ function filtering(event) {
   }else{
     var texts=[];
   }
-  
-  
+
   if (texts && texts.length > 0) {
     console.log(texts[0])
     console.log(event.type)
@@ -324,7 +339,7 @@ function filtering(event) {
    
     
   }
-
+  console.log(show_username,show_type)
   if(admin_name.includes(username[0])){
 
     show_username = true;

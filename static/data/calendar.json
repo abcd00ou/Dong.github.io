@@ -1210,7 +1210,7 @@
         "end": "2025-01-03 09:00"
     },
     {
-        "_id": 404,
+        "_id": "404",
         "title": "\ub9c8\uace1",
         "start": "2025-01-12 09:00",
         "end": "2025-01-12 09:00",
@@ -1220,5 +1220,29 @@
         "backgroundColor": "#ffa94d",
         "textColor": "#ffffff",
         "allDay": false
+    },
+    {
+        "_id": "691",
+        "title": "\ub9c8\uace1",
+        "start": "2025-01-02 09:00",
+        "end": "2025-01-02 09:00",
+        "description": "\uc791\uc5c5\uc7a5 : \ub9c8\uace1 \n \ubaa9\ud45c\uacf5\uc218 : 5 \n\uc791\uc5c5\ub0b4\uc6a9 : \ub9c8\uace1_\ub3c4\uae09_11_B_\ucf54\uc5b4 \ubcbd\uccb4_\ud558\ubd80\uc790\ud0a4 \ubc0f \uc694\uaf2c \ub2e4\ub300 \uc791\uc5c5_5_0%\n",
+        "type": null,
+        "username": "\ud14c\uc2a4\ud2b82",
+        "backgroundColor": "#ffa94d",
+        "textColor": "#ffffff",
+        "allDay": true
+    },
+    {
+        "_id": 918,
+        "title": "\ub9c8\uace1",
+        "start": "2025-01-03 09:00",
+        "end": "2025-01-03 09:00",
+        "description": "\uc791\uc5c5\uc7a5 : \ub9c8\uace1 \n \ubaa9\ud45c\uacf5\uc218 : 30 \n\uc791\uc5c5\ub0b4\uc6a9 : \ub9c8\uace1_\uc9c1\uc601 _11_C_\ucf54\uc5b4 \ubcbd\uccb4_\ubd80\ubd84 \ud574\uccb4 \uae30\uc900\ubaa9 \uc124\uce58 \uc791\uc5c5_30_0.0%\n",
+        "type": "\ub9c8\uace1",
+        "username": "\ud14c\uc2a4\ud2b82",
+        "backgroundColor": "#ffa94d",
+        "textColor": "#ffffff",
+        "allDay": true
     }
 ]

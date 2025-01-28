@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="content-title">작업 일지 작성</h1>
+<h1 class="content-title">작업 기록</h1>
 
 <label for='survey1'>작업 날짜 선택</label>
 <ul >
@@ -28,16 +28,12 @@
     </li>
 </ul>
 
-<ul>
-    <button class="btn btn-outline-primary" id="survey2-active">기존작업 추가</button>
-    <button class="btn btn-outline-primary" id="survey1-active">새작업 추가</button>
-</ul>
-<ul id ='survey1' style="display:none;">
-    <label for='survey1'>새작업 계획</label>
+<label for='survey1'>작업 공수 기재</label>
+<ul id ='survey1'>
     <li class="survey_item">
         
         <!-- 작업 장소 선택 -->
-        <button class="survey_btn">
+        <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#siteModal">
             <div class="survey_btn_title">
                 <div class="survey_btn_title_name">작업 장소</div>
                 <div class="survey_btn_title_data" id="site"></div>
@@ -45,8 +41,25 @@
             <i class="bi bi-chevron-right"></i>
         </button>
         
+        <!-- modal -->
+        <div class="modal fade" id="siteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">작업 장소</h1>
+                    </div>
+                    <ul class="modal-body-custom">
+                        <!-- <li type="button" data-bs-dismiss="modal" aria-label="Close" onclick="selectOption('site', '당진')">당진</li> -->
+                        <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '당진')">당진</li>
+                        <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '마곡')">마곡</li>
+                        <li type="button" data-bs-target="#cat1Modal" data-bs-toggle="modal" onclick="selectOption('site', '김포')">김포</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </li>
-    <li id="cat1Item" class=" survey_item">
+    <li id="cat1Item" class="item-disable survey_item">
         <!-- 중분류 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat1Modal">
             <div class="survey_btn_title">
@@ -161,7 +174,7 @@
         <!-- 공수 선택 -->
         <div class="survey_btn">
             <div class="survey_btn_title">
-                <div class="survey_btn_title_name">목표 공수</div>
+                <div class="survey_btn_title_name">공수</div>
                 <div class="survey_btn_title_data" id="cat6">
                     <i class="bi bi-dash-lg" onclick="onEffortClicked(-0.1)"></i>
                     <input type="number" id="effort" name="effort">
@@ -184,25 +197,117 @@
             </div>
         </div>
     </li>
-    
+
 </ul>
-<div class="d-grid btn-add-task-area" >
-    <button id="survey1-btn" class="btn-dark-custom"  style="display:none;">작업추가</button>
-</div>
 
-
-<div id="survey2" style="display:none;">
-    {{work_info_json|tojson|safe}}
+<div class="d-grid btn-add-task-area">
+    <button id="add-task" class="btn-dark-custom">작업추가</button>
 </div>
-<div class="d-grid btn-add-task-area" >
-    <button id="survey2-btn" class="btn-dark-custom"  style="display:none;">작업추가</button>
-</div>
-
 
 <label for="task-result">작업내용</label>
 <textarea id="task-result" disabled="" placeholder="작업을 추가하면 여기서 확인 가능합니다."></textarea>
 
-<input type="submit" value="제출" id="submit" class="btn-dark-custom">
+<label for='survey2'>인원 및 특이사항</label>
+<ul id ='survey2'>
+    <li class="survey_item">
+        <button class="survey_btn" id="workers" data-bs-toggle="modal" data-bs-target="#workersModal">
+            <div class="survey_btn_title">
+                <div class="survey_btn_title_name">인원 추가</div>
+                <div class="survey_btn_title_data" ></div>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+        <div class="modal fade" id="workersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">인원 추가</h1>
+                    </div>
+                    <div class="modal-body-custom">
+                        <br>
+                        <label for="work-select">작업 선택</label>
+                        <div id ='work-select'></div>
+                        <div class="row" >
+                            <div class ='col-5'>
+                                <label for="workers_add1">근무자 추가</label>
+                                <input type="text" id="workers_add1" placeholder="이름입력" autocomplete="on">
+                                
+                            </div>
+                            
+                            <div class ='col-6' style="margin:auto;" >
+                                <label for="workers_effort">공수 추가</label>     
+                                <div style="display:flex;margin:auto;">
+                                    <i class="bi bi-dash-lg" onclick="onEffortClicked_workers(-0.1)"></i>
+                                    <input type="number" id="workers_effort" min=1 placeholder="1" step=0.1 value="1">
+                                    <i class="bi bi-plus-lg" onclick="onEffortClicked_workers(0.1)"></i>
+                                 </div>
+                            </div>
+                        </div>
+                        <div  style="margin:auto;float:center;">
+                            <button id="add1" class="btn-dark-custom">작업자 추가</button>
+                        </div>
+                        <div id="autocomplete-list"></div>
+                        <br>
+                        <div class="row">
+                        <!-- <label for="workers-normal">작업자 명</label>
+                        <textarea id="workers-normal" disabled="" ></textarea> -->
+                        <label for="workers-table">작업자 기여도</label>
+                        <div id="workers-table"></div>
+                        </div>
+                        
+                    </div>
+                    <div class="d-grid btn-add-task-area">
+                        <button class="btn-dark-custom"  data-bs-dismiss="modal" aria-label="Close">완료</button>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </li>
+    
+    <li class="survey_item">
+        <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#extraModal">
+            <div class="survey_btn_title">
+                <div class="survey_btn_title_name">특이사항</div>
+                <div class="survey_btn_title_data" id="extra"></div>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </button>
+        
+        <div class="modal fade" id="extraModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">특이사항</h1>
+                    </div>
+                    <ul class="modal-body-custom">
+                        <br>
+                        <label for="specialnotes">특이사항</label>
+                        <textarea id="specialnotes" name="specialnotes"></textarea>
+
+                        <label for="overtime">연장근무</label>
+                        <textarea id="overtime" name="overtime"></textarea>
+                        <button id="add4" class="btn-dark-custom" style="float:right">특이사항 추가</button>
+                        <br>
+
+                        <label for="additional">특이사항</label>
+                        <textarea id="additional" disabled=""></textarea>
+                    </ul>
+                </div>
+                <div class="d-grid btn-add-task-area">
+                    <button class="btn-dark-custom"  data-bs-dismiss="modal" aria-label="Close">완료</button>
+                </div>
+            </div>
+            
+        </div>
+    </li>
+</ul>  
+
+<input type="submit" value="Submit" id="submit" class="btn-dark-custom">
 <div style="display:none;" >
     <textarea id="username">{{name}}</textarea>
 </div>
@@ -210,34 +315,33 @@
 <script src="static/js/survey.js"></script>
 <script type="text/javascript">
     window.onload = function(){
-    
         
     // 사람, 공수 추가 테이블
     const tableContainer = document.getElementById('workers-table');
 
     // Add Button Event Listener
-    // document.getElementById('add1').addEventListener('click', function () {
-    //     const name = document.getElementById('workers_add1').value.trim();
-    //     const work =Number(document.getElementById('workers_effort').value);
-    //     const selected_task =document.getElementById('task-select').value;
-    //     console.log(selected_task)
+    document.getElementById('add1').addEventListener('click', function () {
+        const name = document.getElementById('workers_add1').value.trim();
+        const work =Number(document.getElementById('workers_effort').value);
+        const selected_task =document.getElementById('task-select').value;
+        console.log(selected_task)
 
-    //     console.log(name,work,selected_task)
-    //     if (!name || isNaN(work) || work <= 0||!selected_task) {
-    //         alert("이름과 공수, 작업을 올바르게 입력해주세요.");
-    //         return;
-    //     }
+        console.log(name,work,selected_task)
+        if (!name || isNaN(work) || work <= 0||!selected_task) {
+            alert("이름과 공수, 작업을 올바르게 입력해주세요.");
+            return;
+        }
 
-    //     // Check if the table exists, if not, create one
-    //     let table = document.querySelector("#dynamicTable");
-    //     if (!table) {
-    //         table = createTable();
-    //         tableContainer.appendChild(table);
-    //     }
+        // Check if the table exists, if not, create one
+        let table = document.querySelector("#dynamicTable");
+        if (!table) {
+            table = createTable();
+            tableContainer.appendChild(table);
+        }
 
-    //     // Add row to table
-    //     addRow(selected_task,name, work);
-    // });
+        // Add row to table
+        addRow(selected_task,name, work);
+    });
 
     // Function to create a table
     function createTable() {
@@ -297,35 +401,35 @@
     }
 
     const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
-
+    console.log('insadb',insadb)
     // DOM 요소 가져오기
     const input = document.getElementById('workers_add1');
     const autocompleteList = document.getElementById('autocomplete-list');
 
     // 입력 필드 이벤트 리스너 추가
-    // input.addEventListener('input', function() {
-    //     const query = input.value;
-    //     console.log(query)
-    //     autocompleteList.innerHTML = ''; // 기존 항목 제거
+    input.addEventListener('input', function() {
+        const query = input.value;
+        console.log(query)
+        autocompleteList.innerHTML = ''; // 기존 항목 제거
 
-    //     if (!query) return;
-    //     console.log("여기까지")
-    //     // 이름 필터링
-    //     const filtered = insadb.filter(worker =>
-    //         worker.성명 && worker.성명.includes(query)
-    //     );
-    //     console.log('filtered',filtered)
-    //     // 자동완성 항목 표시
-    //     filtered.forEach(worker => {
-    //         const div = document.createElement('div');
-    //         div.textContent = worker.성명;
-    //         div.addEventListener('click', () => {
-    //             input.value = worker.성명; // 선택된 이름으로 채우기
-    //             autocompleteList.innerHTML = ''; // 목록 초기화
-    //         });
-    //         autocompleteList.appendChild(div);
-    //     });
-    // });
+        if (!query) return;
+        console.log("여기까지")
+        // 이름 필터링
+        const filtered = insadb.filter(worker =>
+            worker.성명 && worker.성명.includes(query)
+        );
+        console.log('filtered',filtered)
+        // 자동완성 항목 표시
+        filtered.forEach(worker => {
+            const div = document.createElement('div');
+            div.textContent = worker.성명;
+            div.addEventListener('click', () => {
+                input.value = worker.성명; // 선택된 이름으로 채우기
+                autocompleteList.innerHTML = ''; // 목록 초기화
+            });
+            autocompleteList.appendChild(div);
+        });
+    });
 
     // 자동완성 목록 숨기기
     document.addEventListener('click', function(e) {
@@ -368,22 +472,6 @@
         $(this).addClass('selected');
     });
 
-    $('#survey1-active').on('click', function() {
-        $('#survey1').attr('style','display:block;');
-        $('#survey1-btn').attr('style','display:block;');
-        $('#survey2').attr('style','display:none;');
-        $('#survey2-btn').attr('style','display:none;');
-    });
-
-    $('#survey2-active').on('click', function() {
-        $('#survey2').attr('style','display:block;');
-        $('#survey2-btn').attr('style','display:block;');
-        $('#survey1').attr('style','display:none;');
-        $('#survey1-btn').attr('style','display:none;');
-    });
-
-
-
     $('#workers').on('click', function() {
         const task_result = document.getElementById("task-result")
         console.log();
@@ -410,7 +498,7 @@
 
 
     
-    $('#survey1-btn').on('click', function() {
+    $('#add-task').on('click', function() {
     event.preventDefault();
         var cat5 = document.getElementById('cat5').textContent;
         var cat4 = document.getElementById('cat4').textContent;
@@ -438,6 +526,33 @@
 
 
     });
+
+    document.getElementById('add1').addEventListener('click', function(event) {
+    event.preventDefault();
+        var newbie = document.getElementById('workers_add1').value; 
+        var work_list = document.getElementById('workers-normal');
+        console.log(work_list)
+        if( work_list.textContent!=="" ){
+                work_list.textContent += ","+newbie; 
+            }else{
+                work_list.textContent += newbie; 
+            }
+        document.getElementById('workers_add1').value = "";
+    
+    });
+
+    document.getElementById('add4').addEventListener('click', function(event) {
+        event.preventDefault();
+        var specialnotes = document.getElementById('specialnotes').value; 
+        var overtime = document.getElementById('overtime').value;
+        var work_list = document.getElementById('additional');
+        
+        work_list.textContent += "특이사항: "+specialnotes+"\n"+"연장근무: "+overtime; 
+        document.getElementById('specialnotes').value = "";
+        document.getElementById('overtime').value = "";
+
+
+        });
 
     
     // 1. 페이지 로드 시 인증을 위한 함수 호출
@@ -473,28 +588,28 @@
             return;
         }
         const item_split = item.split("_")
-        formtext += `작업장 : ${item.split("_")[0]} \n 목표공수 : ${item_split[item_split.length-2]} \n작업내용 : ${item}\n`
-        // var table = document.getElementById("dynamicTable"); // 테이블 ID 가져오기
-        // if (table) {
-        //     const rows = table.querySelectorAll("tbody tr"); // 테이블의 모든 행 가져오기
-        //     formtext += "테이블 데이터:\n"; // 테이블 헤더 추가
+        formtext += `작업장 : ${item.split("_")[0]} \n 작업인원 : ${item_split[item_split.length-2]} \n작업내용 : ${item}\n특이사항 : ${document.getElementById('additional').value}\n`
+        var table = document.getElementById("dynamicTable"); // 테이블 ID 가져오기
+        if (table) {
+            const rows = table.querySelectorAll("tbody tr"); // 테이블의 모든 행 가져오기
+            formtext += "테이블 데이터:\n"; // 테이블 헤더 추가
 
-        //     rows.forEach((row, index) => {
-        //         const cells = row.querySelectorAll("td"); // 각 행의 셀 가져오기
-        //         let rowText = `행 ${index + 1}: `;
-        //         console.log(cells)
-        //         console.log(cells[3])
-        //         console.log(item)
-        //         if(cells[3].textContent===item){
-        //             cells.forEach(cell => {
-        //                 rowText += `${cell.textContent.trim()} | `; // 셀 값을 추가
-        //             });
-        //             formtext += rowText.trim() + "\n"; // 행 데이터를 추가
-        //             tabletext += rowText.trim() + "\n";
-        //         }
+            rows.forEach((row, index) => {
+                const cells = row.querySelectorAll("td"); // 각 행의 셀 가져오기
+                let rowText = `행 ${index + 1}: `;
+                console.log(cells)
+                console.log(cells[3])
+                console.log(item)
+                if(cells[3].textContent===item){
+                    cells.forEach(cell => {
+                        rowText += `${cell.textContent.trim()} | `; // 셀 값을 추가
+                    });
+                    formtext += rowText.trim() + "\n"; // 행 데이터를 추가
+                    tabletext += rowText.trim() + "\n";
+                }
                 
-        //     });
-        // }
+            });
+        }
     })  
 
     // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
@@ -554,9 +669,9 @@
                 success: function(response) {
 
                     const formData_db = {
-                            // workersinfo : tabletext,
+                            workersinfo : tabletext,
                             taskresult : document.getElementById("task-result").value,
-                            // additional: document.getElementById('additional').value,
+                            additional: document.getElementById('additional').value,
                             date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
                             username: document.getElementById("username").textContent
                         };
@@ -614,25 +729,8 @@
     const futureStr = `${futureYyyy}-${futureMm}-${futureDd}`;
 
     // input 요소에 값 설정
-    const siteParam = getQueryParam('site');
-    const dateParam = getQueryParam('date');
-    const siteInput = document.getElementById('site');
-
-    // site 값이 있으면 해당 값 적용, 없으면 null 취급(빈 값, 혹은 원하는 처리)
-    if (siteParam) {
-        siteInput.innerHTML = siteParam;
-        selectOption('site', siteParam)
-    } else {
-        siteInput.innerHTML = ''; // 또는 null
-    }
-
     const dateInput = document.getElementById('date-input');
-    if (dateParam) {
-        dateInput.value =`${dateParam.split(" ")[0]}` ;
-      } else{
-        dateInput.value = todayStr;
-      }
-   
+    dateInput.value = todayStr;
     dateInput.min = pastStr;
     dateInput.max = futureStr;
 
@@ -739,11 +837,7 @@
     }
 };
 
-function getQueryParam(param) {
-    // URLSearchParams 사용
-    const params = new URLSearchParams(window.location.search);
-    return params.get(param);
-  }
+    
 
 </script>
 

@@ -58,14 +58,15 @@ $.getJSON('/static/data/test.json', function(item) {
         var cat5 = null;
         var cat6 = null;
         var cat7 = null;
+        console.log("이걸 쓰는가?")
         if (category === 'site') {
             var site = value;
 
             document.getElementById('cat1Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat1Options');
             console.log(data)
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === value).map(item => item['중분류']))];
-            
+            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === value).map(item => item['중분류'].replace(" ","")))];
+            console.log("uniqueValues",uniqueValues)
             modelOptions.innerHTML = uniqueValues.map(model => 
                 `<li type="button" data-bs-target="#cat2Modal" data-bs-toggle="modal" onclick="selectOption('cat1','${model}')"> ${model}</li>`
             ).join('');
@@ -97,7 +98,8 @@ $.getJSON('/static/data/test.json', function(item) {
             const modelOptions = document.getElementById('cat3Options');
             console.log(data)
             const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === value).map(item => item['구간']))];
-            
+     
+            console.log(uniqueValues)
             modelOptions.innerHTML = uniqueValues.map(model => 
                 `<li type="button" data-bs-target="#cat4Modal" data-bs-toggle="modal" onclick="selectOption('cat3', '${model}')"> ${model}</li>`
             ).join('');
@@ -111,7 +113,10 @@ $.getJSON('/static/data/test.json', function(item) {
             document.getElementById('cat4Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat4Options');
             const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === value).map(item => item['세부구간']))];
-            console.log(uniqueValues.length)            
+            console.log(uniqueValues.length)        
+            uniqueValues.sort((a, b) => 
+                a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+              );    
             
             modelOptions.innerHTML = uniqueValues.map(model => 
                 `<li type="button" data-bs-target="#cat5Modal" data-bs-toggle="modal" onclick="selectOption('cat4', '${model}')"> ${model}</li>`
@@ -148,7 +153,7 @@ $.getJSON('/static/data/test.json', function(item) {
             document.getElementById('effort').focus();
             document.getElementById('cat6Item').classList.remove('item-disable');
             document.getElementById('cat7Item').classList.remove('item-disable');
-            document.getElementById('process').value = 100;
+            document.getElementById('process').value = 0;
             document.getElementById('cat5').innerHTML = value;
 
 
