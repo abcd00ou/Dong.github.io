@@ -128,7 +128,7 @@ def signin():
         with open(file_path, 'r') as f:
             grouplist = json.load(f)
             f.close()
-        print(insadb)
+
         login_data  = request.get_json()
         id = login_data['id']
         pw = login_data['pw']
@@ -147,12 +147,25 @@ def signin():
             session['ID'] = filterd_db['ID'][0]
             session['ADMIN'] = filterd_db['ADMIN'][0]
             session['PLACE'] = site_group.tolist()
-           
+            name= session['NAME']
+            admin = session['ADMIN']
+            place = session['PLACE']
+            place = place[0]
+            print(id,name,admin,place)
             
             if session['ADMIN']=='MASTER':
-                return render_template("calendar-master.html")
+                return render_template("infotab-master.html",id=id,name = name,admin=admin,place=session['PLACE'])
             elif session['ADMIN']=='ADMIN':
-                return render_template("calendar-admin.html")
+                work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+
+                today = datetime.today().strftime("%Y-%m")
+                work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+                work_info_filter = work_info_filter[work_info_filter['작업장'] == place]
+                work_info_json = work_info_filter[['작업날짜','작업장','위치_분류1','위치_분류2','작업_분류3','작업진행률']].to_json(orient='records', force_ascii=False)
+            
+
+                
+                return render_template("infotab-admin.html",id=id,name = name,admin=admin,place=place,work_info_json=work_info_json)
             else:
                 ## 나머지 데이터가 있는지 확인 
                 db_cols = ['성명', '영문명', '체류비자', '국적', 'KEY_ID', '주소', '전화번호','자격증유무', '고혈압유무']
@@ -190,6 +203,49 @@ def signin():
         else:
             abort(400, description="Session ID not found")
         
+
+
+
+
+
+@app.route('/infotab', methods=['GET','POST'])
+@nocache
+def infotab():
+    
+    print("infotab gogo") 
+    if 'ADMIN' in session:
+        
+        ## 현재 작업 진행률 보여주기 
+        if session['ADMIN']=='MASTER':
+            name = session['NAME']
+            id = session['ID']
+            admin = 'MASTER'
+            place = session['PLACE']
+            ## 기존 정보들 다 가져감 
+            
+            return render_template("infotab-master.html",id=id,name = name,admin=admin,place=place)
+        else:
+            name = session['NAME']
+            id = session['ID']
+            admin = 'ADMIN'
+            place = session['PLACE']
+            work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+            print(place)
+            today = datetime.today().strftime("%Y-%m")
+            work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+            work_info_filter = work_info_filter[work_info_filter['작업장'] == place[0]]
+            
+            work_info_json = work_info_filter[['KEY','작업날짜','작업장','위치_분류1','위치_분류2','작업_분류2','작업_분류3','작업진행률','목표공수','공수']].to_json(orient='records', force_ascii=False)
+        
+
+            return render_template("infotab-admin.html",id=id,name = name,admin=admin,place=place,work_info_json=work_info_json)
+    else:
+
+        return render_template('backoffice-login.html')
+    
+
+
+
 @app.route('/gocalendar', methods=['GET'])
 @nocache
 @check_session_id
@@ -343,16 +399,19 @@ def survey():
             ## 기존 정보들 다 가져감 
             work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
            
-            file_path = './static/data/calendar_group.json'
-            with open(file_path, 'r') as f:
-                site_info = json.load(f)
-            print('site_info',site_info)
-            for key in range(len(site_info)):
-                if id in site_info[key]['members']:
-                    site = site_info[key]['groupName']
-                else:
-                    site='김포'
+            # file_path = './static/data/calendar_group.json'
+            # with open(file_path, 'r') as f:
+            #     site_info = json.load(f)
+                
+            # for key in range(len(site_info)):
+            #     if id in site_info[key]['members']:
+            #         site = site_info[key]['groupName']
+            #     else:
+            #         site='김포'
+            site = session['PLACE'][0]
+            print(site)
             work_info['작업날짜'] = work_info['작업날짜'].astype(str)
+            print(work_info)
             work_info_filter = work_info.loc[(work_info['작업날짜']>='2025-01-01')&(work_info['작업장']==site)&(work_info['작업진행률']!='100%'),['도급/직영','위치_분류1','위치_분류2','작업_분류1','작업_분류2','작업_분류3','작업날짜','작업진행률','작업장']]
             print(work_info_filter)
             work_info_filter['작업상세'] = work_info_filter['도급/직영']+"_"+work_info_filter['위치_분류1']+"층_"+work_info_filter['위치_분류2']+"_"+work_info_filter['작업_분류3']
@@ -827,7 +886,7 @@ def create_event():
 def backoffice():
     if 'ID' in session:
         print(session['ID'])
-        return redirect("/calendar")
+        return redirect("/infotab")
     else:
       return render_template("backoffice-login.html")
 

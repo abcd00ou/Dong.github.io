@@ -1,48 +1,11 @@
-{% extends "layout-backoffice-admin.html" %}
+{% extends "layout-backoffice-master.html" %}
 
 {% block title %}Calendar{% endblock %}
 
 {% block content %}
 <div class="container">
-      
-    <div id="groupModal" class="modal" style="margin-top: 100px; background-color: #63e6be; height:620px;width:100%;" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <!-- 닫기 버튼 -->
-            <span class="close">&times;</span>
-            
-            <h2>그룹 만들기</h2>
-            
-            <!-- 그룹 이름 입력 -->
-            <label for="groupName">그룹 이름:</label>
-            <input type="text" id="groupName" placeholder="예: 마곡 휘강/ 안양 태일 ">
-            
-            <h3>그룹 멤버 선택</h3>
-            <!-- 사용자 목록이 들어갈 영역 -->
-            <div id="userList"style="height:400px; overflow-y: auto;"></div>
-            
-            <!-- 그룹 생성 버튼 -->
-            <button id="createGroup">그룹 생성</button>
-
-            </div>
-        </div>
-    </div>
-
-    <div id="groupModal2" class="modal" style="margin-top: 100px; " tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <!-- 닫기 버튼 -->
-            <span class="close">&times;</span>
-            
-            <h2>그룹 삭제</h2>
-            <div id="groupList" ></div>
-            <!-- 그룹 생성 버튼 -->
-            <button id="deleteGroup" style="color:red;">그룹 삭제</button>
-
-            </div>
-        </div>
-    </div>
-
+    <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">
+    <div class="col-xs-6"  style="float: right;" id ='group_list'></div>
     <!-- 일자 클릭시 메뉴오픈 -->
     <div id="contextMenu" class="dropdown clearfix">
         <ul class="dropdown-menu dropNewEvent" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
@@ -56,85 +19,9 @@
             <li><a tabindex="-1" href="#">시흥</a></li>
         </ul>
     </div>
-    <div class="panel panel-default">
-
-        <table class="info_table">
-
-            <!-- 표의 본문 영역 -->
-            <tbody>
-                <tr>
-                    <td><b>정보</b></td>
-                    <td>{{ name }}</td>
-                    <td>ID</td>
-                    <td>{{place}} </td>
-                  </tr>
-              <tr>
-                <!-- 근태 버튼 -->
-                <td><b>근태</b></td>
-                <!-- 필요 없다면 비워두거나 다른 내용/버튼 배치 -->
-          
-                <!-- QR활성화 버튼 -->
-                <td colspan="3"><button id="Attend-QR" class='btn  btn-outline-primary btn-sm' >근태 QR 활성화</button></td>
-                <!-- 필요 없다면 비워두거나 다른 내용/버튼 배치 -->
-        
-              </tr>
-          
-              <tr>
-                <!-- 작업 버튼 -->
-                <td><b>작업</b></td>
-                <!-- 계획 작성 버튼 -->
-                <td><button id="plan-btn" class='btn  btn-outline-primary btn-sm'  >계획 작성</button></td>
-                <!-- 일지 작성 버튼 -->
-                <td><button id="work-btn" class='btn btn-outline-primary btn-sm'  >일지 작성</button></td>
-                <!-- Download 버튼 -->
-                <td><button id="work-sheet" class='btn  btn-outline-primary btn-sm' >Downloads</button></td>
-              </tr>
-              <tr>
-                <!-- 작업 버튼 -->
-                <td><b>작업장</b></td>
-                <!-- 계획 작성 버튼 -->
-                <td colspan="2"><button id="group-add" class='btn  btn-outline-primary btn-sm'  >작업 그룹 추가</button></td>
-                <!-- 일지 작성 버튼 -->
-                <td><button id="group-delete" class='btn btn-outline-danger btn-sm'  >그룹 삭제</button></td>
-              </tr>
-            </tbody>
-        </table>
-
-
-
-
-        <!-- <label class="checkbox-inline"> -->
-        <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">
-        <!-- {{place}} 담당 : {{ name }}님 로그인 되었습니다.</label> -->
-            
-        <!-- <div style="margin-top: 20px;justify-content:center;display: auto;"> 
-        <button id="Attend-QR" class='btn btn-primary btn-sm' >근태 QR 활성화</button>
-        
-        <button id="work-sheet" class='btn btn-danger  btn-sm' style="float:right;" >작업일지 Downloads</button> -->
-        
-        <!-- <button id="Attend-abled"  {% if attend == 'abled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>출근 활성화</button> -->
-        <!-- <button id="Attend-disabled"  {% if attend == 'disabled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>출근 비활성화</button> -->
-        <!-- <p>출근 체크 {% if attend == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p> -->
-        <!-- <button id="Leave-abled"  {% if leave == 'abled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>퇴근 활성화</button>
-        <button id="Leave-disabled"  {% if leave == 'disabled' %}disabled class='btn btn-primary btn-sm'{% else %}class = "btn btn-secondary btn-sm"{% endif %}>퇴근 비활성화</button>
-        <p>퇴근 체크 {% if leave == 'disabled' %}비활성화{% else %}활성화{% endif %} 되어있습니다.</p> 
-        </div> -->
-       
-       
-
-        <!-- <div class="panel-body" style="display:auto;margin-top: 15px;">
-            <div class="col-xs-4">
-                <button id="group-add" class='btn btn-dark  btn-sm' >그룹 추가</button>
-                <button id="group-delete" class='btn btn-danger  btn-sm' >그룹 삭제</button>
-                <div class="col-xs-6"  style="float: right;" id ='group_list'>
-                </div>
-            </div>
-            
- 
-         </div> -->
-    </div>
-    <!-- /.filter panel -->
     
+  
+
     <div id="wrapper">
         <div id="loading"></div>
         <div id="calendar"></div>

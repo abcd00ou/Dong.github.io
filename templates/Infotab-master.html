@@ -1,0 +1,120 @@
+{% extends "layout-backoffice-master.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+<div class="container">
+      
+    <div id="groupModal" class="modal" style="margin-top: 100px; background-color: #63e6be; height:620px;width:100%;" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <!-- 닫기 버튼 -->
+            <span class="close">&times;</span>
+            
+            <h2>그룹 만들기</h2>
+            
+            <!-- 그룹 이름 입력 -->
+            <label for="groupName">그룹 이름:</label>
+            <input type="text" id="groupName" placeholder="예: 마곡 휘강/ 안양 태일 ">
+            
+            <h3>그룹 멤버 선택</h3>
+            <!-- 사용자 목록이 들어갈 영역 -->
+            <div id="userList"style="height:400px; overflow-y: auto;"></div>
+            
+            <!-- 그룹 생성 버튼 -->
+            <button id="createGroup">그룹 생성</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="groupModal2" class="modal" style="margin-top: 100px; " tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <!-- 닫기 버튼 -->
+            <span class="close">&times;</span>
+            
+            <h2>그룹 삭제</h2>
+            <div id="groupList" ></div>
+            <!-- 그룹 생성 버튼 -->
+            <button id="deleteGroup" style="color:red;">그룹 삭제</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+
+        <table class="info_table">
+
+            <!-- 표의 본문 영역 -->
+            <tbody>
+                <tr>
+                    <td><b>정보</b></td>
+                    <td>{{ name }}</td>
+                    <td>ID</td>
+                    <td>{{place}} </td>
+                  </tr>
+              <tr>
+                <!-- 근태 버튼 -->
+                <td><b>근태</b></td>
+                <!-- 필요 없다면 비워두거나 다른 내용/버튼 배치 -->
+          
+                <!-- QR활성화 버튼 -->
+                <td colspan="3"><button id="Attend-QR" class='btn  btn-outline-primary btn-sm' >근태 QR 활성화</button></td>
+                <!-- 필요 없다면 비워두거나 다른 내용/버튼 배치 -->
+        
+              </tr>
+          
+              <tr>
+                <!-- 작업 버튼 -->
+                <td><b>작업</b></td>
+                <!-- 계획 작성 버튼 -->
+                <td><button id="plan-btn" class='btn  btn-outline-primary btn-sm'  >계획 작성</button></td>
+                <!-- 일지 작성 버튼 -->
+                <td><button id="work-btn" class='btn btn-outline-primary btn-sm'  >일지 작성</button></td>
+                <!-- Download 버튼 -->
+                <td><button id="work-sheet" class='btn  btn-outline-primary btn-sm' >Downloads</button></td>
+              </tr>
+              <tr>
+                <!-- 작업 버튼 -->
+                <td><b>작업장</b></td>
+                <!-- 계획 작성 버튼 -->
+                <td colspan="2"><button id="group-add" class='btn  btn-outline-primary btn-sm'  >작업 그룹 추가</button></td>
+                <!-- 일지 작성 버튼 -->
+                <td><button id="group-delete" class='btn btn-outline-danger btn-sm'  >그룹 삭제</button></td>
+              </tr>
+            </tbody>
+        </table>
+
+
+        <!-- <label class="checkbox-inline"> -->
+        <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">
+
+    </div>
+
+
+</div>
+<!-- /.container -->
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/moment.min.js"></script>
+<script src="static/js/fullcalendar.min.js"></script>
+<script src="static/js/ko.js"></script>
+<script src="static/js/select2.min.js"></script>
+<script src="static/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="static/js/main.js"></script>
+<script src="static/js/calendar.js"></script>
+<script src="static/js/addEvent.js"></script>
+<script src="static/js/editEvent.js"></script>
+<script src="static/js/etcSetting.js"></script>
+<script src="/static/js/setting-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@2.0.3/dist/chartjs-plugin-doughnutlabel.js"></script>
+
+
+
+</script>
+{% endblock %}
+

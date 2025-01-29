@@ -32,6 +32,70 @@
     <button class="btn btn-outline-primary" id="survey2-active">기존작업 추가</button>
     <button class="btn btn-outline-primary" id="survey1-active">새작업 추가</button>
 </ul>
+
+<label for='survey2'>인원 및 특이사항</label>
+<ul id ='survey2'>
+    <li class="survey_item">
+        <button class="survey_btn" id="workers" data-bs-toggle="modal" data-bs-target="#workersModal">
+            <div class="survey_btn_title">
+                <div class="survey_btn_title_name">인원 추가</div>
+                <div class="survey_btn_title_data" ></div>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+        <div class="modal fade" id="workersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">인원 추가</h1>
+                    </div>
+                    <div class="modal-body-custom">
+                        <br>
+                        <label for="work-select">작업 선택</label>
+                        <div id ='work-select'></div>
+                        <div class="row" >
+                            <div class ='col-5'>
+                                <label for="workers_add1">근무자 추가</label>
+                                <input type="text" id="workers_add1" placeholder="이름입력" autocomplete="on">
+                                
+                            </div>
+                            
+                            <div class ='col-6' style="margin:auto;" >
+                                <label for="workers_effort">공수 추가</label>     
+                                <div style="display:flex;margin:auto;">
+                                    <i class="bi bi-dash-lg" onclick="onEffortClicked_workers(-0.1)"></i>
+                                    <input type="number" id="workers_effort" min=1 placeholder="1" step=0.1 value="1">
+                                    <i class="bi bi-plus-lg" onclick="onEffortClicked_workers(0.1)"></i>
+                                 </div>
+                            </div>
+                        </div>
+                        <div  style="margin:auto;float:center;">
+                            <button id="add1" class="btn-dark-custom">작업자 추가</button>
+                        </div>
+                        <div id="autocomplete-list"></div>
+                        <br>
+                        <div class="row">
+                        <!-- <label for="workers-normal">작업자 명</label>
+                        <textarea id="workers-normal" disabled="" ></textarea> -->
+                        <label for="workers-table">작업자 기여도</label>
+                        <div id="workers-table"></div>
+                        </div>
+                        
+                    </div>
+                    <div class="d-grid btn-add-task-area">
+                        <button class="btn-dark-custom"  data-bs-dismiss="modal" aria-label="Close">완료</button>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </li>
+    
+</ul>  
+
 <ul id ='survey1' style="display:none;">
     <label for='survey1'>새작업 계획</label>
     <li class="survey_item">
@@ -297,7 +361,8 @@
     }
 
     const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
-
+    var work_info_json = JSON.parse({{work_info_json|tojson|safe}})
+    console.log(work_info_json  )
     // DOM 요소 가져오기
     const input = document.getElementById('workers_add1');
     const autocompleteList = document.getElementById('autocomplete-list');
@@ -328,11 +393,11 @@
     // });
 
     // 자동완성 목록 숨기기
-    document.addEventListener('click', function(e) {
-        if (e.target !== input) {
-            autocompleteList.innerHTML = ''; // 외부 클릭 시 목록 닫기
-        }
-    });
+    // document.addEventListener('click', function(e) {
+    //     if (e.target !== input) {
+    //         autocompleteList.innerHTML = ''; // 외부 클릭 시 목록 닫기
+    //     }
+    // });
 
 
     

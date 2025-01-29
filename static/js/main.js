@@ -220,7 +220,7 @@
              
               }else{
                 alert("로그인 되었습니다. ");
-                window.location.href = 'calendar'
+                window.location.href = 'infotab'
               }
              
           },
@@ -345,26 +345,31 @@ $('#plan-btn').on('click', function(event) {
   event.preventDefault();
   
   // window.location.href = '/survey-plan'//
-  const groupButtons = document.querySelectorAll('#group_list button[id^="group-"]');
+  // const groupButtons = document.querySelectorAll('#group_list button[id^="group-"]');
+  // const groupButtons = document.getElementById('work-place').value
+  // 각각의 버튼에 대해 "group-" 뒷부분만 추출
 
-    // 각각의 버튼에 대해 "group-" 뒷부분만 추출
-  
-    const fullId = groupButtons[0].id;          // 예: "group-마곡"
-    const siteValue = fullId.replace("group-", ""); 
-    const startDate = moment().format('YYYY-MM-DD');;
-    console.log('startDate',startDate)
-    console.log('siteValue',siteValue);            // "마곡", "부산", "서울", ...
-    //const siteValue = document.getElementById('site').value;
-    //const dateValue = document.getElementById('date').value;
+  // const fullId = groupButtons[0].id;          // 예: "group-마곡"
+  const siteValue = document.getElementById('work-place').value
+  const startDate = moment().format('YYYY-MM-DD');;
+  console.log('startDate',startDate)
+  console.log('siteValue',siteValue);            // "마곡", "부산", "서울", ...
+  //const siteValue = document.getElementById('site').value;
+  //const dateValue = document.getElementById('date').value;
 
-    // URL 파라미터로 site, date 값을 survey.html에 전달
-    // encodeURIComponent로 특수문자 등을 인코딩해주면 안전합니다.
-    window.location.href = `survey-plan?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
+  // URL 파라미터로 site, date 값을 survey.html에 전달
+  // encodeURIComponent로 특수문자 등을 인코딩해주면 안전합니다.
+  window.location.href = `survey-plan?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
 });
 
 $('#work-btn').on('click', function(event) {
   event.preventDefault();
-  window.location.href = '/survey'
+  const siteValue = document.getElementById('work-place').value
+  const startDate = moment().format('YYYY-MM-DD');;
+  console.log('startDate',startDate)
+  console.log('siteValue',siteValue);            // "마곡
+
+   window.location.href = `survey?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
   
 });
 
