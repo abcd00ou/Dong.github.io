@@ -27,7 +27,7 @@ Compress(app)
 
 app.config['SAVE_FILES_DIR'] = '/static/data'
 app.config['JSON_AS_ASCII'] = False 
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
 
 
 
@@ -412,10 +412,10 @@ def survey():
             print(site)
             work_info['작업날짜'] = work_info['작업날짜'].astype(str)
             print(work_info)
-            work_info_filter = work_info.loc[(work_info['작업날짜']>='2025-01-01')&(work_info['작업장']==site)&(work_info['작업진행률']!='100%'),['도급/직영','위치_분류1','위치_분류2','작업_분류1','작업_분류2','작업_분류3','작업날짜','작업진행률','작업장']]
+            work_info_filter = work_info.loc[(work_info['작업날짜']>='2025-01-01')&(work_info['작업장']==site)&(work_info['작업진행률']!='100%'),['도급/직영','위치_분류1','위치_분류2','작업_분류1','작업_분류2','작업_분류3','작업날짜','작업진행률','작업장','목표공수','공수','KEY']]
             print(work_info_filter)
             work_info_filter['작업상세'] = work_info_filter['도급/직영']+"_"+work_info_filter['위치_분류1']+"층_"+work_info_filter['위치_분류2']+"_"+work_info_filter['작업_분류3']
-            work_info_json = work_info_filter[['작업날짜','작업장','작업상세','작업진행률']].to_json(orient='records', force_ascii=False)
+            work_info_json = work_info_filter[['작업날짜','작업장','작업상세','작업진행률','KEY','목표공수','공수']].to_json(orient='records', force_ascii=False)
             
 
 

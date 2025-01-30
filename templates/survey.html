@@ -1,4 +1,4 @@
-{% extends "layout-backoffice-employee.html" %}
+{% extends "layout-backoffice-admin.html" %}
 {% block title %}Survey{% endblock %}
 
 {% block head %}
@@ -33,68 +33,71 @@
     <button class="btn btn-outline-primary" id="survey1-active">새작업 추가</button>
 </ul>
 
-<label for='survey2'>인원 및 특이사항</label>
-<ul id ='survey2'>
-    <li class="survey_item">
-        <button class="survey_btn" id="workers" data-bs-toggle="modal" data-bs-target="#workersModal">
-            <div class="survey_btn_title">
-                <div class="survey_btn_title_name">인원 추가</div>
-                <div class="survey_btn_title_data" ></div>
-            </div>
-            <i class="bi bi-chevron-right"></i>
-        </button>
 
-        <div class="modal fade" id="workersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">인원 추가</h1>
-                    </div>
-                    <div class="modal-body-custom">
-                        <br>
-                        <label for="work-select">작업 선택</label>
-                        <div id ='work-select'></div>
-                        <div class="row" >
-                            <div class ='col-5'>
-                                <label for="workers_add1">근무자 추가</label>
-                                <input type="text" id="workers_add1" placeholder="이름입력" autocomplete="on">
-                                
-                            </div>
-                            
-                            <div class ='col-6' style="margin:auto;" >
-                                <label for="workers_effort">공수 추가</label>     
-                                <div style="display:flex;margin:auto;">
-                                    <i class="bi bi-dash-lg" onclick="onEffortClicked_workers(-0.1)"></i>
-                                    <input type="number" id="workers_effort" min=1 placeholder="1" step=0.1 value="1">
-                                    <i class="bi bi-plus-lg" onclick="onEffortClicked_workers(0.1)"></i>
-                                 </div>
-                            </div>
-                        </div>
-                        <div  style="margin:auto;float:center;">
-                            <button id="add1" class="btn-dark-custom">작업자 추가</button>
-                        </div>
-                        <div id="autocomplete-list"></div>
-                        <br>
-                        <div class="row">
-                        <!-- <label for="workers-normal">작업자 명</label>
-                        <textarea id="workers-normal" disabled="" ></textarea> -->
-                        <label for="workers-table">작업자 기여도</label>
-                        <div id="workers-table"></div>
-                        </div>
+<div >
+    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">작업 선택</h1>
+            </div>
+            <div class="modal-body-custom">
+                <br>
+                <label for="work-select">작업 선택</label>
+                <div id ='work-select'></div>
+             
+            </div>
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">공수 추가</h1>
+            </div>
+            <div class="modal-body-custom">
+                <div id="work-info"></div>
+                
+            </div>
+            <div class="modal-body-custom" style="display:none;">
+                <div class="row" >
+                    <div class ='col-5'>
+                        <label for="workers_add1">근무자 추가</label>
+                        <input type="text" id="workers_add1" placeholder="이름입력" autocomplete="on">
                         
                     </div>
-                    <div class="d-grid btn-add-task-area">
-                        <button class="btn-dark-custom"  data-bs-dismiss="modal" aria-label="Close">완료</button>
+                    
+                    <div class ='col-4' style="margin:auto;" >
+                        <label for="workers_effort">공수 추가</label>     
+                        <div style="display:flex;margin:auto;">
+                            <i class="bi bi-dash-lg" onclick="onEffortClicked_workers(-0.1)"></i>
+                            <input type="number" id="workers_effort" min=1 placeholder="1" step=0.1 value="1">
+                            <i class="bi bi-plus-lg" onclick="onEffortClicked_workers(0.1)"></i>
+                         </div>
                     </div>
+                    <div class ='col-2'>
+                        <label for="add1"></label>     
+                        <button id="add1" class="btn-dark-custom"> &nbsp;&nbsp;추가&nbsp;&nbsp; </button>
+           
+                    </div>
+                   
+                <div  style="margin:auto;float:center;">
+                    
                 </div>
+                <div id="autocomplete-list"></div>
+                <br>
+                <div class="row">
+          
+                <label for="workers-table">작업자 기여도</label>
+                <div id="workers-table"></div>
+                </div>
+                
             </div>
-            
-            
+            <div class="d-grid btn-add-task-area">
+                <button class="btn-dark-custom"  data-bs-dismiss="modal" aria-label="Close">완료</button>
+            </div>
         </div>
-    </li>
+    </div>
     
-</ul>  
+    
+</div>
+<div class="d-grid btn-add-task-area" >
+    <button id="survey2-btn" class="btn-dark-custom"  style="display:none;">작업추가</button>
+</div>
 
 <ul id ='survey1' style="display:none;">
     <label for='survey1'>새작업 계획</label>
@@ -255,12 +258,6 @@
 </div>
 
 
-<div id="survey2" style="display:none;">
-    {{work_info_json|tojson|safe}}
-</div>
-<div class="d-grid btn-add-task-area" >
-    <button id="survey2-btn" class="btn-dark-custom"  style="display:none;">작업추가</button>
-</div>
 
 
 <label for="task-result">작업내용</label>
@@ -279,34 +276,35 @@
     // 사람, 공수 추가 테이블
     const tableContainer = document.getElementById('workers-table');
 
+    
     // Add Button Event Listener
-    // document.getElementById('add1').addEventListener('click', function () {
-    //     const name = document.getElementById('workers_add1').value.trim();
-    //     const work =Number(document.getElementById('workers_effort').value);
-    //     const selected_task =document.getElementById('task-select').value;
-    //     console.log(selected_task)
+    document.getElementById('add1').addEventListener('click', function () {
+        const name = document.getElementById('workers_add1').value.trim();
+        const work =Number(document.getElementById('workers_effort').value);
+        const selected_task =document.getElementById('task-select').value;
+        console.log(selected_task)
 
-    //     console.log(name,work,selected_task)
-    //     if (!name || isNaN(work) || work <= 0||!selected_task) {
-    //         alert("이름과 공수, 작업을 올바르게 입력해주세요.");
-    //         return;
-    //     }
+        console.log(name,work,selected_task)
+        if (!name || isNaN(work) || work <= 0||!selected_task) {
+            alert("이름과 공수, 작업을 올바르게 입력해주세요.");
+            return;
+        }
 
-    //     // Check if the table exists, if not, create one
-    //     let table = document.querySelector("#dynamicTable");
-    //     if (!table) {
-    //         table = createTable();
-    //         tableContainer.appendChild(table);
-    //     }
+        // Check if the table exists, if not, create one
+        let table = document.querySelector("#dynamicTable");
+        if (!table) {
+            table = createTable();
+            tableContainer.appendChild(table);
+        }
 
-    //     // Add row to table
-    //     addRow(selected_task,name, work);
-    // });
+        // Add row to table
+        addRow(selected_task,name, work);
+    });
 
     // Function to create a table
-    function createTable() {
+    function createTable(suffix) {
         const table = document.createElement('table');
-        table.id = "dynamicTable";
+        table.id = "dynamicTable-"+suffix;
         table.innerHTML = `
             <thead>
                 <tr>
@@ -323,17 +321,17 @@
     }
 
     // Function to add a row to the table
-    function addRow(task,name, work) {
-        const table = document.querySelector("#dynamicTable");
+    function addRow(task,name, work,suffix) {
+        const table = document.querySelector("#dynamicTable-"+suffix);
         const tbody = table.querySelector("tbody");
-
-        const maxValue = parseInt(task.split("_").pop());
+        console.log(task[0]['작업상세'])
+        const maxValue = parseInt(task[0]['목표공수'])-parseInt(task[0]['공수']);   
         let currentSum = 0;
         tbody.querySelectorAll("tr").forEach(row => {
         const taskCell = row.querySelector(".hidden-column"); // Task 열
         const editableCell = row.cells[1]; // 2rd column (editable)
 
-        if (taskCell && taskCell.textContent.trim() === task) {
+        if (taskCell && taskCell.textContent.trim() === task[0]['작업상세']) {
             const value = parseInt(editableCell.innerText.trim()) || 0; // Get user input or default to 0
             currentSum += value;
         }
@@ -351,18 +349,152 @@
             <td>${name}</td>
             <td>${work}</td>
             <td contenteditable='true'></td>
-            <td class="hidden-column">${task}</td>
-            <td><button onclick="deleteRow(this)" class='btn btn-secondary'>삭제</button></td>
+            <td class="hidden-column">${task[0]['작업상세']}</td>
+            <td><button onclick="deleteRow(this,'${suffix}')" class='btn btn-secondary'>삭제</button></td>
         `;
         tbody.appendChild(row);
 
         // Update contributions
-        updateContributions();
+        updateContributions(suffix);
     }
 
     const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
     var work_info_json = JSON.parse({{work_info_json|tojson|safe}})
-    console.log(work_info_json  )
+    console.log(work_info_json)
+    
+    
+    //작업 채우기 
+    const task_results = work_info_json;
+    const selectContainer = document.getElementById('work-select'); // div 요소 가져오기
+    const infoContainter = document.getElementById('work-info')
+    // Select 요소 생성
+    selectContainer.innerHTML = "";
+
+    const table = document.createElement('table');
+    table.classList.add("table")
+    // 2) 배열을 순회하면서 행(tr)과 열(td) 두 개를 만든 뒤 테이블에 추가
+    task_results.forEach(optionValue => {
+    // 테이블 행 생성
+    const tr = document.createElement('tr');
+    
+    // 첫 번째 열(td) : 체크박스
+    const tdCheckbox = document.createElement('td');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = optionValue['KEY'];
+    tdCheckbox.appendChild(checkbox);
+
+    // 두 번째 열(td) : 작업상세
+    const tdText = document.createElement('td');
+    tdText.textContent = optionValue['작업상세'];
+    const tdText2 = document.createElement('td');
+    tdText2.textContent = optionValue['작업진행률'];
+    // 행에 두 개의 열을 차례로 붙임
+    tr.appendChild(tdCheckbox);
+    tr.appendChild(tdText);
+    tr.appendChild(tdText2);
+
+    // 완성된 행을 테이블에 추가
+    table.appendChild(tr);
+
+
+    const tdDetail = document.createElement('div');
+    // 여기서부터는 공수 추가 부분
+    tdDetail.style.display = 'none';
+    tdDetail.classList.add('modal-body-custom');
+    // 주어진 상세 HTML 코드(작업자 추가/공수 추가)를 그대로 집어넣습니다.
+    // ★주의★ : ID가 중복되면 곤란하므로, 실제로는 index 등을 활용해
+    //           각 행별로 고유 ID를 생성할 것을 권장합니다.
+    tdDetail.innerHTML = `
+        ${optionValue['작업상세']}<br>
+        (현재 공수:${optionValue['공수']}, 목표 공수:${optionValue['목표공수']})
+        <div class="row">
+            <hr>
+            
+            <div class="col-5">
+                <label for="workers_add1">근무자 추가</label>
+                <input type="text" id="workers_add1_${optionValue['KEY']}" placeholder="이름입력" autocomplete="on">
+            </div>
+            <div class="col-4" style="margin:auto;">
+                <label for="workers_effort_${optionValue['KEY']}">공수 추가</label>
+                <div style="display:flex;margin:auto;">
+                    <i class="bi bi-dash-lg" onclick="onEffortClicked_workers(-0.1)"></i>
+                    <input type="number" id="workers_effort_${optionValue['KEY']}" min="1" placeholder="1" step="0.1" value="1">
+                    <i class="bi bi-plus-lg" onclick="onEffortClicked_workers(0.1 )"></i>
+                </div>
+            </div>
+            <div class="col-3">
+                <label for="add1_${optionValue['KEY']}"></label>     
+                 <button id="add1_${optionValue['KEY']}" class="btn-dark-custom">&nbsp;&nbsp;추가&nbsp;&nbsp;</button>
+            </div>
+        </div>
+
+        <div id="autocomplete-list_${optionValue['KEY']}"></div>
+        <br>
+        <div class="row">
+            // <label for="workers-table_${optionValue['KEY']}">작업자 기여도</label>
+            <div id="workers-table_${optionValue['KEY']}"></div>
+        </div>
+    `;
+
+    infoContainter.appendChild(tdDetail);
+    // 숨길 div를 테이블 셀에 삽입
+    // trDetail.appendChild(tdDetail);
+        // 체크박스를 클릭할 때마다 숨겨진 행 토글
+    checkbox.addEventListener('change', (e) => {
+      if (checkbox.checked) {
+        tdDetail.style.display = 'table-row';
+      } else {
+        tdDetail.style.display = 'none';
+      }
+    });
+    });
+
+    // 3) 최종적으로 selectContainer(혹은 원하는 컨테이너)에 테이블 삽입
+    selectContainer.appendChild(table);
+    // 처음엔 숨김 처리
+    var keyArray = work_info_json.map(item => item.KEY);
+    console.log(keyArray)
+    
+    keyArray.forEach(suffix => {
+        console.log(suffix)
+    const button = document.getElementById(`add1_${suffix}`);
+    if (!button) {
+        console.log("??")
+      return; // 혹시 HTML에 해당 버튼이 없으면 무시
+    }
+    button.addEventListener("click", function() {
+        const tableContainer = document.getElementById('workers-table_'+suffix);
+        const name = document.getElementById(`workers_add1_${suffix}`).value.trim();
+        const work = Number(document.getElementById(`workers_effort_${suffix}`).value);
+        const selectedTask = work_info_json.filter(item=>item['KEY']===suffix)
+   
+        console.log("Suffix:", suffix, "Name:", name, "Work:", work, "Task:", suffix,'selectedTask',selectedTask);
+
+        if (!name || isNaN(work) || work <= 0 ) {
+            alert("이름과 공수, 작업을 올바르게 입력해주세요.");
+            return;
+        }
+        // Check if the table exists, if not, create one
+        let table = document.querySelector("#dynamicTable-"+suffix);
+        if (!table) {
+            table = createTable(suffix);
+            tableContainer.appendChild(table);
+        }
+        
+        // 선택된 정보를 테이블에 추가
+        addRow(selectedTask, name, work,suffix);
+        });
+    });
+    
+    
+    
+    
+
+
+
+    // div에 select 추가
+    // selectContainer.appendChild(select);
     // DOM 요소 가져오기
     const input = document.getElementById('workers_add1');
     const autocompleteList = document.getElementById('autocomplete-list');
@@ -445,32 +577,6 @@
         $('#survey2-btn').attr('style','display:block;');
         $('#survey1').attr('style','display:none;');
         $('#survey1-btn').attr('style','display:none;');
-    });
-
-
-
-    $('#workers').on('click', function() {
-        const task_result = document.getElementById("task-result")
-        console.log();
-        const task_results = task_result.textContent.split("\n");
-        const selectContainer = document.getElementById('work-select'); // div 요소 가져오기
-
-        // Select 요소 생성
-        selectContainer.innerHTML = "";
-        const select = document.createElement('select');
-        select.id = 'task-select'; // ID 추가 (필요에 따라 변경 가능)
-
-        // 옵션 추가
-        task_results.forEach(optionValue => {
-            const option = document.createElement('option');
-            option.value = optionValue; // 값 설정
-            option.textContent = optionValue; // 표시 텍스트 설정
-            select.appendChild(option); // select에 옵션 추가
-        });
-
-        // div에 select 추가
-        selectContainer.appendChild(select);
-
     });
 
 

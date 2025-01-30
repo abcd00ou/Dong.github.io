@@ -1244,5 +1244,17 @@
         "backgroundColor": "#ffa94d",
         "textColor": "#ffffff",
         "allDay": true
+    },
+    {
+        "_id": 668,
+        "title": "\ub9c8\uace1",
+        "start": "2025-01-30 09:00",
+        "end": "2025-01-30 09:00",
+        "description": "",
+        "type": "\ub9c8\uace1",
+        "username": "\ud14c\uc2a4\ud2b82",
+        "backgroundColor": "#ffa94d",
+        "textColor": "#ffffff",
+        "allDay": true
     }
 ]

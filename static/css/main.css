@@ -2422,7 +2422,7 @@ label {
   align-items: center;
 }
 .modal-body-custom {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   width: 100%;
   overflow-y: auto;

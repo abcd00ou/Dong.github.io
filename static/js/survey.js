@@ -58,7 +58,6 @@ $.getJSON('/static/data/test.json', function(item) {
         var cat5 = null;
         var cat6 = null;
         var cat7 = null;
-        console.log("이걸 쓰는가?")
         if (category === 'site') {
             var site = value;
 
@@ -202,15 +201,15 @@ $.getJSON('/static/data/test.json', function(item) {
     }
 
     // Function to delete a row
-    function deleteRow(button) {
+    function deleteRow(button,suffix) {
         const row = button.parentElement.parentElement;
         row.remove();
 
         // Update contributions after deletion
-        updateContributions();
+        updateContributions(suffix);
 
         // Remove the table if no rows are left
-        const table = document.querySelector("#dynamicTable");
+        const table = document.querySelector("#dynamicTable-"+suffix);
         const tbody = table.querySelector("tbody");
         if (!tbody.hasChildNodes()) {
             table.remove();
@@ -218,8 +217,8 @@ $.getJSON('/static/data/test.json', function(item) {
     };
 
     // Function to update contribution percentages
-    function updateContributions() {
-            const table = document.querySelector("#dynamicTable");
+    function updateContributions(suffix) {
+            const table = document.querySelector("#dynamicTable-"+suffix);
             const tbody = table.querySelector("tbody");
             const rows = tbody.querySelectorAll("tr");
 
@@ -235,6 +234,7 @@ $.getJSON('/static/data/test.json', function(item) {
                 const work = parseFloat(row.cells[1].textContent);
                 const contribution = totalWork > 0 ? ((work / totalWork) * 100).toFixed(2) : 0;
                 row.cells[2].textContent = `${contribution}%`;
+                console.log('이거 업데이트됌?',contribution)
             });
         }
 
