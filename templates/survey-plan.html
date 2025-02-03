@@ -1,4 +1,4 @@
-{% extends "layout-backoffice-employee.html" %}
+{% extends "layout-backoffice-admin.html" %}
 {% block title %}Survey{% endblock %}
 
 {% block head %}
@@ -203,30 +203,6 @@
     // 사람, 공수 추가 테이블
     const tableContainer = document.getElementById('workers-table');
 
-    // Add Button Event Listener
-    // document.getElementById('add1').addEventListener('click', function () {
-    //     const name = document.getElementById('workers_add1').value.trim();
-    //     const work =Number(document.getElementById('workers_effort').value);
-    //     const selected_task =document.getElementById('task-select').value;
-    //     console.log(selected_task)
-
-    //     console.log(name,work,selected_task)
-    //     if (!name || isNaN(work) || work <= 0||!selected_task) {
-    //         alert("이름과 공수, 작업을 올바르게 입력해주세요.");
-    //         return;
-    //     }
-
-    //     // Check if the table exists, if not, create one
-    //     let table = document.querySelector("#dynamicTable");
-    //     if (!table) {
-    //         table = createTable();
-    //         tableContainer.appendChild(table);
-    //     }
-
-    //     // Add row to table
-    //     addRow(selected_task,name, work);
-    // });
-
     // Function to create a table
     function createTable() {
         const table = document.createElement('table');
@@ -287,8 +263,8 @@
     // const insadb = {{ insadb | safe }}; // Flask에서 전달된 JSON
 
     // DOM 요소 가져오기
-    const input = document.getElementById('workers_add1');
-    const autocompleteList = document.getElementById('autocomplete-list');
+    // const input = document.getElementById('workers_add1');
+    // const autocompleteList = document.getElementById('autocomplete-list');
 
     // 입력 필드 이벤트 리스너 추가
     // input.addEventListener('input', function() {
@@ -316,11 +292,11 @@
     // });
 
     // 자동완성 목록 숨기기
-    document.addEventListener('click', function(e) {
-        if (e.target !== input) {
-            autocompleteList.innerHTML = ''; // 외부 클릭 시 목록 닫기
-        }
-    });
+    // document.addEventListener('click', function(e) {
+    //     if (e.target !== input) {
+    //         autocompleteList.innerHTML = ''; // 외부 클릭 시 목록 닫기
+    //     }
+    // });
 
 
     
@@ -462,27 +438,7 @@
         }
         const item_split = item.split("_")
         formtext += `작업장 : ${item.split("_")[0]} \n 목표공수 : ${item_split[item_split.length-2]} \n작업내용 : ${item}\n`
-        // var table = document.getElementById("dynamicTable"); // 테이블 ID 가져오기
-        // if (table) {
-        //     const rows = table.querySelectorAll("tbody tr"); // 테이블의 모든 행 가져오기
-        //     formtext += "테이블 데이터:\n"; // 테이블 헤더 추가
-
-        //     rows.forEach((row, index) => {
-        //         const cells = row.querySelectorAll("td"); // 각 행의 셀 가져오기
-        //         let rowText = `행 ${index + 1}: `;
-        //         console.log(cells)
-        //         console.log(cells[3])
-        //         console.log(item)
-        //         if(cells[3].textContent===item){
-        //             cells.forEach(cell => {
-        //                 rowText += `${cell.textContent.trim()} | `; // 셀 값을 추가
-        //             });
-        //             formtext += rowText.trim() + "\n"; // 행 데이터를 추가
-        //             tabletext += rowText.trim() + "\n";
-        //         }
-                
-        //     });
-        // }
+   
     })  
 
     // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
@@ -671,6 +627,7 @@ function getQueryParam(param) {
     const params = new URLSearchParams(window.location.search);
     return params.get(param);
   }
+
 
 </script>
 

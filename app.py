@@ -142,26 +142,40 @@ def signin():
             for group in grouplist:
                 if filterd_db['ID'][0] in group['members']:
                     site_group = np.append(site_group,group['groupName'])
-
+            print("site_group",site_group)
             session['NAME'] = filterd_db['성명'][0]
             session['ID'] = filterd_db['ID'][0]
             session['ADMIN'] = filterd_db['ADMIN'][0]
-            session['PLACE'] = site_group.tolist()
+
+            if len(site_group)==0:
+                session['PLACE']= ""
+                place=""
+            else:
+                session['PLACE'] = site_group.tolist()
+                place = session['PLACE'][0]
             name= session['NAME']
             admin = session['ADMIN']
-            place = session['PLACE']
-            place = place[0]
+            # place = session['PLACE']
+            
             print(id,name,admin,place)
+            work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
+
+            today = datetime.today().strftime("%Y-%m")
+            work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+            work_info_filter = work_info_filter[work_info_filter['작업장'] == place]
+            work_info_json = work_info_filter[['작업날짜','작업장','위치_분류1','위치_분류2','작업_분류3','작업진행률','목표공수','총공수']].to_json(orient='records', force_ascii=False)
+        
+
             
             if session['ADMIN']=='MASTER':
-                return render_template("infotab-master.html",id=id,name = name,admin=admin,place=session['PLACE'])
+                return render_template("infotab-master.html",id=id,name = name,admin=admin,place=place,work_info_json=work_info_json)
             elif session['ADMIN']=='ADMIN':
-                work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+                work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
 
                 today = datetime.today().strftime("%Y-%m")
                 work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
                 work_info_filter = work_info_filter[work_info_filter['작업장'] == place]
-                work_info_json = work_info_filter[['작업날짜','작업장','위치_분류1','위치_분류2','작업_분류3','작업진행률']].to_json(orient='records', force_ascii=False)
+                work_info_json = work_info_filter[['작업날짜','작업장','위치_분류1','위치_분류2','작업_분류3','작업진행률','목표공수','총공수']].to_json(orient='records', force_ascii=False)
             
 
                 
@@ -222,20 +236,29 @@ def infotab():
             admin = 'MASTER'
             place = session['PLACE']
             ## 기존 정보들 다 가져감 
+            work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
+            print(place)
+            today = datetime.today().strftime("%Y-%m")
+            # work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+            # work_info_filter = work_info_filter[work_info_filter['작업장'] == place[0]]
             
-            return render_template("infotab-master.html",id=id,name = name,admin=admin,place=place)
+            work_info_json = work_info[['KEY','작업날짜','작업장','위치_분류1','위치_분류2','작업_분류2','작업_분류3','작업진행률','목표공수','총공수']].to_json(orient='records', force_ascii=False)
+        
+            
+            return render_template("infotab-master.html",id=id,name = name,admin=admin,place=place,work_info_json=work_info_json)
         else:
             name = session['NAME']
             id = session['ID']
             admin = 'ADMIN'
             place = session['PLACE']
-            work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+            work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
             print(place)
             today = datetime.today().strftime("%Y-%m")
-            work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
-            work_info_filter = work_info_filter[work_info_filter['작업장'] == place[0]]
+            # work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+            # print(work_info_filter)
+            work_info_filter = work_info[work_info['작업장'] == place[0]]
             
-            work_info_json = work_info_filter[['KEY','작업날짜','작업장','위치_분류1','위치_분류2','작업_분류2','작업_분류3','작업진행률','목표공수','공수']].to_json(orient='records', force_ascii=False)
+            work_info_json = work_info_filter[['KEY','작업날짜','작업장','위치_분류1','위치_분류2','작업_분류2','작업_분류3','작업진행률','목표공수','총공수']].to_json(orient='records', force_ascii=False)
         
 
             return render_template("infotab-admin.html",id=id,name = name,admin=admin,place=place,work_info_json=work_info_json)
@@ -311,7 +334,7 @@ def survey_plan():
             insadb_json = insadb[['성명','작업장']].to_json(orient='records', force_ascii=False)
 
             ## 기존 정보들 다 가져감 
-            work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
+            work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
            
             file_path = './static/data/calendar_group.json'
             with open(file_path, 'r') as f:
@@ -354,8 +377,10 @@ def survey_plan():
                                         "위치_분류2":[task_info[3]],
                                         "작업_분류2":[task_info[4]], ## 작업분류1 알폼/코아 필요한데 
                                         "작업_분류3":[task_info[5]],
+                                        "총공수":[0],
                                         "목표공수":[float(task_info[6])],
-                                        "도급/직영":[task_info[1]]
+                                        "도급/직영":[task_info[1]],
+                                        '작업진행률':["0%"]
                                         })
                 key_column = ['작업장', '위치_분류1', '위치_분류2', '작업_분류2', '도급/직영', '작업_분류3']
                 dup = work_info.loc[(work_info[key_column]==temp_task[key_column].values).sum(axis=1)==6]
@@ -393,29 +418,34 @@ def survey():
         else:
             name = session['NAME']
             id = session['ID']
+          
+            # site = session['PLACE'][0]
+
             insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+            base_url = request.url
+            print('base_url',base_url)
+            todate = base_url.split("date=")[1]
+            site = base_url.split("site=")[1].split("&")[0]
+            cols = [x for x in insadb.columns if todate in x]
+            print("cols",cols)
+            if len(cols)==0:
+                insadb = insadb[(insadb['작업장']==site)]
+            else:
+                insadb = insadb[(~insadb[cols[0]].isna())&(insadb['작업장']==site)]
             insadb_json = insadb[['성명','작업장']].to_json(orient='records', force_ascii=False)
 
             ## 기존 정보들 다 가져감 
-            work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
-           
-            # file_path = './static/data/calendar_group.json'
-            # with open(file_path, 'r') as f:
-            #     site_info = json.load(f)
-                
-            # for key in range(len(site_info)):
-            #     if id in site_info[key]['members']:
-            #         site = site_info[key]['groupName']
-            #     else:
-            #         site='김포'
-            site = session['PLACE'][0]
+            work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
+            
+      
+            
             print(site)
             work_info['작업날짜'] = work_info['작업날짜'].astype(str)
             print(work_info)
-            work_info_filter = work_info.loc[(work_info['작업날짜']>='2025-01-01')&(work_info['작업장']==site)&(work_info['작업진행률']!='100%'),['도급/직영','위치_분류1','위치_분류2','작업_분류1','작업_분류2','작업_분류3','작업날짜','작업진행률','작업장','목표공수','공수','KEY']]
+            work_info_filter = work_info.loc[(work_info['작업날짜']>='2025-01-01')&(work_info['작업장']==site)&(work_info['작업진행률']!='100%'),['도급/직영','위치_분류1','위치_분류2','작업_분류1','작업_분류2','작업_분류3','작업날짜','작업진행률','작업장','목표공수','총공수','KEY']]
             print(work_info_filter)
             work_info_filter['작업상세'] = work_info_filter['도급/직영']+"_"+work_info_filter['위치_분류1']+"층_"+work_info_filter['위치_분류2']+"_"+work_info_filter['작업_분류3']
-            work_info_json = work_info_filter[['작업날짜','작업장','작업상세','작업진행률','KEY','목표공수','공수']].to_json(orient='records', force_ascii=False)
+            work_info_json = work_info_filter[['작업날짜','작업장','작업상세','작업진행률','KEY','목표공수','총공수']].to_json(orient='records', force_ascii=False)
             
 
 
@@ -560,6 +590,8 @@ def calendar():
             place = session['PLACE']
             if len(place)>=1:
                place= place[0]
+            else:
+                place = '마곡'
             file_path = './static/data/Attend.json'
             with open(file_path, 'r') as f:
                 attend = json.load(f)[place]['Attend']
@@ -1210,7 +1242,36 @@ def upload_image():
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
 
-
+@app.route('/upload-workman', methods=['POST'])
+@check_session_id
+def upload_workman():
+    if 'image' not in request.files:
+        return jsonify({'success': False, 'message': '이미지가 없습니다.'})
+    id = session['ID']
+    print( request.files)
+    text_data = request.form.get('textData') 
+    print(text_data)
+    file = request.files['image']
+    
+    print('request.files',request.files)
+    print('img file',file)
+    # print(file.content)
+    print(id)
+    type = file.filename.split(".")[1]
+    file.filename = id + "_"+text_data +"." + type
+    
+    if file.filename == '':
+        return jsonify({'success': False, 'message': '파일 이름이 비어 있습니다.'})
+    
+    path = './static/data/작업자사진/'
+    # 파일 저장
+    file_path = os.path.join(path, file.filename)
+    file.save(file_path)
+    try:
+        
+        return jsonify({'success': True, 'message': '이미지가 성공적으로 저장되었습니다.'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
 
 @app.route('/work_sheet', methods=['POST'])
 @check_session_id
@@ -1328,6 +1389,7 @@ def work_sheet():
             # for j in range(5,len(parse_i)):
                 # print(j)
             index_of_table = None
+            print('v',parse_i)
             for i, item in enumerate(parse_i):
                 # "테 이블 데이터:" 라는 문자열이 포함되어 있는지 확인
                 if "테이블 데이터:" in item:

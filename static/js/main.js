@@ -313,9 +313,13 @@
 
   $('#work-sheet').on('click', function(event) {
     event.preventDefault();
-    const ddd = document.querySelector('#calendar h2').textContent;
-    const date = ddd.split(" ")[0].slice(0,4)+"-"+ddd.split(" ")[1].split("월")[0]+"-01"
-    const date2 = ddd.split(" ")[0].slice(0,4)+"_"+ddd.split(" ")[1].split("월")[0]
+    // const ddd = document.querySelector('#calendar h2').textContent;
+    // const date = ddd.split(" ")[0].slice(0,4)+"-"+ddd.split(" ")[1].split("월")[0]+"-01"
+    // const date2 = ddd.split(" ")[0].slice(0,4)+"_"+ddd.split(" ")[1].split("월")[0]
+    const ddd = document.getElementById('Month-select').value;
+    const date = "20"+ddd+"-01";
+    const date2 = "20"+ddd;
+    console.log(date,date2)
     $.ajax({
       url: '/work_sheet',
       method: 'POST',
@@ -361,6 +365,7 @@ $('#plan-btn').on('click', function(event) {
   // encodeURIComponent로 특수문자 등을 인코딩해주면 안전합니다.
   window.location.href = `survey-plan?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
 });
+
 
 $('#work-btn').on('click', function(event) {
   event.preventDefault();
@@ -465,10 +470,11 @@ $('#group-delete').on('click', function(event) {
        var closeBtn = $('#groupModal2 .close'); // 닫기 버튼
       
         var keys = response
-        console.log(keys)
         // 사용자 목록을 모달에 채워넣기
         var groupList = $('#groupList');   
         // 예: response가 [{"name": "김서준"}, {"name": "이동성"}] 같은 구조라고 가정
+        groupList.empty();
+        console.log(keys)
         keys.forEach(function (user) {
           console.log(user)
           // 각각 체크박스와 이름을 표시
@@ -769,6 +775,7 @@ $('#Leavecheck').on('click', function(event) {
       }
   });
 });
+
 
 
 

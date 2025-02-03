@@ -1,6 +1,6 @@
 {% extends "layout-backoffice-admin.html" %}
 
-{% block title %}Calendar{% endblock %}
+{% block title %}Infotab{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -53,7 +53,7 @@
             
 
         </div>
-    </div>
+  </div>
     <!-- /.filter panel -->
     <div class="page-inner mt--5x " style="justify-content:center;display:center;">
        
@@ -116,7 +116,7 @@
 <script src="static/js/editEvent.js"></script>
 <script src="static/js/etcSetting.js"></script>
 
-<script src="static/js/main.js"></script>
+<!-- <script src="static/js/main.js"></script> -->
 <script src="/static/js/setting-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@2.0.3/dist/chartjs-plugin-doughnutlabel.js"></script>
@@ -143,6 +143,7 @@ function checkPlace() {
 
 var work_info_json = JSON.parse({{work_info_json|tojson|safe}})
 console.log('work_info_json',work_info_json)
+
 init_gaugechart(work_info_json)
 
 
@@ -154,12 +155,12 @@ $('#Month-select').on('change',function(event){
     console.log(month,complete)
     if(complete==='Complete'){
         var work_info_json_filter = work_info_json.filter(item=>{
-        return item['공수']/item['목표공수']===1
+        return item['작업진행률']==="100%"
     })
     init_gaugechart(work_info_json_filter)
     }else if (complete==='not-Complete'){
         var work_info_json_filter = work_info_json.filter(item=>{
-        return item['공수']/item['목표공수']!==1
+        return item['작업진행률']!=="100%"
     })
     init_gaugechart(work_info_json_filter)
     }else{
@@ -177,12 +178,12 @@ $('#Complete-select').on('change',function(event){
     console.log(month,complete)
     if(complete==='Complete'){
         var work_info_json_filter = work_info_json.filter(item=>{
-        return item['공수']/item['목표공수']===1
+        return item['작업진행률']==="100%"
     })
     init_gaugechart(work_info_json_filter)
     }else if (complete==='not-Complete'){
         var work_info_json_filter = work_info_json.filter(item=>{
-        return item['공수']/item['목표공수']!==1
+        return item['작업진행률']!=="100%"
     })
     init_gaugechart(work_info_json_filter)
     }else{
@@ -207,7 +208,7 @@ Object.keys(work_info_json).forEach((keyName, idx) => {
   // (B) KEY 제목
   const title = document.createElement("div");
   title.className = "key-title";
-  title.textContent = `공수 진행률: ${work_info_json[keyName].공수} / ${work_info_json[keyName].목표공수}`;
+  title.textContent = `공수 진행률: ${work_info_json[keyName].총공수} / ${work_info_json[keyName].목표공수}`;
   sectionDiv.appendChild(title);
 
   // (C) 작업 목록 표시 (예: 작업_분류3)
@@ -238,17 +239,18 @@ Object.keys(work_info_json).forEach((keyName, idx) => {
   //     공수, 목표공수 2개 막대로 예시
   const labels =  items["위치_분류2"]+"구역"+" "+items["위치_분류1"]+"층"+" "+items["작업_분류3"]  || "(No 작업명)";
   // 공수와 목표공수가 null / 문자열일 수 있으니 숫자로 안전 변환
-  const laborData =parseFloat(items["공수"] || 0);
+  const laborData =parseFloat(items["총공수"] || 0);
   const targetLaborData = parseFloat(items["목표공수"] || 0);
-
+  const Laborrate = parseFloat(items["작업진행률"].split("%")[0] || 0);
   // (F) Chart.js로 Bar Chart 생성
-  value = Math.max(0, Math.min((laborData/targetLaborData)*100, 100));
+  value = Math.max(0, Math.min(Laborrate, 100));
   value = value.toFixed(1)
   ctx = document.getElementById(canvasId)
   createCustomGaugeChart(value,ctx);
 
 });
 };
+
 
 
 function createCustomGaugeChart(value, ctx) {
@@ -271,7 +273,7 @@ function createCustomGaugeChart(value, ctx) {
 
   // 3) 0~1로 정규화한 값
   const normalizedValue = value / 100;
-
+  console.log('normalizedValue',normalizedValue)
   // 4) colorStops를 바탕으로 “구간 크기(dataValues)”와 “색상(colors)” 만들기
   //    예) colorStops.map -> [각 구간 길이], [색상 배열]
   const dataValues = colorStops.map((stop, index) => {
@@ -284,8 +286,9 @@ function createCustomGaugeChart(value, ctx) {
       return stopValue - prevStopValue; // 이전 구간과 차이
     }
   });
-  const colors = colorStops.map(stop => stop[1]);
-
+  console.log('dataValues',dataValues)
+  var colors = colorStops.map(stop => stop[1]);
+  console.log(colors)
   // 5) 현재 값이 어느 구간에 속하는지 찾아서 gaugeColor, color_index 결정
   let gaugeColor = '#000';
   let color_index = 0;
@@ -298,18 +301,43 @@ function createCustomGaugeChart(value, ctx) {
       break;
     }
   }
+  if(normalizedValue===0){
+    console.log("여기 들어옴?")
+     gaugeColor = '#000';
+     color_index = 10;
+  }
+  console.log(gaugeColor,color_index)
 
   // 6) 실제 차트 데이터(스택 막대) 구성
   //    - 이미 지난 구간은 고유 색상,
   //    - 현재 구간은 “value % 10” 정도의 세그먼트,
   //    - 남은 구간은 회색
-  let segments = dataValues.slice(0, color_index + 1); // 이미 지나온 구간
-  const remainderInThatSegment = (value % 10 === 0) ? 10 : (value % 10); 
-  // ↑ 딱 10단위라면 10, 그렇지 않으면 나머지
-  segments.push(remainderInThatSegment);              // 현재 진행 중 구간
-  const leftover = 100 - value;                       // 남은 0~100 중 (100 - value)
-  segments.push(leftover);
-
+  
+  
+  console.log('value',value)
+  if(value===0){
+    var segments = dataValues.slice(0,0); // 이미 지나온 구간
+    var remainderInThatSegment = 0
+    segments.push(remainderInThatSegment);    
+    var leftover = 100;     
+    segments.push(leftover);
+    var colors = ['#e0e0e0'];
+  }else{
+    var segments = dataValues.slice(0, color_index + 1); // 이미 지나온 구간
+    var remainderInThatSegment = (value % 10 === 0) ? 10 : (value % 10); 
+    // ↑ 딱 10단위라면 10, 그렇지 않으면 나머지
+    // 현재 진행 중 구간
+           
+    segments.push(remainderInThatSegment);     
+     // 남은 0~100 중 (100 - value)
+    var leftover = 100 - value;        
+    
+    segments.push(leftover);
+  }
+  console.log(remainderInThatSegment)
+  
+  
+  console.log(segments,leftover)
   // 각 세그먼트를 각각 하나의 dataset으로 만들어 “스택 막대”로 표시
   // 첫 color_index+1개의 구간은 이미 지나온 구간 색, 
   // 다음(현재 부분)은 color_index+1 인덱스 색,
@@ -321,6 +349,7 @@ function createCustomGaugeChart(value, ctx) {
     let bgColor = '#e0e0e0'; // 기본 회색
     if (idx < color_index + 1) {
       // 이미 지나온 구간
+      console.log(idx)
       bgColor = colors[idx];
     } else if (idx === color_index + 1 && (color_index + 1) < colors.length) {
       // 현재 구간

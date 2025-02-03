@@ -1,7 +1,9 @@
 var data =null ; 
 $.getJSON('/static/data/test.json', function(item) {
         data =  JSON.parse(item)
-        console.log(data)
+      
+        // data=item
+        // console.log(data)
     }).fail(function() {
         console.error('Error fetching JSON');
     });
