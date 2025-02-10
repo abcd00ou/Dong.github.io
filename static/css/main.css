@@ -3082,3 +3082,16 @@ input[type="radio"]:checked + .label1 {
 .info_table td:first-child {
   background-color: rgb(109, 200, 0);
 }
+
+.scroll-container {
+          /* 가로 크기 제한 */
+  overflow-x: auto;       /* 가로 스크롤 생성 */
+  white-space: nowrap;    /* 줄바꿈을 없애 수평으로 나열 */
+}
+
+.scroll-container img {
+  display: inline-block; 
+         /* 원하는 이미지 크기 */
+  height: auto;
+  margin-right: 10px;    /* 이미지 간격 */
+}
