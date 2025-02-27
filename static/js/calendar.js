@@ -200,17 +200,18 @@ var calendar = $('#calendar').fullCalendar({
 
   select: function (startDate, endDate, jsEvent, view) {
 
-    $(".fc-body").unbind('click');
+    // $(".fc-body").unbind('click');
     $(".fc-body").on('click', 'td', function (e) {
       console.log('eeee',e)
       console.log( e.pageX, e.pageY)
-      $("#contextMenu")
-        .addClass("contextOpened")
-        .css({
-          display: "block",
-          left: e.pageX,
-          top: e.pageY
-        });
+      // contextMenu 조작 금지 
+      // $("#contextMenu")
+      //   .addClass("contextOpened")
+      //   .css({
+      //     display: "block",
+      //     left: e.pageX,
+      //     top: e.pageY
+      //   });
       return false;
     });
 
@@ -273,9 +274,13 @@ var calendar = $('#calendar').fullCalendar({
 
   //이벤트 클릭시 수정이벤트
   eventClick: function (event, jsEvent, view) {
-    console.log(jsEvent),
-    console.log(view)
     console.log("event 왜안돼",event)
+    // alert('Event: ' + event.title);
+    // alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+    // alert('View: ' + view.name);
+
+    // change the border color just for fun
+    $(this).css('border-color', 'red');
     editEvent(event);
     console.log("You clicked at:", jsEvent.pageX, jsEvent.pageY);
     // 클릭된 이벤트 정보 출력
@@ -310,6 +315,7 @@ function filtering(event) {
   var username = $('input:checkbox.filter:checked').map(function () {
     return $(this).val();
   }).get();
+  console.log(username)
 
   if($('#text_filter').val()!==""&&$('#text_filter').val()!==undefined){
     var texts = [$('#text_filter').val()];
@@ -317,13 +323,27 @@ function filtering(event) {
     var texts=[];
   }
 
+  var activeGroupButtons = $("button[id^='group-'].active");
+  // 2) 해당 버튼(들)의 텍스트를 가져오기
+  //    만약 복수 개가 있을 수 있다면, each() 혹은 map() 사용
+  var buttonText = ''
+  if(activeGroupButtons.length>0){
+    activeGroupButtons.each(function() {
+      buttonText = $(this).text();
+      console.log("활성 버튼의 텍스트:", buttonText);
+
+      // 원하는 필터링 로직 수행
+      // filteringByGroup(buttonText); // 예시 함수
+  });
+  }else{
+    buttonText = ''
+  }
+  console.log('buttonText',buttonText)
+  
+  
+
   if (texts && texts.length > 0) {
-    console.log(texts[0])
-    console.log(event.type)
-    console.log(event.description)
-    console.log(event.title)
-    console.log(event.username)
-    
+
     // if(event.type.includes(texts[0])){
     //   show_type = true
     // }else 
@@ -339,14 +359,24 @@ function filtering(event) {
    
     
   }
-  console.log(show_username,show_type)
-  if(admin_name.includes(username[0])){
-
-    show_username = true;
-  }else{
-    show_username = username.indexOf(event.username) >= 0;
+  console.log('buttonText',buttonText)
+  if(buttonText){
+    console.log("여기 안옴?")
+    if(event.type.includes(buttonText)){
+      show_type = true
+    }else{
+      
+      show_type=false
+    }
   }
   console.log(show_username,show_type)
+  // if(admin_name.includes(username[0])){
+
+  //   show_username = true;
+  // }else{
+  //   show_username = username.indexOf(event.username) >= 0;
+  // }
+  // console.log(show_username,show_type)
   return show_username && show_type;
 }
 

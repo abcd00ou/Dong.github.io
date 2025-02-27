@@ -29,7 +29,7 @@
 </ul>
 
 <ul>
-    <button class="btn btn-outline-primary" id="survey2-active">기존작업 추가</button>
+    <button class="btn btn-outline-primary active" id="survey2-active">작업 선택</button>
     <button class="btn btn-outline-primary" id="survey1-active">새작업 추가</button>
 </ul>
 
@@ -118,7 +118,7 @@
         <!-- 세부구간 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat4Modal">
             <div class="survey_btn_title">
-                <div class="survey_btn_title_name">세부구간</div>
+                <div class="survey_btn_title_name">공종</div>
                 <div class="survey_btn_title_data" id="cat4"></div>
             </div>
             <i class="bi bi-chevron-right"></i>
@@ -129,7 +129,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">세부구간</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">공종</h1>
                     </div>
                     <ul class="modal-body-custom" id="cat4Options"></ul>
                 </div>
@@ -140,7 +140,7 @@
         <!-- 작업내용 선택 -->
         <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat5Modal">
             <div class="survey_btn_title">
-                <div class="survey_btn_title_name">작업내용</div>
+                <div class="survey_btn_title_name">작업구분</div>
                 <div class="survey_btn_title_data" id="cat5"></div>
             </div>
             <i class="bi bi-chevron-right"></i>
@@ -151,7 +151,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">작업내용</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">작업구분</h1>
                     </div>
                     <ul class="modal-body-custom" id="cat5Options"></ul>
                 </div>
@@ -160,14 +160,23 @@
     </li>
 
     <li id="cat6Item" class="item-disable survey_item">
-        <!-- 공수 선택 -->
-        <div class="survey_btn">
+        <!-- 작업내용 선택 -->
+        <button class="survey_btn" data-bs-toggle="modal" data-bs-target="#cat6Modal">
             <div class="survey_btn_title">
-                <div class="survey_btn_title_name">목표 공수</div>
-                <div class="survey_btn_title_data" id="cat6">
-                    <i class="bi bi-dash-lg" onclick="onEffortClicked(-0.1)"></i>
-                    <input type="number" id="effort" name="effort">
-                    <i class="bi bi-plus-lg" onclick="onEffortClicked(0.1)"></i>
+                <div class="survey_btn_title_name">작업내용</div>
+                <div class="survey_btn_title_data" id="cat6"></div>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </button>
+        
+        <div class="modal fade" id="cat6Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i type="button" class="bi bi-chevron-left modal-icon" data-bs-dismiss="modal" aria-label="Close"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">작업내용</h1>
+                    </div>
+                    <ul class="modal-body-custom" id="cat6Options"></ul>
                 </div>
             </div>
         </div>
@@ -177,8 +186,22 @@
         <!-- 공수 선택 -->
         <div class="survey_btn">
             <div class="survey_btn_title">
-                <div class="survey_btn_title_name">진행률(%)</div>
+                <div class="survey_btn_title_name">목표 공수</div>
                 <div class="survey_btn_title_data" id="cat7">
+                    <i class="bi bi-dash-lg" onclick="onEffortClicked(-0.1)"></i>
+                    <input type="number" id="effort" name="effort">
+                    <i class="bi bi-plus-lg" onclick="onEffortClicked(0.1)"></i>
+                </div>
+            </div>
+        </div>
+    </li>
+
+    <li id="cat8Item" class="item-disable survey_item">
+        <!-- 공수 선택 -->
+        <div class="survey_btn">
+            <div class="survey_btn_title">
+                <div class="survey_btn_title_name">진행률(%)</div>
+                <div class="survey_btn_title_data" id="cat8">
                     <i class="bi bi-dash-lg" onclick="onProcessClicked(-5)"></i>
                     <input type="number" id="process" name="process">
                     <i class="bi bi-plus-lg" onclick="onProcessClicked(5)"></i>
@@ -254,15 +277,9 @@
     
     
 </div>
-<div class="d-grid btn-add-task-area" >
+<!-- <div class="d-grid btn-add-task-area" >
     <button id="survey2-btn" class="btn-dark-custom"  style="display:none;">작업추가</button>
-</div>
-
-
-
-
-<label for="task-result">작업내용</label>
-<textarea id="task-result" disabled="" placeholder="작업을 추가하면 여기서 확인 가능합니다."></textarea>
+</div> -->
 
 <input type="submit" value="제출" id="submit" class="btn-dark-custom">
 <div style="display:none;" >
@@ -515,12 +532,14 @@ function displayImage(event,id) {
     // 여기서부터는 공수 추가 부분
     tdDetail.style.display = 'none';
     tdDetail.classList.add('modal-body-custom');
+    tdDetail.id = `workinfo_${optionValue['KEY']}`
     // 주어진 상세 HTML 코드(작업자 추가/공수 추가)를 그대로 집어넣습니다.
     // ★주의★ : ID가 중복되면 곤란하므로, 실제로는 index 등을 활용해
     //           각 행별로 고유 ID를 생성할 것을 권장합니다.
     tdDetail.innerHTML = `
-        ${optionValue['작업상세']}<br>
+        <div id = "title_${optionValue['KEY']}">${optionValue['작업상세']}<br>
         (현재 공수:${optionValue['총공수']}, 목표 공수:${optionValue['목표공수']})
+        </div>
         <div class="row">
             <hr>
             
@@ -532,9 +551,9 @@ function displayImage(event,id) {
             <div class="col-4" style="margin:auto;">
                 <label for="workers_effort_${optionValue['KEY']}">공수 추가</label>
                 <div style="display:flex;margin:auto;">
-                    <i class="bi bi-dash-lg" onclick="onEffortClicked_workers(-0.1)"></i>
+                    <i class="bi bi-dash-lg" onclick="onEffortClicked_workers(-0.1,'${optionValue['KEY']}')"></i>
                     <input type="number" id="workers_effort_${optionValue['KEY']}" min="1" placeholder="1" step="0.1" value="1">
-                    <i class="bi bi-plus-lg" onclick="onEffortClicked_workers(0.1 )"></i>
+                    <i class="bi bi-plus-lg" onclick="onEffortClicked_workers(0.1,'${optionValue['KEY']}' )"></i>
                 </div>
             </div>
             <div class="col-3">
@@ -542,12 +561,20 @@ function displayImage(event,id) {
                  <button id="add1_${optionValue['KEY']}" class="btn-dark-custom">&nbsp;&nbsp;추가&nbsp;&nbsp;</button>
             </div>
         </div>
+        
 
         <!-- <div id="autocomplete-list_${optionValue['KEY']}"></div>  -->
         <br>
         <div class="row">
             <!-- <label for="workers-table_${optionValue['KEY']}">작업자 기여도</label>  -->
             <div id="workers-table_${optionValue['KEY']}"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-5 " style="float:right;">
+                <label for="workers_progress_${optionValue['KEY']}">진행률(%)</label>
+                <input type="number" id="workers_progress_${optionValue['KEY']}" placeholder="숫자만 입력(현재 : ${optionValue['작업진행률']})" >
+            </div>
         </div>
 
         <button onclick="uploadImage('selfie_${optionValue['KEY']}')" class="btn btn-outline-secondary" style="height: 40px;width:160px;font-size:15px;">근무자 사진 업로드</button>
@@ -575,8 +602,10 @@ function displayImage(event,id) {
         <div id="preview-workimage_${optionValue['KEY']}">
             <!-- <img id="previewImage-workimage_${optionValue['KEY']}" style="display:none; max-width:100%; height:auto;" /> -->
         </div>
+        
      
         <br><br><br> <hr>
+         
     `;
 
     infoContainter.appendChild(tdDetail);
@@ -586,7 +615,6 @@ function displayImage(event,id) {
         const div = document.createElement('option');
         div.value = worker.성명;
         autocompleteList.appendChild(div);
-        console.log('autocompleteList',autocompleteList)
     });
     // 숨길 div를 테이블 셀에 삽입
     // trDetail.appendChild(tdDetail);
@@ -637,46 +665,9 @@ function displayImage(event,id) {
         document.getElementById(`workers_add1_${suffix}`).value=""
         });
 
-        // const input = document.getElementById('workers_add1_'+suffix);
-        // const autocompleteList = document.getElementById('autocomplete-list_'+suffix);
-
-        // // 입력 필드 이벤트 리스너 추가
-        // input.addEventListener('input', function() {
-        //     const query = input.value;
-        //     console.log(query)
-        //     autocompleteList.innerHTML = ''; // 기존 항목 제거
-
-        //     if (!query) return;
-        //     console.log("여기까지")
-        //     // 이름 필터링
-        //     const filtered = insadb.filter(worker =>
-        //         worker.성명 && worker.성명.includes(query)
-        //     );
-        //     console.log('filtered',filtered)
-        //     // 자동완성 항목 표시
-        //     filtered.forEach(worker => {
-        //         const div = document.createElement('option');
-        //         div.value = worker.성명;
-        //         // div.addEventListener('click', () => {
-        //         //     input.value = worker.성명; // 선택된 이름으로 채우기
-        //         //     autocompleteList.innerHTML = ''; // 목록 초기화
-        //         // });
-        //         autocompleteList.appendChild(div);
-        //     });
-        // });
-
-        // 자동완성 목록 숨기기
-        // document.addEventListener('click', function(e) {
-        //     if (e.target !== input) {
-        //         autocompleteList.innerHTML = ''; // 외부 클릭 시 목록 닫기
-        //     }
-        // });
+        
 
     });
-
-   
-    
-    
 
 
     
@@ -712,7 +703,16 @@ function displayImage(event,id) {
         $(this).addClass('selected');
     });
 
+    $('#cat6Options li').on('click', function() {
+        $('#cat6Options li').removeClass('selected');
+        console.log($(this))
+        $(this).addClass('selected');
+    });
+
+
     $('#survey1-active').on('click', function() {
+        $('#survey1-active').addClass('active');
+        $('#survey2-active').removeClass('active');
         $('#survey1').attr('style','display:block;');
         $('#survey1-btn').attr('style','display:block;');
         $('#survey2').attr('style','display:none;');
@@ -720,8 +720,11 @@ function displayImage(event,id) {
     });
 
     $('#survey2-active').on('click', function() {
+        $('#survey2-active').addClass('active');
+        $('#survey1-active').removeClass('active');
+        
         $('#survey2').attr('style','display:block;');
-        $('#survey2-btn').attr('style','display:block;');
+        // $('#survey2-btn').attr('style','display:block;');
         $('#survey1').attr('style','display:none;');
         $('#survey1-btn').attr('style','display:none;');
     });
@@ -730,29 +733,61 @@ function displayImage(event,id) {
     
     $('#survey1-btn').on('click', function() {
     event.preventDefault();
+        var cat6 = document.getElementById('cat6').textContent;
         var cat5 = document.getElementById('cat5').textContent;
         var cat4 = document.getElementById('cat4').textContent;
         var cat3 = document.getElementById('cat3').textContent;
         var cat2 = document.getElementById('cat2').textContent;
         var cat1 = document.getElementById('cat1').textContent;
         var site = document.getElementById('site').textContent;
-        const cat6 = document.getElementById('effort').value; 
-        const cat7= document.getElementById('process').value; 
-        console.log(site,cat1,cat2,cat3,cat4,cat5,cat6,cat7)
+        const cat7 = document.getElementById('effort').value; 
+        const cat8= document.getElementById('process').value; 
+        console.log(site,cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8)
 
         
-        var task_result = document.getElementById('task-result');
+        // var task_results = document.getElementById('task-result');
 
-        task_result.textContent += site+"_"+cat1+"_"+cat2+"_"+cat3+"_"+cat4+"_"+cat5+"_"+cat6+'_'+cat7+"%"+"\n"; 
+        // task_result.textContent += site+"_"+cat1+"_"+cat2+"_"+cat3+"_"+cat4+"_"+cat5+"_"+cat6+"_"+cat7+'_'+cat8+"%"+"\n"; 
 
-        document.getElementById('cat5').textContent = "";
-        document.getElementById('cat4').textContent = "";
-        document.getElementById('cat3').textContent = "";
-        document.getElementById('cat2').textContent = "";
-        document.getElementById('cat1').textContent = "";
-        // document.getElementById('site').textContent = ""
-        document.getElementById('effort').value = ""; 
-        document.getElementById('process').value = ""; 
+        
+
+        var eventId = 1 + Math.floor(Math.random() * 1000);
+    
+        var task_results = site+"_"+cat1+"_"+cat2+"_"+cat3+"_"+cat4+"_"+cat5+"_"+cat6+"_"+cat7+'_'+cat8+"%"
+        // var task_results = document.getElementById('task-result').textContent.split("\n");
+
+        const formData_db = {
+                                taskresult : task_results,
+                                date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
+                                username: document.getElementById("username").textContent
+                            };
+
+        // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
+        $.ajax({
+            url: '/survey-plan',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData_db),
+            success: function (response) {
+                console.log(response)
+                alert("데이터가 저장되었습니다.")
+                document.getElementById('cat6').textContent = "";
+                document.getElementById('cat5').textContent = "";
+                document.getElementById('cat4').textContent = "";
+                document.getElementById('cat3').textContent = "";
+                document.getElementById('cat2').textContent = "";
+                document.getElementById('cat1').textContent = "";
+                // document.getElementById('site').textContent = ""
+                document.getElementById('effort').value = ""; 
+                document.getElementById('process').value = ""; 
+                location.reload(true)
+            
+            },
+            error: function(error) {
+                alert('데이터 저장에 실패했습니다.', error);
+            }
+        });
+
 
 
     });
@@ -771,115 +806,161 @@ function displayImage(event,id) {
     }
 
     document.getElementById('submit').addEventListener('click', function(event) {
-        createEvent()
-        // var task_result = document.getElementById('task-result');
-        // const formData = {
-        //     numworkers: document.getElementById('numworkers').value,
-        //     workersnormal: document.getElementById('workers-normal').value,
-        //     taskresult : document.getElementById("task-result").value,
-        //     additional: document.getElementById('additional').value,
-            
-        // };
-    var eventId = 1 + Math.floor(Math.random() * 1000);
+        try{
+            // createEvent()
+
+            var visibleDivs = $("div[id^='workinfo_']:visible");
+
+            // 결과 확인
+            console.log(visibleDivs);
+            var task_results=[];
+            visibleDivs.each(function(){    
+                const key = this.id.split("_")[1];
+                // 1) 현재 브라우저의 URL 쿼리스트링(`?site=...&date=...`) 부분
+                //    window.location.search -> "?site=%EB%A7%88%EA%B3%A1&date=2025-02-28"
+                const searchParams = new URLSearchParams(window.location.search);
+
+                // 2) site 파라미터 값을 get
+                const place = searchParams.get("site"); 
+                console.log(place)
+                
+                console.log(key)
+                //dynamic table 받아오기   
+                const dtable = document.querySelectorAll(`#dynamicTable-${key} tbody tr`);
+                textOutput="";
+                dtable.forEach(row => {
+                    // 각 행의 첫 번째/두 번째 td 가져오기
+                    const name = row.querySelector('td:nth-child(1)').textContent.trim();
+                    const gongSu = row.querySelector('td:nth-child(2)').textContent.trim();
+                    
+                    // 원하는 형식으로 문자열을 이어붙임
+                    textOutput += `이름: ${name}, 공수: ${gongSu}\n`;
+                });
+                // title 받아오기 
+                const title = document.getElementById('title_'+key).innerHTML.split("<br>")[0];
+
+                const progress = document.getElementById('workers_progress_'+key).value;
+                console.log(dtable,title,progress)
+
+                //작업 진행률 받아오기 
+                var formtext = `작업장 : ${place} \n 작업내용 : ${title} \n 작업인원 \n ${textOutput}`
+                console.log('formtext',formtext)
+                var tabletext = ''  
+
+                }); 
+        
+            // var eventId = 1 + Math.floor(Math.random() * 1000);
+        
+            // var task_results = document.getElementById('task-result').textContent.split("\n");
+
+            // var formtext = ''
+            // var tabletext = ''
+            // task_results.forEach((item,index)=>{
+            //     if (index === task_results.length - 1) {
+            //         return;
+            //     }
+            //     const item_split = item.split("_")
+            //     formtext += `작업장 : ${item.split("_")[0]} \n 목표공수 : ${item_split[item_split.length-2]} \n작업내용 : ${item}\n`
+        
+            // })  
+
+            // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
+
+            // var id_init = {'김포':"AE",
+            //                 '송도':'AB',
+            //                 '마곡':'AA',
+            //                 '당진':'AD',
+            //                 '안양':'AC'}
+
+            // var backcolor = {'김포':"#D25565",
+            //                 '송도':'#D25565',
+            //                 '마곡':'#ffa94d',
+            //                 '당진':'#74c0fc',
+            //                 '안양':'#c73814',
+            //                 '기타1':'#63e6be',
+            //                 '기타2':'#a9e34b',
+            //                 '기타3':'#4d638c',
+            //                 '기타4':'#495057'}
+            // var eventData = {
+            //     _id: Number(eventId),
+            //     title: document.getElementById('site').textContent,
+            //     start: getCurrentDateTime(datestr = document.getElementById('date-input').value),
+            //     end: getCurrentDateTime(datestr = document.getElementById('date-input').value),
+            //     description: formtext,
+            //     type: document.getElementById('site').textContent,
+            //     username: document.getElementById("username").textContent,
+            //     backgroundColor: backcolor[document.getElementById('site').textContent],
+            //     textColor: '#ffffff',
+            //     allDay: true
+            // };
     
-    var task_results = document.getElementById('task-result').textContent.split("\n");
-
-    var formtext = ''
-    var tabletext = ''
-    task_results.forEach((item,index)=>{
-        if (index === task_results.length - 1) {
-            return;
-        }
-        const item_split = item.split("_")
-        formtext += `작업장 : ${item.split("_")[0]} \n 목표공수 : ${item_split[item_split.length-2]} \n작업내용 : ${item}\n`
-   
-    })  
-
-    // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
-
-
-    var backcolor = {'김포':"#D25565",
-                    '송도':'#9775fa',
-                    '마곡':'#ffa94d',
-                    '당진':'#74c0fc',
-                    '안양':'#f06595',
-                    '기타1':'#63e6be',
-                    '기타2':'#a9e34b',
-                    '기타3':'#4d638c',
-                    '기타4':'#495057'}
-    var eventData = {
-        _id: Number(eventId),
-        title: document.getElementById('site').textContent,
-        start: getCurrentDateTime(datestr = document.getElementById('date-input').value),
-        end: getCurrentDateTime(datestr = document.getElementById('date-input').value),
-        description: formtext,
-        type: document.getElementById('site').textContent,
-        username: document.getElementById("username").textContent,
-        backgroundColor: backcolor[document.getElementById('site').textContent],
-        textColor: '#ffffff',
-        allDay: true
-    };
-    console.log('eventData',eventData)
-    //createExcel(formData);
-    $("#calendar").fullCalendar('renderEvent', eventData, true);
-    eventModal.find('input, textarea').val('');
-    editAllDay.prop('checked', true);
-    eventModal.modal('hide');
-    console.log(eventData)
-    //새로운 일정 저장
-    $.ajax({
-        type: "get",
-        url: "/static/data/calendar.json",
-        data: {
-            //.....
-        },
-        success: function (response) {
-            console.log(response)
-            var data = response; 
-
-            data.push(eventData);
-            console.log(data)
-            //DB연동시 중복이벤트 방지를 위한
-            //$('#calendar').fullCalendar('removeEvents');
-            //$('#calendar').fullCalendar('refetchEvents');
-            json_data = JSON.stringify(data)
-            console.log(json_data)
+            // //createExcel(formData);
+            // $("#calendar").fullCalendar('renderEvent', eventData, true);
+            // eventModal.find('input, textarea').val('');
+            // editAllDay.prop('checked', true);
+            // eventModal.modal('hide');
+            console.log(eventData)
+            //새로운 일정 저장
             $.ajax({
-                url: '/calendar_save', // 데이터를 저장할 서버의 URL
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({data:json_data}),
-                success: function(response) {
+                type: "get",
+                url: "/static/data/calendar.json",
+                data: {
+                    //.....
+                },
+                success: function (response) {
+                    console.log(response)
+                    var data = response; 
 
-                    const formData_db = {
-                            // workersinfo : tabletext,
-                            taskresult : document.getElementById("task-result").value,
-                            // additional: document.getElementById('additional').value,
-                            date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
-                            username: document.getElementById("username").textContent
-                        };
-
+                    data.push(eventData);
+                    console.log(data)
+                    //DB연동시 중복이벤트 방지를 위한
+                    //$('#calendar').fullCalendar('removeEvents');
+                    //$('#calendar').fullCalendar('refetchEvents');
+                    json_data = JSON.stringify(data)
+                    console.log(json_data)
                     $.ajax({
-                        url: '/survey',
-                        method: 'POST',
+                        url: '/calendar_save', // 데이터를 저장할 서버의 URL
+                        type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify(formData_db),
-                        success: function (response) {
-                            console.log(response)
-                            alert("데이터가 저장되었습니다.")
-                        
+                        data: JSON.stringify({data:json_data}),
+                        success: function(response) {
+
+                            const formData_db = {
+                                    // workersinfo : tabletext,
+                                    taskresult : document.getElementById("task-result").value,
+                                    // additional: document.getElementById('additional').value,
+                                    date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
+                                    username: document.getElementById("username").textContent
+                                };
+
+                            $.ajax({
+                                url: '/survey',
+                                method: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(formData_db),
+                                success: function (response) {
+                                    console.log(response)
+                                    alert("데이터가 저장되었습니다.")
+                                    location.reload(true)
+                                
+                                },
+                                error: function(error) {
+                                    alert('데이터 저장에 실패했습니다.', error);
+                                }
+                            });
                         },
                         error: function(error) {
-                            alert('데이터 저장에 실패했습니다.', error);
+                            alert('Error saving data:', error);
                         }
                     });
-                },
-                error: function(error) {
-                    alert('Error saving data:', error);
                 }
             });
+
+        }catch (err) {
+            alert("오류가 발생했습니다: " + err.message);
         }
-    });
+        
+    
     
 
 

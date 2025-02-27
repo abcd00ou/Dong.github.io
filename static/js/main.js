@@ -354,7 +354,7 @@ $('#plan-btn').on('click', function(event) {
   // 각각의 버튼에 대해 "group-" 뒷부분만 추출
 
   // const fullId = groupButtons[0].id;          // 예: "group-마곡"
-  const siteValue = document.getElementById('work-place').value
+  const siteValue = document.getElementById('place-choice').value
   const startDate = moment().format('YYYY-MM-DD');;
   console.log('startDate',startDate)
   console.log('siteValue',siteValue);            // "마곡", "부산", "서울", ...
@@ -369,7 +369,7 @@ $('#plan-btn').on('click', function(event) {
 
 $('#work-btn').on('click', function(event) {
   event.preventDefault();
-  const siteValue = document.getElementById('work-place').value
+  const siteValue = document.getElementById('place-choice').value
   const startDate = moment().format('YYYY-MM-DD');;
   console.log('startDate',startDate)
   console.log('siteValue',siteValue);            // "마곡
@@ -775,7 +775,6 @@ $('#Leavecheck').on('click', function(event) {
       }
   });
 });
-
 
 
 

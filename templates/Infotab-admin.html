@@ -15,7 +15,13 @@
                     <td><b>정보</b></td>
                     <td>{{ name }}</td>
                     <td>ID</td>
-                    <td>{{place[0]}} </td>
+                    <td >
+                      <select id = 'place-choice' name="placeSelect">
+                        {% for city in place %}
+                          <option value="{{ city }}">{{ city }}</option>
+                        {% endfor %}
+                      </select>
+                     </td>
                   </tr>
               <tr>
                 <!-- 근태 버튼 -->
@@ -70,7 +76,7 @@
         <div id ='work-filter' class="d-flex">
             
             <select name="작업장" id="work-place"  style="font-size:15px;">
-                <option value="{{place[0]}}">{{place[0]}}</option>
+                <!-- <option value="{{place}}">{{place}}</option> -->
             </select>
             <select name="날짜 선택택" id="Month-select" style="font-size:15px;">
                 <option value="25-01">2025-01</option>
@@ -143,9 +149,51 @@ function checkPlace() {
 
 var work_info_json = JSON.parse({{work_info_json|tojson|safe}})
 console.log('work_info_json',work_info_json)
-
 init_gaugechart(work_info_json)
 
+const placeArray = work_info_json.map(item => item['작업장']);
+
+// 2) 중복 제거(Unique) - Set을 활용
+const uniquePlaces = [...new Set(placeArray)];
+console.log('uniquePlaces',uniquePlaces)
+// 3) select 요소 가져오기
+const selectEl = document.getElementById('work-place');
+
+// 4) 옵션 생성 및 추가
+uniquePlaces.forEach(place => {
+  const option = document.createElement('option');
+  option.value = place;
+  option.text = place;  // or option.textContent = place;
+  selectEl.appendChild(option);
+});
+
+const work_place = document.getElementById('work-place').value;
+init_gaugechart(work_info_json.filter(item=>String(item['작업날짜']).includes('2025-01')&&item['작업장']===work_place))
+
+
+$('#work-place').on('change',function(event){
+    event.preventDefault();
+    const work_place = document.getElementById('work-place').value;
+    const month = document.getElementById('Month-select').value;
+    const complete = document.getElementById('Complete-select').value;
+    console.log(month,complete)
+    const work_info_json2 = work_info_json.filter(item=>String(item['작업날짜']).includes(month)&&item['작업장']===work_place)
+    if(complete==='Complete'){
+        var work_info_json_filter = work_info_json2.filter(item=>{
+        return item['작업진행률']==="100%"
+    })
+    init_gaugechart(work_info_json_filter)
+    }else if (complete==='not-Complete'){
+        var work_info_json_filter = work_info_json2.filter(item=>{
+        return item['작업진행률']!=="100%"
+    })
+    init_gaugechart(work_info_json_filter)
+    }else{
+        init_gaugechart(work_info_json2)
+    }
+    
+    
+});
 
 $('#Month-select').on('change',function(event){
     event.preventDefault();

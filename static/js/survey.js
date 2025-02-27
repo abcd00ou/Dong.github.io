@@ -1,9 +1,9 @@
 var data =null ; 
-$.getJSON('/static/data/test.json', function(item) {
+$.getJSON('/static/data/작업공수/SETTING.json', function(item) {
         data =  JSON.parse(item)
       
         // data=item
-        // console.log(data)
+        console.log('data',data)
     }).fail(function() {
         console.error('Error fetching JSON');
     });
@@ -60,13 +60,14 @@ $.getJSON('/static/data/test.json', function(item) {
         var cat5 = null;
         var cat6 = null;
         var cat7 = null;
+        var cat8 = null;
         if (category === 'site') {
             var site = value;
 
             document.getElementById('cat1Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat1Options');
             console.log(data)
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === value).map(item => item['중분류'].replace(" ","")))];
+            const uniqueValues = [...new Set(data.filter(item => item['TYPE'] === value && item['LIST']=='형태').map(item => item['VALUE'].replace(" ","")))];
             console.log("uniqueValues",uniqueValues)
             modelOptions.innerHTML = uniqueValues.map(model => 
                 `<li type="button" data-bs-target="#cat2Modal" data-bs-toggle="modal" onclick="selectOption('cat1','${model}')"> ${model}</li>`
@@ -81,7 +82,7 @@ $.getJSON('/static/data/test.json', function(item) {
             document.getElementById('cat2Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat2Options');
             console.log(data)
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === value).map(item => item['층']))];
+            const uniqueValues = [...new Set(data.filter(item => item['TYPE'] === site && item['LIST']=='층').map(item => item['VALUE'].replace(" ","")))];
             console.log(uniqueValues)
 
             modelOptions.innerHTML = uniqueValues.map(model => 
@@ -98,8 +99,7 @@ $.getJSON('/static/data/test.json', function(item) {
             document.getElementById('cat3Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat3Options');
             console.log(data)
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === value).map(item => item['구간']))];
-     
+            const uniqueValues = [...new Set(data.filter(item => item['TYPE'] === site && item['LIST']=='구간').map(item => item['VALUE']))];
             console.log(uniqueValues)
             modelOptions.innerHTML = uniqueValues.map(model => 
                 `<li type="button" data-bs-target="#cat4Modal" data-bs-toggle="modal" onclick="selectOption('cat3', '${model}')"> ${model}</li>`
@@ -113,7 +113,7 @@ $.getJSON('/static/data/test.json', function(item) {
 
             document.getElementById('cat4Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat4Options');
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === value).map(item => item['세부구간']))];
+            const uniqueValues = [...new Set(data.filter(item => item['TYPE'] === site && item['LIST']=='공종').map(item => item['VALUE'].replace(" ","")))];
             console.log(uniqueValues.length)        
             uniqueValues.sort((a, b) => 
                 a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
@@ -123,6 +123,7 @@ $.getJSON('/static/data/test.json', function(item) {
                 `<li type="button" data-bs-target="#cat5Modal" data-bs-toggle="modal" onclick="selectOption('cat4', '${model}')"> ${model}</li>`
             ).join('');
             document.getElementById('cat3').innerHTML = value;
+
         }else if(category==="cat4"){
             var cat4 = value;
             var cat3 = document.getElementById('cat3').textContent;
@@ -132,16 +133,15 @@ $.getJSON('/static/data/test.json', function(item) {
 
             document.getElementById('cat5Item').classList.remove('item-disable');
             const modelOptions = document.getElementById('cat5Options');
-            const uniqueValues = [...new Set(data.filter(item => item['작업장명'] === site&&item['중분류'] === cat1&&item['층'] === cat2&&item['구간'] === cat3&&item['세부구간'] === value).map(item => item['작업내용']))];
-            console.log('cat5',uniqueValues)
+            const uniqueValues = [...new Set(data.filter(item => item['TYPE'] === site && item['LIST']=='작업단가').map(item => item['VALUE'].replace(" ","")))];console.log('cat5',uniqueValues)
             modelOptions.innerHTML = uniqueValues.map(model => 
-                `<li type="button" data-bs-dismiss="modal" onclick="selectOption('cat5', '${model}')"> ${model}</li>`
+                `<li type="button" data-bs-target="#cat6Modal" data-bs-toggle="modal" onclick="selectOption('cat5', '${model}')"> ${model}</li>`
             ).join('');
 
             const additionalInputHTML = `
                 <li id='add_li'>
-                    <input type="text" id="additionalInput" placeholder="보기에 없는경우 직접 입력하세요" />
-                    <button type="button" onclick="addCustomOption()">작업 추가</button>
+                    <input type="text" id="additionalInput5" placeholder="보기에 없는경우 직접 입력하세요" />
+                    <button type="button" onclick="addCustomOption(5)">작업 추가</button>
                 </li>
             `;
 
@@ -150,13 +150,29 @@ $.getJSON('/static/data/test.json', function(item) {
 
             document.getElementById('cat4').innerHTML = value;
         }else if(category==="cat5"){
-            var cat5= value;
-            document.getElementById('effort').focus();
-            document.getElementById('cat6Item').classList.remove('item-disable');
-            document.getElementById('cat7Item').classList.remove('item-disable');
-            document.getElementById('process').value = 0;
-            document.getElementById('cat5').innerHTML = value;
 
+            const modelOptions = document.getElementById('cat6Options');
+            document.getElementById('cat6Item').classList.remove('item-disable');
+            const additionalInputHTML = `
+                <li id='add_li'>
+                    <input type="text" id="additionalInput6" placeholder="세부 작업내용을 직접 입력하세요" />
+                    <button type="button" data-bs-target="#cat7Modal" data-bs-toggle="modal"  onclick="addDetailwork()" >작업 추가</button>
+                </li>
+            `;
+            const uniqueValues=[];
+            modelOptions.innerHTML = uniqueValues.map(model => 
+                `<li type="button" data-bs-target="#cat7Modal" data-bs-toggle="modal" onclick="selectOption('cat6', '${model}')"> ${model}</li>`
+            ).join('');
+
+            // 추가 입력 필드를 modelOptions 요소에 추가
+            modelOptions.innerHTML = additionalInputHTML;
+
+            document.getElementById('cat5').innerHTML = value;
+            document.getElementById('effort').focus();
+            document.getElementById('cat7Item').classList.remove('item-disable');
+            document.getElementById('cat8Item').classList.remove('item-disable');
+            document.getElementById('process').value = 0;
+        
 
         }
         // Hide the current options after selection   
@@ -172,18 +188,18 @@ $.getJSON('/static/data/test.json', function(item) {
       effortElement.value = (Number(effortElement.value) + num).toFixed(1);
   }
 
-    function onEffortClicked_workers(num) {
-        const effortElement = document.getElementById('workers_effort');
+    function onEffortClicked_workers(num,key) {
+        const effortElement = document.getElementById('workers_effort_'+key);
         effortElement.value = (Number(effortElement.value) + num).toFixed(1);
     }
 
     // 추가된 옵션을 처리하는 함수
-    function addCustomOption() {
-        const inputElement = document.getElementById('additionalInput');
+    function addCustomOption(cat) {
+        const inputElement = document.getElementById('additionalInput'+String(cat));
         const newValue = inputElement.value.trim();
 
         if (newValue) {
-            const modelOptions = document.getElementById('cat5Options');
+            const modelOptions = document.getElementById('cat'+String(cat)+'Options');
             // 새로운 li 요소를 생성
             const newLi = document.createElement('li');
             newLi.setAttribute('type', 'button');
@@ -193,10 +209,22 @@ $.getJSON('/static/data/test.json', function(item) {
 
             // 새로운 li 요소를 add_li 요소 위에 삽입
             const addLi = document.getElementById('add_li');
+            console.log(newLi,addLi)
             modelOptions.insertBefore(newLi, addLi);
 
             // 입력 필드 초기화
             inputElement.value = '';
+        } else {
+            alert('유효한 값을 입력하세요.');
+        }
+    }
+
+    function addDetailwork() {
+        const inputElement = document.getElementById('additionalInput6');
+        const newValue = inputElement.value.trim();
+
+        if (newValue) {
+            document.getElementById('cat6').innerHTML = newValue;
         } else {
             alert('유효한 값을 입력하세요.');
         }

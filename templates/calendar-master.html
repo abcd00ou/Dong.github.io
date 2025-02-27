@@ -105,12 +105,40 @@
                 </div>
                 <div class="modal-footer modalBtnContainer-modifyEvent">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-danger" id="deleteEvent">삭제</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">삭제</button>
                     <button type="button" class="btn btn-dark" id="updateEvent">저장</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <!-- 모달 -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- 모달 헤더 -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">삭제 확인</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- 모달 바디 -->
+        <div class="modal-body">
+          정말 삭제하시겠습니까?
+        </div>
+
+        <!-- 모달 푸터 -->
+        <div class="modal-footer">
+          <!-- 취소 버튼 -->
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <!-- 확인 버튼 (실제 삭제 로직이 연결될 부분) -->
+          <button id="deleteEvent" type="button" class="btn btn-danger">확인</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
     
 
@@ -211,11 +239,34 @@
             let buttonId = 'group-' +data[groupName]['groupName'];
             console.log(groupName)
             // jQuery로 버튼 동적 생성
-            $('<button>')
-              .attr('id', buttonId)
-              .addClass('btn btn-dark btn-sm')
-              .text(data[groupName]['groupName'])                // 버튼 텍스트 = 그룹명
-              .appendTo('#group_list');       // #group_list 안에 붙이기
+            if(index==0){
+                $('<button>')
+                .attr('id', buttonId)
+                .addClass('btn btn-dark btn-sm group-btn active')
+                .text(data[groupName]['groupName'])                // 버튼 텍스트 = 그룹명
+                .appendTo('#group_list');       // #group_list 안에 붙이기
+            }else{
+                $('<button>')
+                .attr('id', buttonId)
+                .addClass('btn btn-dark btn-sm group-btn')
+                .text(data[groupName]['groupName'])                // 버튼 텍스트 = 그룹명
+                .appendTo('#group_list');       // #group_list 안에 붙이기
+            }
+
+            $('.group-btn').click(function() {
+                // 1) 모든 그룹 버튼에서 active 클래스 제거
+                $('.group-btn').removeClass('active');
+
+                // 2) 현재 클릭한 버튼만 active 추가
+                $(this).addClass('active');
+
+                // 3) data-group에 있는 값(마곡, 송도 등)을 읽어서 selectedGroup에 저장
+                selectedGroup = $(this).data('group');
+                });
+
+            $("button[id^='group-']").on('click', function () {
+                $('#calendar').fullCalendar('rerenderEvents');
+            });
           });
         },
         error: function(xhr, status, error) {

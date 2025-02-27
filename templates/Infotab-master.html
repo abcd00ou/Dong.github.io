@@ -16,7 +16,12 @@
                     <td><b>정보</b></td>
                     <td>{{ name }}</td>
                     <td>ID</td>
-                    <td>{{place}} </td>
+                    <td>
+                      <select id = 'place-choice' name="placeSelect">
+                      {% for city in place %}
+                        <option value="{{ city }}">{{ city }}</option>
+                      {% endfor %}
+                    </select></td>
                   </tr>
               <tr>
                 <!-- 근태 버튼 -->
@@ -175,6 +180,7 @@ function checkPlace() {
 }
 
 var work_info_json = JSON.parse({{work_info_json|tojson|safe}})
+console.log('work_info_json',work_info_json)
 const placeArray = work_info_json.map(item => item['작업장']);
 
 // 2) 중복 제거(Unique) - Set을 활용
