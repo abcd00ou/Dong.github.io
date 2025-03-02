@@ -814,6 +814,7 @@ function displayImage(event,id) {
             // 결과 확인
             console.log(visibleDivs);
             var task_results=[];
+            var task_text= "";
             visibleDivs.each(function(){    
                 const key = this.id.split("_")[1];
                 // 1) 현재 브라우저의 URL 쿼리스트링(`?site=...&date=...`) 부분
@@ -828,6 +829,8 @@ function displayImage(event,id) {
                 //dynamic table 받아오기   
                 const dtable = document.querySelectorAll(`#dynamicTable-${key} tbody tr`);
                 textOutput="";
+                var sumGongsu = 0;
+                var wokerNum = 0
                 dtable.forEach(row => {
                     // 각 행의 첫 번째/두 번째 td 가져오기
                     const name = row.querySelector('td:nth-child(1)').textContent.trim();
@@ -835,19 +838,120 @@ function displayImage(event,id) {
                     
                     // 원하는 형식으로 문자열을 이어붙임
                     textOutput += `이름: ${name}, 공수: ${gongSu}\n`;
+                    sumGongsu = sumGongsu+Number(gongSu);
+                    wokerNum = wokerNum+1; 
                 });
                 // title 받아오기 
                 const title = document.getElementById('title_'+key).innerHTML.split("<br>")[0];
 
                 const progress = document.getElementById('workers_progress_'+key).value;
-                console.log(dtable,title,progress)
-
+                
+                
                 //작업 진행률 받아오기 
                 var formtext = `작업장 : ${place} \n 작업내용 : ${title} \n 작업인원 \n ${textOutput}`
-                console.log('formtext',formtext)
-                var tabletext = ''  
+                task_text += `${place}_${title}_${sumGongsu}_${wokerNum}_${progress}%\n`
+
+                var id_init = {'김포':"AE",
+                                '송도':'AB',
+                                '마곡':'AA',
+                                '당진':'AD',
+                                '안양':'AC'}
+
+                var backcolor = {'김포':"#D25565",
+                                '송도':'#D25565',
+                                '마곡':'#ffa94d',
+                                '당진':'#74c0fc',
+                                '안양':'#c73814',
+                                '기타1':'#63e6be',
+                                '기타2':'#a9e34b',
+                                '기타3':'#4d638c',
+                                '기타4':'#495057'}
+
+                $.ajax({
+                    type: "get",
+                    url: "/static/data/calendar.json",
+                    data: {
+                        //.....
+                    },
+                    success: function (response) {
+                        console.log(response)
+                        var data = response; 
+
+                        var eventData = {
+                            title: place,
+                            start: getCurrentDateTime(datestr = document.getElementById('date-input').value),
+                            end: getCurrentDateTime(datestr = document.getElementById('date-input').value),
+                            description: formtext,
+                            type: place,
+                            username: document.getElementById("username").textContent,
+                            backgroundColor: backcolor[place],
+                            textColor: '#ffffff',
+                            allDay: true
+                        };
+
+                        var siteType = eventData.type;
+                        var maxId = 0;
+
+                        // 기존 데이터 중 해당 type을 가진 이벤트들 찾아서 maxId 추출
+                        data.forEach(function(event) {
+                            if (event.type === siteType) {
+                                var currentId = parseInt(event._id.slice(2), 10); // _id에서 숫자 부분만 추출
+                                maxId = Math.max(maxId, currentId);  // 최대 숫자 값을 추출
+                            }
+                        });
+
+                        eventData._id = siteType.slice(0, 2) + (maxId + 1); // 앞 두 글자 + 숫자 증가
+                        console.log('eventData',eventData)
+
+                        data.push(eventData);
+                        // console.log(data)
+                        //DB연동시 중복이벤트 방지를 위한
+                        //$('#calendar').fullCalendar('removeEvents');
+                        //$('#calendar').fullCalendar('refetchEvents');
+                        json_data = JSON.stringify(data)
+                        // console.log(json_data)
+                        $.ajax({
+                            url: '/calendar_save', // 데이터를 저장할 서버의 URL
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({data:json_data}),
+                            success: function(response) {
+                                console.log('save완료')
+                            },
+                            error: function(error) {
+                                alert('Error saving data:', error);
+                            }
+                        });
+                    }
+                });
+
+
 
                 }); 
+            task_text = task_text.replace(/\n$/, '');
+            console.log('task_text',task_text)
+            const formData_db = {
+                    taskresult : task_text,
+                    date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
+                    username: document.getElementById("username").textContent
+                };
+            console.log('formData_db',formData_db)
+
+            $.ajax({
+                    url: '/survey',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData_db),
+                    success: function (response) {
+                        console.log(response)
+                        alert("데이터가 저장되었습니다.")
+                        location.reload(true)
+                    
+                    },
+                    error: function(error) {
+                        alert('데이터 저장에 실패했습니다.', error);
+                    }
+                });
         
             // var eventId = 1 + Math.floor(Math.random() * 1000);
         
@@ -866,95 +970,16 @@ function displayImage(event,id) {
 
             // var formtext= `작업장 : ${document.getElementById("task-result").value.split("_")[0]} \n 작업인원 : ${ document.getElementById('numworkers').value} \n작업내용 : ${document.getElementById('task-result').value}\n특이사항 : ${document.getElementById('additional').value}\n`
 
-            // var id_init = {'김포':"AE",
-            //                 '송도':'AB',
-            //                 '마곡':'AA',
-            //                 '당진':'AD',
-            //                 '안양':'AC'}
-
-            // var backcolor = {'김포':"#D25565",
-            //                 '송도':'#D25565',
-            //                 '마곡':'#ffa94d',
-            //                 '당진':'#74c0fc',
-            //                 '안양':'#c73814',
-            //                 '기타1':'#63e6be',
-            //                 '기타2':'#a9e34b',
-            //                 '기타3':'#4d638c',
-            //                 '기타4':'#495057'}
-            // var eventData = {
-            //     _id: Number(eventId),
-            //     title: document.getElementById('site').textContent,
-            //     start: getCurrentDateTime(datestr = document.getElementById('date-input').value),
-            //     end: getCurrentDateTime(datestr = document.getElementById('date-input').value),
-            //     description: formtext,
-            //     type: document.getElementById('site').textContent,
-            //     username: document.getElementById("username").textContent,
-            //     backgroundColor: backcolor[document.getElementById('site').textContent],
-            //     textColor: '#ffffff',
-            //     allDay: true
-            // };
+            
     
             // //createExcel(formData);
             // $("#calendar").fullCalendar('renderEvent', eventData, true);
             // eventModal.find('input, textarea').val('');
             // editAllDay.prop('checked', true);
             // eventModal.modal('hide');
-            console.log(eventData)
+            // console.log(eventData)
             //새로운 일정 저장
-            $.ajax({
-                type: "get",
-                url: "/static/data/calendar.json",
-                data: {
-                    //.....
-                },
-                success: function (response) {
-                    console.log(response)
-                    var data = response; 
-
-                    data.push(eventData);
-                    console.log(data)
-                    //DB연동시 중복이벤트 방지를 위한
-                    //$('#calendar').fullCalendar('removeEvents');
-                    //$('#calendar').fullCalendar('refetchEvents');
-                    json_data = JSON.stringify(data)
-                    console.log(json_data)
-                    $.ajax({
-                        url: '/calendar_save', // 데이터를 저장할 서버의 URL
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({data:json_data}),
-                        success: function(response) {
-
-                            const formData_db = {
-                                    // workersinfo : tabletext,
-                                    taskresult : document.getElementById("task-result").value,
-                                    // additional: document.getElementById('additional').value,
-                                    date : getCurrentDateTime(datestr = document.getElementById('date-input').value),
-                                    username: document.getElementById("username").textContent
-                                };
-
-                            $.ajax({
-                                url: '/survey',
-                                method: 'POST',
-                                contentType: 'application/json',
-                                data: JSON.stringify(formData_db),
-                                success: function (response) {
-                                    console.log(response)
-                                    alert("데이터가 저장되었습니다.")
-                                    location.reload(true)
-                                
-                                },
-                                error: function(error) {
-                                    alert('데이터 저장에 실패했습니다.', error);
-                                }
-                            });
-                        },
-                        error: function(error) {
-                            alert('Error saving data:', error);
-                        }
-                    });
-                }
-            });
+            
 
         }catch (err) {
             alert("오류가 발생했습니다: " + err.message);

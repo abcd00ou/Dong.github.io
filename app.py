@@ -185,7 +185,7 @@ def signin():
             work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
 
             today = datetime.today().strftime("%Y-%m")
-            work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+            work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.nan,False)]
             if len(place)>1:
 
                 work_info_filter = work_info_filter[work_info_filter['작업장'].isin(place)]
@@ -201,7 +201,7 @@ def signin():
                 work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
 
                 today = datetime.today().strftime("%Y-%m")
-                work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+                work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.nan,False)]
                 if len(place)>1:
                     work_info_filter = work_info_filter[work_info_filter['작업장'].isin(place)]
                 else:
@@ -270,7 +270,7 @@ def infotab():
             work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
             print(place)
             today = datetime.today().strftime("%Y-%m")
-            # work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+            # work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.nan,False)]
             # work_info_filter = work_info_filter[work_info_filter['작업장'] == place[0]]
             
             work_info_json = work_info[['KEY','작업날짜','작업장','위치_분류1','위치_분류2','작업_분류2','작업_분류3','작업진행률','목표공수','총공수']].to_json(orient='records', force_ascii=False)
@@ -285,7 +285,7 @@ def infotab():
             work_info = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
             print(place)
             today = datetime.today().strftime("%Y-%m")
-            # work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.NaN,False)]
+            # work_info_filter = work_info[work_info['작업날짜'].str.contains(today).replace(np.nan,False)]
             # print(work_info_filter)
             if len(place)>1:
                 work_info_filter = work_info[work_info['작업장'].isin(place)]
@@ -467,7 +467,7 @@ def survey():
             print(work_info)
             work_info_filter = work_info.loc[(work_info['작업날짜']>='2025-01-01')&(work_info['작업장']==site)&(work_info['작업진행률']!='100%'),['도급/직영','위치_분류1','위치_분류2','작업_분류1','작업_분류2','작업_분류3','작업날짜','작업진행률','작업장','목표공수','총공수','KEY']]
             print(work_info_filter)
-            work_info_filter['작업상세'] = work_info_filter['도급/직영']+"_"+work_info_filter['위치_분류1']+"층_"+work_info_filter['위치_분류2']+"_"+work_info_filter['작업_분류3']
+            work_info_filter['작업상세'] = work_info_filter['도급/직영']+"_"+work_info_filter['위치_분류1']+"_"+work_info_filter['위치_분류2']+"_"+work_info_filter['작업_분류1']+"_"+work_info_filter['작업_분류2']+"_"+work_info_filter['작업_분류3']
             work_info_json = work_info_filter[['작업날짜','작업장','작업상세','작업진행률','KEY','목표공수','총공수']].to_json(orient='records', force_ascii=False)
             setting = pd.read_excel("./static/data/작업공수/SETTING.xlsx").to_json(orient='records', force_ascii=False)
 
@@ -495,12 +495,10 @@ def survey():
         date = survey_data['date'].split(" ")[0]
         username = survey_data['username']
 
+        ## 기존 정보들 다 가져감 
+        work_plan = pd.read_excel("./static/data/작업공수/작업계획.xlsx")
 
         work_info = pd.read_excel("./static/data/작업공수/작업입력.xlsx")
-
-        file_path = "./static/data/test.json"
-        with open(file_path, 'r',encoding='utf-8') as outfile:
-            old_df = pd.DataFrame(json.loads(json.load(outfile)))
         setting = pd.read_excel("./static/data/작업공수/SETTING.xlsx")
         for task in taskresult:
             task_info = task.split("_")
@@ -513,36 +511,56 @@ def survey():
                                         "작업_분류2":[task_info[5]],
                                         "작업_분류3":[task_info[6]],
                                         "공수":[float(task_info[7])],
+                                        "인원":[float(task_info[8])],
                                         "도급/직영":[task_info[1]],
-                                        "작업진행률":[task_info[8]]
+                                        "작업진행률":[task_info[9]]
+                                        })
+
+                temp_plan = pd.DataFrame({"작업날짜":[date],
+                                          '작업장':[task_info[0]],
+                                        "위치_분류1":[task_info[2]],
+                                        "위치_분류2":[task_info[3]],
+                                        "작업_분류1":[task_info[4]],
+                                        "작업_분류2":[task_info[5]],
+                                        "작업_분류3":[task_info[6]],
+                                        "총공수":[float(task_info[7])],
+                                        "도급/직영":[task_info[1]],
+                                        "작업진행률":[task_info[9]]
                                         })
                 
                 key_column = ['작업장', '위치_분류1', '위치_분류2','작업_분류1',  '작업_분류2', '도급/직영', '작업_분류3']
-                dup = work_info.loc[(work_info[key_column]==temp_task[key_column].values).sum(axis=1)==7]
-   
+                dup =  work_info.loc[(work_info[key_column]==temp_task[key_column].values).sum(axis=1)==7]
+
+                dup_key = work_plan.loc[(work_plan[key_column]==temp_plan[key_column].values).sum(axis=1)==7,'KEY'].values[0]
+                print('dup_key',dup_key)
+                work_plan.loc[work_plan.KEY==dup_key,'총공수'] = work_plan.loc[work_plan.KEY==dup_key,'총공수'] + float(task_info[7])
+                work_plan.loc[work_plan.KEY==dup_key,'작업진행률'] = task_info[9]
+                print('work_plan.loc[work_plan.KEY==dup_key,',work_plan.loc[work_plan.KEY==dup_key])
                 if len(dup)!=0:
-                    print('error')
+                    temp_task['KEY'] = dup_key
+                    work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
                 else:
                     new_key = new_generate_random_key(work_info)
                     temp_task['KEY'] = new_key
                     work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
 
                 # work_info = pd.concat([work_info,temp_task]).reset_index(drop=True)
-                new_val = pd.DataFrame({"구간":[task_info[3]],"층":[task_info[2]],"세부구간":[task_info[4]],"중분류":[task_info[1]],"작업내용":[task_info[6]],"공수":[float(task_info[7])],"작업진행률":[task_info[8]],"작업날짜":[date],"직종":[task_info[5]],"작업장명":[task_info[0]]})
-                new_df = pd.concat([old_df,new_val]).reset_index(drop=True)
+                # new_val = pd.DataFrame({"구간":[task_info[3]],"층":[task_info[2]],"세부구간":[task_info[4]],"중분류":[task_info[1]],"작업내용":[task_info[6]],"공수":[float(task_info[7])],"작업진행률":[task_info[8]],"작업날짜":[date],"직종":[task_info[5]],"작업장명":[task_info[0]]})
+                # new_df = pd.concat([old_df,new_val]).reset_index(drop=True)
         #worker_info.columns = pd.MultiIndex.from_tuples(worker_info.columns)
         
 
-        with open(file_path, 'w',encoding='utf-8') as outfile:
-            json.dump(new_df.to_json(orient='records'), outfile, ensure_ascii=False, indent=4)
+        # with open(file_path, 'w',encoding='utf-8') as outfile:
+        #     json.dump(new_df.to_json(orient='records'), outfile, ensure_ascii=False, indent=4)
 
-        # if(len(worker_info)>1):
-        #     print('worker_info',worker_info)
-        #     #worker_info.to_excel()
-        #     save_double_column_df(worker_info,"./static/data/작업공수/작업자입력.xlsx")
         if(len(work_info)>1):
-            print('worker_info',work_info)
+            print('worker_info',work_info.tail())
             work_info.to_excel("./static/data/작업공수/작업입력.xlsx", index=False)
+
+        if(len(work_plan)>1):
+            print('work_plan',work_plan.tail())
+            work_plan.to_excel("./static/data/작업공수/작업계획.xlsx", index=False)
+
         return jsonify("success")
 
 

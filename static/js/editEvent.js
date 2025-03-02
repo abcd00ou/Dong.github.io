@@ -133,6 +133,7 @@ $('#deleteEvent').on('click', function () {
     eventModal.addClass("fade")
     eventModal.modal('hide');
     var this_id = $(this).data('id');
+    
     //삭제시
     $.ajax({
         type: "get",
@@ -161,7 +162,7 @@ $('#deleteEvent').on('click', function () {
                 url: '/calendar_remove', // 데이터를 저장할 서버의 URL
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({data:json_data}),
+                data: JSON.stringify({data:json_data,key:this_id}),
                 success: function(response) {
                     alert('데이터를 정상적으로 삭제하였습니다.:', response);
                     location.reload();  // 성공 후 페이지 새로고침
