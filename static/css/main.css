@@ -815,13 +815,16 @@ section,
   padding: 10px 0;
   scroll-margin-top: 100px;
   overflow: clip;
+  
 }
 
 @media (max-width: 1199px) {
-
+  
   section,
   .section {
     scroll-margin-top: 30px;
+    height: 300px;
+    
   }
 }
 
@@ -947,6 +950,8 @@ section,
 }
 
 @media (max-width: 768px) {
+
+
   .hero h2 {
     font-size: 32px;
   }
@@ -954,6 +959,7 @@ section,
   .hero p {
     font-size: 18px;
   }
+
 }
 
 /*--------------------------------------------------------------
