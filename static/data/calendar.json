@@ -6586,41 +6586,5 @@
         "username": "ADMIN",
         "allDay": false,
         "_id": "AB153"
-    },
-    {
-        "title": "\ub9c8\uace1",
-        "start": "2025-02-28 09:00",
-        "end": "2025-02-28 09:00",
-        "description": "\uc791\uc5c5\uc7a5 : \ub9c8\uace1 \n \uc791\uc5c5\ub0b4\uc6a9 : \uc9c1\uc601 _11\uce35_C_\ud615\ud2c0_\ucf54\uc544_\ucf54\uc5b4 \ubcbd\uccb4 \ubd80\ubd84 \ud574\uccb4 \uae30\uc900\ubaa9 \uc124\uce58 \uc791\uc5c5 \n \uc791\uc5c5\uc778\uc6d0 \n \uc774\ub984: \uc815\ud638, \uacf5\uc218: 1\n\uc774\ub984: \ucd5c\uc77c, \uacf5\uc218: 1\n\uc774\ub984: \uae40\uacbd\ud658, \uacf5\uc218: 1\n",
-        "type": "\ub9c8\uace1",
-        "username": "\ud14c\uc2a4\ud2b82",
-        "backgroundColor": "#ffa94d",
-        "textColor": "#ffffff",
-        "allDay": true,
-        "_id": "\ub9c8\uace1280"
-    },
-    {
-        "title": "\ub9c8\uace1",
-        "start": "2025-02-28 09:00",
-        "end": "2025-02-28 09:00",
-        "description": "\uc791\uc5c5\uc7a5 : \ub9c8\uace1 \n \uc791\uc5c5\ub0b4\uc6a9 : \ub3c4\uae09_11\uce35_B_\ud615\ud2c0_\ucf54\uc544_\ucf54\uc5b4 \ubcbd\uccb4 \ud558\ubd80\uc790\ud0a4 \ubc0f \uc694\uaf2c \ub2e4\ub300 \uc791\uc5c5 \n \uc791\uc5c5\uc778\uc6d0 \n \uc774\ub984: \uae40\ucc3d\ud638, \uacf5\uc218: 1\n\uc774\ub984: \ucc28\ucc3d\ud76c, \uacf5\uc218: 1\n\uc774\ub984: \uc724\uc11d\ub450, \uacf5\uc218: 2\n",
-        "type": "\ub9c8\uace1",
-        "username": "\ud14c\uc2a4\ud2b82",
-        "backgroundColor": "#ffa94d",
-        "textColor": "#ffffff",
-        "allDay": true,
-        "_id": "\ub9c8\uace1282"
-    },
-    {
-        "title": "\ub9c8\uace1",
-        "start": "2025-02-28 09:00",
-        "end": "2025-02-28 09:00",
-        "description": "\uc791\uc5c5\uc7a5 : \ub9c8\uace1 \n \uc791\uc5c5\ub0b4\uc6a9 : \ub3c4\uae09_11\uce35_B_\ud615\ud2c0_\ucf54\uc544_\ucf54\uc5b4 \ubcbd\uccb4 \ud558\ubd80\uc790\ud0a4 \ubc0f \uc694\uaf2c \ub2e4\ub300 \uc791\uc5c5 \n \uc791\uc5c5\uc778\uc6d0 \n \uc774\ub984: \uae40\ucc3d\ud638, \uacf5\uc218: 1\n\uc774\ub984: \ucc28\ucc3d\ud76c, \uacf5\uc218: 1\n\uc774\ub984: \uc724\uc11d\ub450, \uacf5\uc218: 2\n",
-        "type": "\ub9c8\uace1",
-        "username": "\ud14c\uc2a4\ud2b82",
-        "backgroundColor": "#ffa94d",
-        "textColor": "#ffffff",
-        "allDay": true,
-        "_id": "\ub9c8\uace1283"
     }
 ]

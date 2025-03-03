@@ -40,7 +40,7 @@ def read_encrypted_excel(filepath, password):
     return wb
 
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='templates')
 app.secret_key = 'your_secret_key'  # 세션 관리를 위해 필요한 키 설정
 
 
