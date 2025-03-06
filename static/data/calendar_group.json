@@ -24,5 +24,18 @@
             "A0010",
             "A0011"
         ]
+    },
+    {
+        "groupName": "\uc2dc\ud765",
+        "members": [
+            "B0000"
+        ]
+    },
+    {
+        "groupName": "\ub2f9\uc9c4",
+        "members": [
+            "B0000",
+            "A0001"
+        ]
     }
 ]
