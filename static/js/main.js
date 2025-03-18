@@ -265,6 +265,26 @@
   //     });
   // });
 
+
+
+  $('#agree').on('click', function(event) {
+    event.preventDefault();
+    
+    $.ajax({
+        url: '/signup',
+        method: 'GET',
+        contentType: 'application/json',
+        data: JSON.stringify({id: id, pw: pw}),
+        success: function(response) {
+            
+        },
+        error: function(response) {
+          
+        }
+    });
+});
+
+
   // 로그아웃 기능 
   $('#nav_logout').on('click',function(){
 

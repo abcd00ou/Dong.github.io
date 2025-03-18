@@ -1084,7 +1084,6 @@ def personal_agree():
     return render_template("personal_agree.html")
 
 @app.route('/signup', methods=['GET'])
-@check_session_id
 @nocache
 def signup():
     
@@ -1159,9 +1158,20 @@ def register():
     user_credential = register_data['user_credential']
     user_visa = register_data['user_visa']
     user_address = register_data['user_address']
-    user_certificate = register_data['user_certificate']
-    user_highBlood = register_data['user_highBlood']
-    radio_nationality = register_data['radio_nationality']
+    try:
+        user_certificate = register_data['user_certificate']
+    except:
+        user_certificate = ""
+
+    try:
+        user_highBlood = register_data['user_highBlood']
+    except:
+        user_highBlood=""
+    try:
+        radio_nationality = register_data['radio_nationality']
+    except:
+        radio_nationality=""
+    
 
     if radio_nationality=='총괄':
         registerd_data = pd.DataFrame({

@@ -592,8 +592,8 @@ const addressValidation = () => {
                     user_visa:user_visa,user_address:user_address,user_certificate:user_certificate ,user_highBlood:user_highBlood,radio_nationality:radio_nationality    
                 }),
                 success: function(response) {
-                    // alert('개인정보 저장이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
-                    // window.location.href = 'backoffice'
+                    alert('개인정보 저장이 완료되었습니다.\n 로그인 화면으로 돌아갑니다. ');
+                    window.location.href = 'backoffice'
                     console.log("정보 저장 끝")
                 },
                 error: function(response) {
