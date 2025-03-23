@@ -398,36 +398,36 @@ function calDateWhenResize(event) {
   return newDates;
 }
 
-function calDateWhenDragnDrop(event) {
-  // 드랍시 수정된 날짜반영
-  var newDates = {
-    startDate: '',
-    endDate: ''
-  }
+// function calDateWhenDragnDrop(event) {
+//   // 드랍시 수정된 날짜반영
+//   var newDates = {
+//     startDate: '',
+//     endDate: ''
+//   }
 
-  // 날짜 & 시간이 모두 같은 경우
-  if(!event.end) {
-    event.end = event.start;
-  }
+//   // 날짜 & 시간이 모두 같은 경우
+//   if(!event.end) {
+//     event.end = event.start;
+//   }
 
-  //하루짜리 all day
-  if (event.allDay && event.end === event.start) {
-    console.log('1111')
-    newDates.startDate = moment(event.start._d).format('YYYY-MM-DD');
-    newDates.endDate = newDates.startDate;
-  }
+//   //하루짜리 all day
+//   if (event.allDay && event.end === event.start) {
+//     console.log('1111')
+//     newDates.startDate = moment(event.start._d).format('YYYY-MM-DD');
+//     newDates.endDate = newDates.startDate;
+//   }
 
-  //2일이상 all day
-  else if (event.allDay && event.end !== null) {
-    newDates.startDate = moment(event.start._d).format('YYYY-MM-DD');
-    newDates.endDate = moment(event.end._d).subtract(1, 'days').format('YYYY-MM-DD');
-  }
+//   //2일이상 all day
+//   else if (event.allDay && event.end !== null) {
+//     newDates.startDate = moment(event.start._d).format('YYYY-MM-DD');
+//     newDates.endDate = moment(event.end._d).subtract(1, 'days').format('YYYY-MM-DD');
+//   }
 
-  //all day가 아님
-  else if (!event.allDay) {
-    newDates.startDate = moment(event.start._d).format('YYYY-MM-DD HH:mm');
-    newDates.endDate = moment(event.end._d).format('YYYY-MM-DD HH:mm');
-  }
+//   //all day가 아님
+//   else if (!event.allDay) {
+//     newDates.startDate = moment(event.start._d).format('YYYY-MM-DD HH:mm');
+//     newDates.endDate = moment(event.end._d).format('YYYY-MM-DD HH:mm');
+//   }
 
-  return newDates;
-}
+//   return newDates;
+// }

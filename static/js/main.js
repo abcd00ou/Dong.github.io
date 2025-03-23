@@ -267,22 +267,7 @@
 
 
 
-  $('#agree').on('click', function(event) {
-    event.preventDefault();
-    
-    $.ajax({
-        url: '/signup',
-        method: 'GET',
-        contentType: 'application/json',
-        data: JSON.stringify({id: id, pw: pw}),
-        success: function(response) {
-            
-        },
-        error: function(response) {
-          
-        }
-    });
-});
+  
 
 
   // 로그아웃 기능 
@@ -428,19 +413,36 @@ $('#group-add').on('click', function(event) {
         console.log(USER_LIST)
         // 사용자 목록을 모달에 채워넣기
         var userList = $('#userList');
-        userList.empty(); // 혹시 이전 내용이 있을 수 있으니 초기화
+        var searchInput = $('#memberSearch');  // 입력창
+        // userList.empty(); // 혹시 이전 내용이 있을 수 있으니 초기화
 
-        // 예: response가 [{"name": "김서준"}, {"name": "이동성"}] 같은 구조라고 가정
-        USER_LIST.forEach(function (user) {
-     
-          // 각각 체크박스와 이름을 표시
-          var userItem = `
-            <div>
-              <input type="checkbox" class="memberCheckbox" value="${user.ID}">
-              <span>${user.ID}, ${user.성명}</span>
-            </div>
-          `;
-          userList.append(userItem);
+        function renderUserList(filteredList) {
+          userList.empty();
+          filteredList.forEach(function (user) {
+              var userItem = `
+                  <div style="display: flex; align-items: center;margin-bottom:10px; ">
+                      <span style='width:100%; margin-left:50px;'>${user.ID}, ${user.성명}</span>
+                      <input type="checkbox" class="memberCheckbox"  value="${user.ID}">
+                  </div>
+              `;
+                userList.append(userItem);
+            });
+        }
+
+
+         // 최초 전체 목록 렌더링
+        renderUserList(USER_LIST);
+
+        // 검색 이벤트 등록
+        searchInput.on('input', function () {
+            var keyword = $(this).val().toLowerCase();
+            console.log(keyword)
+            var filtered = USER_LIST.filter(function (user) {
+              var name = user.성명 ? user.성명.toLowerCase() : '';
+              var id = user.ID ? user.ID.toLowerCase() : '';
+              return name.includes(keyword) || id.includes(keyword);
+            });
+            renderUserList(filtered);
         });
 
         // 데이터 세팅 후 모달 표시

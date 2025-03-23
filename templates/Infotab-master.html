@@ -100,7 +100,7 @@
           </div>
         </div>
     </div>
-    <div id="groupModal" class="modal" style="margin-top: 100px; background-color: #63e6be; height:620px;width:100%;" tabindex="-1" role="dialog">
+    <div id="groupModal" class="modal groupModal"  tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <!-- 닫기 버튼 -->
@@ -113,6 +113,7 @@
             <input type="text" id="groupName" placeholder="예: 마곡 휘강/ 안양 태일 ">
             
             <h3>그룹 멤버 선택</h3>
+            <input type="text" id ='memberSearch' placeholder="이름 검색" autocomplete="on">
             <!-- 사용자 목록이 들어갈 영역 -->
             <div id="userList"style="height:400px; overflow-y: auto;"></div>
             
@@ -507,6 +508,14 @@ function createCustomGaugeChart(value, ctx) {
     plugins: [centerTextPlugin]
   });
 }
+
+const autocompleteList = document.getElementById('autocomplete-list');
+autocompleteList.innerHTML = ''; // 기존 항목 제거
+insadb.forEach(worker => {
+    const div = document.createElement('option');
+    div.value = worker.성명;
+    autocompleteList.appendChild(div);
+});
 
 </script>
 

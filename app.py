@@ -1125,15 +1125,65 @@ def signup():
                         'user_address':user_address,
                         'user_certificate':user_certificate,
                         'user_highBlood':user_highBlood}
+            return render_template("signup-update.html", countries=countries['countries'],info_list=info_list)
         else: 
             info_list={}
 
-        return render_template("signup.html", countries=countries['countries'],info_list=info_list)
+            return render_template("signup.html", countries=countries['countries'],info_list=info_list)
     else:
 
         info_list={}
         return render_template("signup.html", countries=countries['countries'],info_list=info_list)
 
+
+@app.route('/signup-update', methods=['GET'])
+@nocache
+def signup_update():
+    
+    file_path = './static/data/countries.json'
+    with open(file_path, 'r') as f:
+        countries = json.load(f)
+        f.close()
+
+    # ID랑 비번으로 계정 매핑  
+    insadb = pd.read_excel("./static/data/INSA_DB.xlsx")
+    insadb['PASSWORD'] = insadb['PASSWORD'].astype(str)
+    if 'id' in session and 'pw' in session:
+        id = str(session['id']) 
+        pw = str(session['pw'])
+        print('id',id,pw)
+        print(insadb)
+        print(insadb[insadb['ID']==id])
+        try:
+            filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
+        except:
+            filterd_db = insadb[(insadb['ID']==id)&(insadb['PASSWORD']==pw)].reset_index(drop=True)
+        print(filterd_db)
+        if len(filterd_db)>0:## 정보가 있는경우 
+            filterd_db= filterd_db.fillna("")
+            user_name = filterd_db['성명'].values[0]
+            user_contact = filterd_db['전화번호'].values[0]
+            user_nationality = filterd_db['국적'].values[0]
+            user_credential = filterd_db['KEY_ID'].values[0]
+            user_visa = filterd_db['체류비자'].values[0]
+            user_address = filterd_db['주소'].values[0]
+            user_certificate = filterd_db['자격증유무'].values[0]
+            user_highBlood = filterd_db['고혈압유무'].values[0]
+            info_list = {'user_id':id,
+                        'user_name':user_name,
+                        'user_contact':user_contact,
+                        'user_nationality':user_nationality,
+                        'user_credential':user_credential,
+                        'user_visa':user_visa,
+                        'user_address':user_address,
+                        'user_certificate':user_certificate,
+                        'user_highBlood':user_highBlood}
+            return render_template("signup-update.html", countries=countries['countries'],info_list=info_list)
+        else: 
+            info_list={}
+
+            return render_template("signup.html", countries=countries['countries'],info_list=info_list)
+        
 @app.route('/logout', methods=['POST'])
 @nocache
 def logout():
