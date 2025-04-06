@@ -371,7 +371,7 @@ $('#plan-btn').on('click', function(event) {
   window.location.href = `survey-plan?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
 });
 
-
+//infotab에서 작업일지 가기 
 $('#work-btn').on('click', function(event) {
   event.preventDefault();
   const siteValue = document.getElementById('place-choice').value
@@ -380,6 +380,18 @@ $('#work-btn').on('click', function(event) {
   console.log('siteValue',siteValue);            // "마곡
 
    window.location.href = `survey?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
+  
+});
+
+$('#work-btn-cal').on('click', function(event) {
+  event.preventDefault();
+  console.log(document.querySelector('button[id^="group-"].active'))
+  const siteValue =  document.querySelector('button[id^="group-"].active').textContent; 
+  const startDate = moment().format('YYYY-MM-DD');;
+  console.log('startDate',startDate)
+  console.log('siteValue',siteValue);            // "마곡
+
+  window.location.href = `survey?site=${encodeURIComponent(siteValue)}&date=${encodeURIComponent(startDate)}`;
   
 });
 

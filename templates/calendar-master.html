@@ -5,7 +5,14 @@
 {% block content %}
 <div class="container">
     <input class='filter' type="checkbox" id ='edit-name' value="{{ name }}" checked style="display:none">
-    <div class="col-xs-6"  style="float: right;" id ='group_list'></div>
+    <div class="col-xs-6"  style="display:inline-block;" id ='group_list'></div>
+    
+    
+    <div id="wrapper">
+        <div id="loading"></div>
+        <div id="calendar"></div>
+    </div>
+
     <!-- 일자 클릭시 메뉴오픈 -->
     <div id="contextMenu" class="dropdown clearfix">
         <ul class="dropdown-menu dropNewEvent" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
@@ -13,18 +20,12 @@
                 <i type="button" class="bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></i>
                 <div>일정 생성</div>
             </div>
-            <li><a tabindex="-1" href="#">당진</a></li>
+            <li><a  href="#" id="work-btn-cal">작업 일지 작성</a></li>
+            <!-- <li><a tabindex="-1" href="#">당진</a></li>
             <li><a tabindex="-1" href="#">송도</a></li>
             <li><a tabindex="-1" href="#">마곡</a></li>
-            <li><a tabindex="-1" href="#">시흥</a></li>
+            <li><a tabindex="-1" href="#">시흥</a></li> -->
         </ul>
-    </div>
-    
-  
-
-    <div id="wrapper">
-        <div id="loading"></div>
-        <div id="calendar"></div>
     </div>
 
 

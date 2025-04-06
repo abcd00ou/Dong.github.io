@@ -1899,8 +1899,13 @@ section,
   min-height: 26px;
   height: 26px;
 }
+
+.fc-scroller.fc-day-grid-container {
+  height: 400px !important;   /* or 100% / auto */
+}
+
 .fc-day-grid-container > .fc-day-grid > .fc-row {
-  min-height: 56px;
+  min-height: 48px;
 }
 
 /* .fc-day-header {

@@ -32,7 +32,7 @@ var calendar = $('#calendar').fullCalendar({
   defaultDate               : moment().format('YYYY-MM-DD'), //실제 사용시 현재 날짜로 수정
   timeFormat                : 'HH:mm',
   defaultTimedEventDuration : '01:00:00',
-  editable                  : true,
+  editable                  : false, //drag 안되게 하기 
   minTime                   : '00:00:00',
   maxTime                   : '24:00:00',
   slotLabelFormat           : 'HH:mm',
@@ -78,38 +78,38 @@ var calendar = $('#calendar').fullCalendar({
   columnHeaderFormat        : 'ddd',
 
 
-  eventRender: function (event, element, view) {
-    console.log(event)
-    //일정에 hover시 요약
-    element.popover({
-      title: $('<div />', {
-        class: 'popoverTitleCalendar',
-        text: event.title
-      }).css({
-        'background': event.backgroundColor,
-        'color': event.textColor,
-        'font-size':'1px',
-        'z-index':'99'
-      }),
-      content: $('<div />', {
-          class: 'popoverInfoCalendar'
-        }).append('<p><strong>등록자:</strong> ' + event.username + '</p>')
-        .append('<p><strong>구분:</strong> ' + event.type + '</p>')
-        .append('<p><strong>시간:</strong> ' + getDisplayEventDate(event) + '</p>')
-        .append('<div class="popoverDescCalendar"><strong>설명:</strong> ' + event.description + '</div>'),
-      delay: {
-        show: "700",
-        hide: "50"
-      },
-      trigger: 'hover',
-      placement: 'top',
-      html: true,
-      container: 'body'
-    });
+  // eventRender: function (event, element, view) {
+  //   console.log(event)
+  //   //일정에 hover시 요약
+  //   element.popover({
+  //     title: $('<div />', {
+  //       class: 'popoverTitleCalendar',
+  //       text: event.title
+  //     }).css({
+  //       'background': event.backgroundColor,
+  //       'color': event.textColor,
+  //       'font-size':'1px',
+  //       'z-index':'99'
+  //     }),
+  //     content: $('<div />', {
+  //         class: 'popoverInfoCalendar'
+  //       }).append('<p><strong>등록자:</strong> ' + event.username + '</p>')
+  //       .append('<p><strong>구분:</strong> ' + event.type + '</p>')
+  //       .append('<p><strong>시간:</strong> ' + getDisplayEventDate(event) + '</p>')
+  //       .append('<div class="popoverDescCalendar"><strong>설명:</strong> ' + event.description + '</div>'),
+  //     delay: {
+  //       show: "700",
+  //       hide: "50"
+  //     },
+  //     trigger: 'hover',
+  //     placement: 'top',
+  //     html: true,
+  //     container: 'body'
+  //   });
 
-    return filtering(event);
+  //   return filtering(event);
 
-  },
+  // },
 
   /* ****************
    *  일정 받아옴 
@@ -163,40 +163,40 @@ var calendar = $('#calendar').fullCalendar({
 
   },
 
-  eventDragStart: function (event, jsEvent, ui, view) {
-    draggedEventIsAllDay = event.allDay;
-  },
+  // eventDragStart: function (event, jsEvent, ui, view) {
+  //   draggedEventIsAllDay = event.allDay;
+  // },
 
   //일정 드래그앤드롭
-  eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
-    $('.popover.fade.top').remove();
+  // eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
+  //   $('.popover.fade.top').remove();
 
-    //주,일 view일때 종일 <-> 시간 변경불가
-    if (view.type === 'agendaWeek' || view.type === 'agendaDay') {
-      if (draggedEventIsAllDay !== event.allDay) {
-        alert('드래그앤드롭으로 종일<->시간 변경은 불가합니다.');
-        location.reload();
-        return false;
-      }
-    }
+  //   //주,일 view일때 종일 <-> 시간 변경불가
+  //   if (view.type === 'agendaWeek' || view.type === 'agendaDay') {
+  //     if (draggedEventIsAllDay !== event.allDay) {
+  //       alert('드래그앤드롭으로 종일<->시간 변경은 불가합니다.');
+  //       location.reload();
+  //       return false;
+  //     }
+  //   }
 
     // 드랍시 수정된 날짜반영
-    var newDates = calDateWhenDragnDrop(event);
+    // var newDates = calDateWhenDragnDrop(event);
 
     //드롭한 일정 업데이트
-    $.ajax({
-      type: "get",
-      url: "",
-      data: {
-        //...
-      },
-      success: function (response) {
+    // $.ajax({
+    //   type: "get",
+    //   url: "",
+    //   data: {
+    //     //...
+    //   },
+    //   success: function (response) {
 
-        alert('수정: ' + newDates.startDate + ' ~ ' + newDates.endDate);
-      }
-    });
+    //     alert('수정: ' + newDates.startDate + ' ~ ' + newDates.endDate);
+    //   }
+    // });
 
-  },
+  // },
 
   select: function (startDate, endDate, jsEvent, view) {
 
@@ -205,13 +205,13 @@ var calendar = $('#calendar').fullCalendar({
       console.log('eeee',e)
       console.log( e.pageX, e.pageY)
       // contextMenu 조작 금지 
-      // $("#contextMenu")
-      //   .addClass("contextOpened")
-      //   .css({
-      //     display: "block",
-      //     left: e.pageX,
-      //     top: e.pageY
-      //   });
+      $("#contextMenu")
+        .addClass("contextOpened")
+        .css({
+          display: "block",
+          left: e.pageX,
+          top: e.pageY
+        });
       return false;
     });
 
